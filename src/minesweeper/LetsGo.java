@@ -133,7 +133,7 @@ public class LetsGo {
             }
         }
         if (y + 1 <= minus.getJ() - 1) {
-            if (checkOrNot(x, y + 1) == false) {
+            if (checkOrNot(x, y + 1) == false) {                                    // x+1 | x+1,y+1 |y+1 |y-1|x-1|y-1,x-1
                 if (minus.getWireRack(x, y + 1) == Case.ALONE) {
                     ticTac[x][y + 1] = Case.ALONE;
                     propagation(x, y + 1);
@@ -200,22 +200,40 @@ public class LetsGo {
         }
     }
 
+    private void help() {
+        System.out.println(" Not complete order ");
+        System.out.println(" d x y -> show this case ");
+        System.out.println(" m x y ?/! -> mark case with ?/!");
+        System.out.println(" q -> quit ");
+        showTicTac();
+    }
+
     // victoire, compte le nombre de case  
     public void order(String go) {
         String[] cr = go.split(" ");
         switch (cr[0]) {
             case "d":
-                print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
-                break;
+                if (cr.length == 3) {
+                    print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    break;
+                } else {
+                    help();
+                    break;
+                }
             case "q":
                 stop(" give up ");
                 break;
             case "m":
-                mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
-                System.out.print(cr[3]);
-                break;
+                if (cr.length == 4) {
+                    mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
+                    break;
+                } else {
+                    help();
+                    break;
+                }
             default:
                 System.out.println(" Not understand your order");
+                help();
         }
     }
 
