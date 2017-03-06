@@ -16,16 +16,15 @@ public enum Case {
     HIDE("#"),
     ALONE("."),
     NUMBER(0);
-    
+
     private String valueS;
-    private int valueI;    
-    
-    
+    private int valueI;
+
     private Case(String x) {
         valueS = x;
     }
-    
-    private Case(int x){
+
+    private Case(int x) {
         valueI = x;
     }
 
@@ -44,6 +43,5 @@ public enum Case {
     public void setValueI(int valueI) {
         this.valueI = valueI;
     }
-    
-    
+
 }
