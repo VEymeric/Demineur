@@ -34,8 +34,8 @@ public class Minesweeper {
         generate.creatWireRack();
         generate.affichage();
         LetsGo demineur = new LetsGo(generate);
-        sc.nextLine();
         demineur.hideTicTac();
+        sc.nextLine();    
         while(demineur.isEnd() != false){
             action = sc.nextLine();
             demineur.order(action);

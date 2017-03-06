@@ -96,9 +96,9 @@ public class Generate {
     
     private void defaultWireRack(){
         Case[][] wireRackS = new Case[getI()][getJ()];
-        for (Case[] wireRackS1 : wireRackS) {
-            for (int y = 0; y < wireRackS1.length; y++) {
-                wireRackS1[y] = Case.NUMBER;
+        for ( int x = 0; x < getI();x++) {
+            for (int y = 0; y < getJ(); y++) {
+                wireRackS[x][y] = Case.NUMBER;
             }
         }
         setWireRack(wireRackS); 
@@ -139,8 +139,8 @@ public class Generate {
     }
     
     public void affichage(){
-        for( int x = 0; x < getI() ; x++){
-            for( int y = 0; y< getJ(); y++){
+        for( int y = 0; y < getJ() ; y++){
+            for( int x = 0; x< getI(); x++){
                 if(wireRack[x][y] == Case.NUMBER){
                     System.out.print(wireRack[x][y].getValueI()+"  ");                    
                 }
