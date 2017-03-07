@@ -28,10 +28,10 @@ public class LetsGo {
     }
 
     private void print(int i, int j) {
-        if (minus.getWireRack(i, j) == Case.MINE) {
+        if (minus.getGrid(i, j) == Case.MINE) {
             stop(" loose... ");
         }
-        ticTac[i][j] = minus.getWireRack(i, j);
+        ticTac[i][j] = minus.getGrid(i, j);
         showTicTac();
     }
 
@@ -49,13 +49,13 @@ public class LetsGo {
     }
 
     public void hideTicTac() {
-        Case[][] wireRackS = new Case[minus.getI()][minus.getJ()];
+        Case[][] GridS = new Case[minus.getI()][minus.getJ()];
         for (int x = 0; x < minus.getI(); x++) {
             for (int y = 0; y < minus.getJ(); y++) {
-                wireRackS[x][y] = Case.HIDE;
+                GridS[x][y] = Case.HIDE;
             }
         }
-        setTicTac(wireRackS);
+        setTicTac(GridS);
         showTicTac();
     }
 
@@ -85,7 +85,7 @@ public class LetsGo {
         return true;
     }
 
-    public void showTicTac() {
+    public void showTicTac() { // erreur ! affichage des point si passent avant alors ne s'affiche pas !
         for (int y = 0; y < minus.getJ(); y++) {
             for (int x = 0; x < minus.getI(); x++) {
                 if (Case.NUMBER.equals(ticTac[x][y])) {
@@ -111,90 +111,90 @@ public class LetsGo {
     private void propagation(int x, int y) {
         if (x + 1 <= minus.getI() - 1) {
             if (checkOrNot(x + 1, y) == false) {
-                if (minus.getWireRack(x + 1, y) == Case.ALONE) {
+                if (minus.getGrid(x + 1, y) == Case.ALONE) {
                     ticTac[x + 1][y] = Case.ALONE;
                     propagation(x + 1, y);
 
                 }
-                if (minus.getWireRack(x + 1, y) == Case.NUMBER) {
-                    ticTac[x + 1][y] = minus.getWireRack(x + 1, y);
+                if (minus.getGrid(x + 1, y) == Case.NUMBER) {
+                    ticTac[x + 1][y] = minus.getGrid(x + 1, y);
                 }
             }
         }
         if (x + 1 <= minus.getI() - 1 && y + 1 <= minus.getJ() - 1) {
             if (checkOrNot(x + 1, y + 1) == false) {
-                if (minus.getWireRack(x + 1, y + 1) == Case.ALONE) {
+                if (minus.getGrid(x + 1, y + 1) == Case.ALONE) {
                     ticTac[x + 1][y + 1] = Case.ALONE;
                     propagation(x + 1, y + 1);
                 }
-                if (minus.getWireRack(x + 1, y + 1) == Case.NUMBER) {
-                    ticTac[x + 1][y + 1] = minus.getWireRack(x + 1, y + 1);
+                if (minus.getGrid(x + 1, y + 1) == Case.NUMBER) {
+                    ticTac[x + 1][y + 1] = minus.getGrid(x + 1, y + 1);
                 }
             }
         }
         if (y + 1 <= minus.getJ() - 1) {
             if (checkOrNot(x, y + 1) == false) {                                    // x+1 | x+1,y+1 |y+1 |y-1|x-1|y-1,x-1
-                if (minus.getWireRack(x, y + 1) == Case.ALONE) {
+                if (minus.getGrid(x, y + 1) == Case.ALONE) {
                     ticTac[x][y + 1] = Case.ALONE;
                     propagation(x, y + 1);
                 }
-                if (minus.getWireRack(x, y + 1) == Case.NUMBER) {
-                    ticTac[x][y + 1] = minus.getWireRack(x, y + 1);
+                if (minus.getGrid(x, y + 1) == Case.NUMBER) {
+                    ticTac[x][y + 1] = minus.getGrid(x, y + 1);
                 }
             }
         }
         if (y - 1 >= 0) {
             if (checkOrNot(x, y - 1) == false) {
-                if (minus.getWireRack(x, y - 1) == Case.ALONE) {
+                if (minus.getGrid(x, y - 1) == Case.ALONE) {
                     ticTac[x][y - 1] = Case.ALONE;
                     propagation(x, y - 1);
                 }
-                if (minus.getWireRack(x, y - 1) == Case.NUMBER) {
-                    ticTac[x][y - 1] = minus.getWireRack(x, y - 1);
+                if (minus.getGrid(x, y - 1) == Case.NUMBER) {
+                    ticTac[x][y - 1] = minus.getGrid(x, y - 1);
                 }
             }
         }
         if (x - 1 >= 0) {
             if (checkOrNot(x - 1, y) == false) {
-                if (minus.getWireRack(x - 1, y) == Case.ALONE) {
+                if (minus.getGrid(x - 1, y) == Case.ALONE) {
                     ticTac[x - 1][y] = Case.ALONE;
                     propagation(x - 1, y);
                 }
-                if (minus.getWireRack(x - 1, y) == Case.NUMBER) {
-                    ticTac[x - 1][y] = minus.getWireRack(x - 1, y);
+                if (minus.getGrid(x - 1, y) == Case.NUMBER) {
+                    ticTac[x - 1][y] = minus.getGrid(x - 1, y);
                 }
             }
         }
         if (y - 1 >= 0 && x - 1 >= 0) {
             if (checkOrNot(x - 1, y - 1) == false) {
-                if (minus.getWireRack(x - 1, y - 1) == Case.ALONE) {
+                if (minus.getGrid(x - 1, y - 1) == Case.ALONE) {
                     ticTac[x - 1][y - 1] = Case.ALONE;
                     propagation(x - 1, y - 1);
                 }
-                if (minus.getWireRack(x - 1, y - 1) == Case.NUMBER) {
-                    ticTac[x - 1][y - 1] = minus.getWireRack(x - 1, y - 1);
+                if (minus.getGrid(x - 1, y - 1) == Case.NUMBER) {
+                    ticTac[x - 1][y - 1] = minus.getGrid(x - 1, y - 1);
                 }
             }
         }
         if (y + 1 <= minus.getJ() - 1 && x - 1 >= 0) {
             if (checkOrNot(x - 1, y + 1) == false) {
-                if (minus.getWireRack(x - 1, y + 1) == Case.ALONE) {
+                if (minus.getGrid(x - 1, y + 1) == Case.ALONE) {
                     ticTac[x - 1][y + 1] = Case.ALONE;
                     propagation(x - 1, y + 1);
                 }
-                if (minus.getWireRack(x - 1, y + 1) == Case.NUMBER) {
-                    ticTac[x - 1][y + 1] = minus.getWireRack(x - 1, y + 1);
+                if (minus.getGrid(x - 1, y + 1) == Case.NUMBER) {
+                    ticTac[x - 1][y + 1] = minus.getGrid(x - 1, y + 1);
                 }
             }
         }
         if (y - 1 >= 0 && x + 1 <= minus.getI() - 1) {
             if (checkOrNot(x + 1, y - 1) == false) {
-                if (minus.getWireRack(x + 1, y - 1) == Case.ALONE) {
+                if (minus.getGrid(x + 1, y - 1) == Case.ALONE) {
                     ticTac[x + 1][y - 1] = Case.ALONE;
                     propagation(x + 1, y - 1);
                 }
-                if (minus.getWireRack(x + 1, y - 1) == Case.NUMBER) {
-                    ticTac[x + 1][y - 1] = minus.getWireRack(x + 1, y - 1);
+                if (minus.getGrid(x + 1, y - 1) == Case.NUMBER) {
+                    ticTac[x + 1][y - 1] = minus.getGrid(x + 1, y - 1);
                 }
             }
         }
@@ -208,7 +208,7 @@ public class LetsGo {
         showTicTac();
     }
 
-    // victoire, compte le nombre de case  
+    // victoire, compte le nombre de case
     public void order(String go) {
         String[] cr = go.split(" ");
         switch (cr[0]) {

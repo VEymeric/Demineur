@@ -11,7 +11,7 @@ package minesweeper;
  */
 public class Generate {
 
-    private Case[][] wireRack;  // tableau
+    private Case[][] grid;  // tableau
     private int i, j, percentage, numberOfMine; // dimention
 
     public Generate() {
@@ -22,29 +22,29 @@ public class Generate {
         this.i = i;
         this.j = j;
         this.percentage = percentage;
-    } // constructeur 
+    } // constructeur
 
     private Generate(int i, int j, String percentage) {
         String[] cr = percentage.split("%");
         this.percentage = Integer.parseInt(cr[0]);
         this.i = i;
         this.j = j;
-    } // constructeur 
+    } // constructeur
 
     private Generate(int i, int percentage) {
         this(i, i, percentage);
-    } // constructeur 
+    } // constructeur
 
     private Generate(int i, String percentage) {
         this(i, i, percentage);
-    } // constructeur 
+    } // constructeur
 
-    public Case getWireRack(int i, int j) {
-        return wireRack[i][j];
+    public Case getGrid(int i, int j) {
+        return grid[i][j];
     }
 
-    public void setWireRack(Case[][] wireRack) {
-        this.wireRack = wireRack;
+    public void setGrid(Case[][] grid) {
+        this.grid = grid;
     }
 
     public int getI() {
@@ -91,42 +91,42 @@ public class Generate {
         this.numberOfMine = numberOfMine;
     }
 
-    private void defaultWireRack() {
-        Case[][] wireRackS = new Case[getI()][getJ()];
+    private void defaultGrid() {
+        Case[][] grids = new Case[getI()][getJ()];
         for (int x = 0; x < getI(); x++) {
             for (int y = 0; y < getJ(); y++) {
-                wireRackS[x][y] = Case.NUMBER;
+                gridS[x][y] = Case.NUMBER;
             }
         }
-        setWireRack(wireRackS);
+        setGrid(gridS);
     }    // construire le tableau par default avec la valeur 0 partout
 
     private int searchMine(int x, int y) {
         int mine = 0;
         // on vérifie si la case existe et sinon on regarde ce qu'il y a dedans
         if (x + 1 <= getI() - 1) {
-            mine += (Case.MINE.equals(wireRack[x + 1][y])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x + 1][y])) ? 1 : 0;
         }         // coté droit
         if (x + 1 <= getI() - 1 && y + 1 <= getJ() - 1) {
-            mine += (Case.MINE.equals(wireRack[x + 1][y + 1])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x + 1][y + 1])) ? 1 : 0;
         }    // diagonal haute droite
         if (x + 1 <= getI() - 1 && y - 1 >= 0) {
-            mine += (Case.MINE.equals(wireRack[x + 1][y - 1])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x + 1][y - 1])) ? 1 : 0;
         }// diagonale basse droite
         if (x - 1 >= 0) {
-            mine += (Case.MINE.equals(wireRack[x - 1][y])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x - 1][y])) ? 1 : 0;
         }     // coté gauche
         if (x - 1 >= 0 && y + 1 <= getJ() - 1) {
-            mine += (Case.MINE.equals(wireRack[x - 1][y + 1])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x - 1][y + 1])) ? 1 : 0;
         }     //diagonale haute gauche
         if (x - 1 >= 0 && y - 1 >= 0) {
-            mine += (Case.MINE.equals(wireRack[x - 1][y - 1])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x - 1][y - 1])) ? 1 : 0;
         }    // diagonale basse gauche
         if (y - 1 >= 0) {
-            mine += (Case.MINE.equals(wireRack[x][y - 1])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x][y - 1])) ? 1 : 0;
         }    // coté haut
         if (y + 1 <= getJ() - 1) {
-            mine += (Case.MINE.equals(wireRack[x][y + 1])) ? 1 : 0;
+            mine += (Case.MINE.equals(grid[x][y + 1])) ? 1 : 0;
         }    // coté bas
         return mine;
     } // Parcour des voisins pour voir si il y a une mine
@@ -138,38 +138,38 @@ public class Generate {
     public void affichage() {
         for (int y = 0; y < getJ(); y++) {
             for (int x = 0; x < getI(); x++) {
-                if (wireRack[x][y] == Case.NUMBER) {
-                    System.out.print(wireRack[x][y].getValueI() + "  ");
+                if (grid[x][y] == Case.NUMBER) {
+                    System.out.print(grid[x][y].getValueI() + "  ");
                 } else {
-                    System.out.print(wireRack[x][y].getValueS() + "  ");
+                    System.out.print(grid[x][y].getValueS() + "  ");
                 }
             }
             System.out.println("  ");
         }
     }
 
-    public void creatWireRack() {
+    public void creatGrid() {
         int counter = 0;
         int mine = 0;
-        defaultWireRack();
+        defaultGrid();
         numberOfMine();
         while (counter != getNumberOfMine()) {
             int randI = (int) (Math.random() * getI());
             int randJ = (int) (Math.random() * getJ());
-            if (Case.NUMBER.equals(wireRack[randI][randJ])) {
-                wireRack[randI][randJ] = Case.MINE;
+            if (Case.NUMBER.equals(grid[randI][randJ])) {
+                grid[randI][randJ] = Case.MINE;
                 counter++;
             }
         }
         for (int a = 0; a < getI(); a++) {
             for (int b = 0; b < getJ(); b++) {
-                if (Case.NUMBER.equals(wireRack[a][b])) {
+                if (Case.NUMBER.equals(grid[a][b])) {
                     mine = searchMine(a, b);
                     if (mine == 0) {
-                        wireRack[a][b] = Case.ALONE;
+                        grid[a][b] = Case.ALONE;
                     } else {
                         Case.NUMBER.setValueI(mine);
-                        wireRack[a][b] = Case.NUMBER;
+                        grid[a][b] = Case.NUMBER;
                     }
                 }
             }
