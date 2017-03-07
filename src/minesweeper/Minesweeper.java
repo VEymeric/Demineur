@@ -31,15 +31,14 @@ public class Minesweeper {
         percentage = sc.nextInt();
         System.out.println("_________________LET'S GO___________________"); */
         Generate generate = new Generate(10, 10, 15);
-        generate.creatWireRack();
-        generate.affichage();
         System.out.println("chat");
         LetsGo demineur = new LetsGo(generate);
         demineur.hideTicTac();
-        sc.nextLine();
+        action = sc.nextLine();
+        demineur.order(action, true);
         while (demineur.isEnd() != false) {
             action = sc.nextLine();
-            demineur.order(action);
+            demineur.order(action, false);
         }
 
     }

@@ -39,7 +39,7 @@ public class Generate {
         this(i, i, percentage);
     } // constructeur
 
-    public Case getGrid(int i, int j) {
+    public Case getCase(int i, int j) {
         return grid[i][j];
     }
 
@@ -87,12 +87,12 @@ public class Generate {
         return numberOfMine;
     }
 
-    public void setNumberOfMine(int numberOfMine) {
-        this.numberOfMine = numberOfMine;
+    public void setNumberOfMine(int percentage) {
+        this.numberOfMine = (getI() * getJ()) * percentage / 100;
     }
 
     private void defaultGrid() {
-        Case[][] grids = new Case[getI()][getJ()];
+        Case[][] gridS = new Case[getI()][getJ()];
         for (int x = 0; x < getI(); x++) {
             for (int y = 0; y < getJ(); y++) {
                 gridS[x][y] = Case.NUMBER;
@@ -130,11 +130,7 @@ public class Generate {
         }    // coté bas
         return mine;
     } // Parcour des voisins pour voir si il y a une mine
-
-    public void numberOfMine() { // Calcule du nombre de mine
-        setNumberOfMine((getI() * getJ()) * getPercentage() / 100);
-    }
-
+    
     public void affichage() {
         for (int y = 0; y < getJ(); y++) {
             for (int x = 0; x < getI(); x++) {
@@ -148,15 +144,16 @@ public class Generate {
         }
     }
 
-    public void creatGrid() {
+    public void creatGrid(int i, int j) {
+        System.out.println(" hahahahaha ");
         int counter = 0;
         int mine = 0;
         defaultGrid();
-        numberOfMine();
+        setNumberOfMine( getPercentage());
         while (counter != getNumberOfMine()) {
             int randI = (int) (Math.random() * getI());
             int randJ = (int) (Math.random() * getJ());
-            if (Case.NUMBER.equals(grid[randI][randJ])) {
+            if (Case.NUMBER.equals(grid[randI][randJ]) && randI != i && randJ != j) {
                 grid[randI][randJ] = Case.MINE;
                 counter++;
             }
@@ -169,7 +166,9 @@ public class Generate {
                         grid[a][b] = Case.ALONE;
                     } else {
                         Case.NUMBER.setValueI(mine);
+                        System.out.print(Case.NUMBER.getValueI());
                         grid[a][b] = Case.NUMBER;
+                        
                     }
                 }
             }
