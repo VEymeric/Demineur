@@ -162,7 +162,7 @@ public class Generate {
         for (int a = 0; a < getI(); a++) {
             for (int b = 0; b < getJ(); b++) {
                 if (Case.NUMBER.equals(grid[a][b])) {
-                    mine = searchMine(a, b);
+                    //mine = searchMine(a, b);
                     if (mine == 0) {
                         grid[a][b] = Case.ALONE;
                     } else {
