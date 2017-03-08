@@ -76,7 +76,7 @@ public class Generate {
     }
 
     public void setPercentage(int percentage) {
-        if (percentage < 0 || percentage > 100) {
+        if (percentage < 0 || percentage > 85) {
             throw new java.lang.IllegalArgumentException(" Percentage is not consistent ");
         } else {
             this.percentage = percentage;
@@ -157,8 +157,6 @@ public class Generate {
                 counter++;
             }
         }
-        System.out.println("yolo");
-
         for (int a = 0; a < getI(); a++) {
             for (int b = 0; b < getJ(); b++) {
                 if (Case.NUMBER.equals(grid[a][b])) {
@@ -168,22 +166,12 @@ public class Generate {
                     } else {
                         Case.NUMBER.setValueI(mine);
                         System.out.print(Case.NUMBER.getValueI()+ "   ");
-                        grid[a][b] = Case.NUMBER;
+                        grid[a][b] = Case.NUMBER ;
                         System.out.println(grid[a][b].getValueI());
                         
                     }
                 }
             }
-        }
-        for (int y = 0; y < getJ(); y++) {
-            for (int x = 0; x < getI(); x++) {
-                if (grid[x][y] == Case.NUMBER) {
-                    System.out.print(grid[x][y].getValueI() + "  ");
-                } else {
-                    System.out.print(grid[x][y].getValueS() + "  ");
-                }
-            }
-            System.out.println("  ");
-        }        
+        }       
     }   // La grille est crée, apres que la premiere case ne soit dévoiler
 }
