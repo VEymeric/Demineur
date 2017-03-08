@@ -51,6 +51,7 @@ public class Generate {
         return i;
     }
 
+    
     public void setI(int i) {
         if (i <= 0) {
             throw new java.lang.IllegalArgumentException(" Row too low ");
@@ -100,36 +101,35 @@ public class Generate {
         }
         setGrid(gridS);
     }    // construire le tableau par default avec la valeur 0 partout
-
-    private int searchMine(int x, int y) {
-        int mine = 0;
-        // on vérifie si la case existe et sinon on regarde ce qu'il y a dedans
-        if (x + 1 <= getI() - 1) {
-            mine += (Case.MINE.equals(grid[x + 1][y])) ? 1 : 0;
-        }         // coté droit
-        if (x + 1 <= getI() - 1 && y + 1 <= getJ() - 1) {
-            mine += (Case.MINE.equals(grid[x + 1][y + 1])) ? 1 : 0;
-        }    // diagonal haute droite
-        if (x + 1 <= getI() - 1 && y - 1 >= 0) {
-            mine += (Case.MINE.equals(grid[x + 1][y - 1])) ? 1 : 0;
-        }// diagonale basse droite
-        if (x - 1 >= 0) {
-            mine += (Case.MINE.equals(grid[x - 1][y])) ? 1 : 0;
-        }     // coté gauche
-        if (x - 1 >= 0 && y + 1 <= getJ() - 1) {
-            mine += (Case.MINE.equals(grid[x - 1][y + 1])) ? 1 : 0;
-        }     //diagonale haute gauche
-        if (x - 1 >= 0 && y - 1 >= 0) {
-            mine += (Case.MINE.equals(grid[x - 1][y - 1])) ? 1 : 0;
-        }    // diagonale basse gauche
-        if (y - 1 >= 0) {
-            mine += (Case.MINE.equals(grid[x][y - 1])) ? 1 : 0;
-        }    // coté haut
-        if (y + 1 <= getJ() - 1) {
-            mine += (Case.MINE.equals(grid[x][y + 1])) ? 1 : 0;
-        }    // coté bas
-        return mine;
-    } // Parcour des voisins pour voir si il y a une mine
+    
+    //fonction qui met à jour les voisins à chaque installation de bombe
+    public void majNumbers(int x, int y){
+        if (x>0 && y>0) { // voisin haut gauche
+            if(grid[y-1][x-1] == Case.NUMBER ) grid[y-1][x-1].setValueI(grid[y-1][x-1].getValueI()+1);
+        }
+        if (y>0) { // voisin haut
+            if(grid[y-1][x] == Case.NUMBER ) grid[y-1][x].setValueI(grid[y-1][x].getValueI()+1);
+        }
+        if (x<getI() && y>0) { // voisin haut droit
+            if(grid[y-1][x+1] == Case.NUMBER ) grid[y-1][x+1].setValueI(grid[y-1][x+1].getValueI()+1);
+        }
+        if(x>0){//voisin gauche
+            if(grid[y][x-1] == Case.NUMBER ) grid[y][x-1].setValueI(grid[y][x-1].getValueI()+1);
+        }
+        if(x<getI()){//voisin droit
+            if(grid[y][x+1] == Case.NUMBER ) grid[y][x+1].setValueI(grid[y][x+1].getValueI()+1);
+        }
+        if (x>0 && y<getJ()) { // voisin bas gauche
+            if(grid[y+1][x-1] == Case.NUMBER ) grid[y+1][x-1].setValueI(grid[y+1][x-1].getValueI()+1);
+        }
+        if (y<getJ()) { // voisin bas
+            if(grid[y+1][x] == Case.NUMBER ) grid[y+1][x].setValueI(grid[y+1][x].getValueI()+1);
+        }
+        if (x<getI() && y<getJ()) { // voisin haut droit
+            if(grid[y-1][x+1] == Case.NUMBER ) grid[y-1][x+1].setValueI(grid[y-1][x+1].getValueI()+1);
+        }
+    }
+    
 
     public void affichage() {
         for (int y = 0; y < getJ(); y++) {
