@@ -130,7 +130,7 @@ public class Generate {
         }    // coté bas
         return mine;
     } // Parcour des voisins pour voir si il y a une mine
-    
+
     public void affichage() {
         for (int y = 0; y < getJ(); y++) {
             for (int x = 0; x < getI(); x++) {
@@ -169,9 +169,12 @@ public class Generate {
                         grid[0][0] = Case.NUMBER ;
                         System.out.println(grid[0][0].getValueI());
                         System.out.println(grid[0][0]);                      
+                        grid[a][b] = Case.NUMBER ;
+                        System.out.println(grid[a][b].getValueI());
+
                     }
                 }
             }
-        }       
+        }
     }   // La grille est crée, apres que la premiere case ne soit dévoiler
 }

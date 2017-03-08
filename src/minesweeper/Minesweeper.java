@@ -32,9 +32,9 @@ public class Minesweeper {
         Generate generate = new Generate(10, 10, 15);
         System.out.println("chat");
         generate.creatGrid();
-        generate.affichage();
+        //generate.affichage();
         LetsGo demineur = new LetsGo(generate);
-        demineur.hideTicTac();
+        //demineur.hideTicTac();
         while (demineur.isEnd() != false) {
             action = sc.nextLine();
             demineur.order(action, false);
