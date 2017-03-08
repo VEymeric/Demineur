@@ -18,7 +18,6 @@ public class Minesweeper {
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        boolean loose;
         String action;
         /*int width,height = 5;
         int percentage = 30;
@@ -32,10 +31,10 @@ public class Minesweeper {
         System.out.println("_________________LET'S GO___________________"); */
         Generate generate = new Generate(10, 10, 15);
         System.out.println("chat");
+        generate.creatGrid();
+        generate.affichage();
         LetsGo demineur = new LetsGo(generate);
         demineur.hideTicTac();
-        action = sc.nextLine();
-        demineur.order(action, true);
         while (demineur.isEnd() != false) {
             action = sc.nextLine();
             demineur.order(action, false);
