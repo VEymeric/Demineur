@@ -157,33 +157,5 @@ public class Generate {
                 counter++;
             }
         }
-        System.out.println("yolo");
-
-        for (int a = 0; a < getI(); a++) {
-            for (int b = 0; b < getJ(); b++) {
-                if (Case.NUMBER.equals(grid[a][b])) {
-                    mine = searchMine(a, b);
-                    if (mine == 0) {
-                        grid[a][b] = Case.ALONE;
-                    } else {
-                        Case.NUMBER.setValueI(mine);
-                        System.out.print(Case.NUMBER.getValueI()+ "   ");
-                        grid[a][b] = Case.NUMBER;
-                        System.out.println(grid[a][b].getValueI());
-                        
-                    }
-                }
-            }
-        }
-        for (int y = 0; y < getJ(); y++) {
-            for (int x = 0; x < getI(); x++) {
-                if (grid[x][y] == Case.NUMBER) {
-                    System.out.print(grid[x][y].getValueI() + "  ");
-                } else {
-                    System.out.print(grid[x][y].getValueS() + "  ");
-                }
-            }
-            System.out.println("  ");
-        }        
     }   // La grille est crée, apres que la premiere case ne soit dévoiler
 }
