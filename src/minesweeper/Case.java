@@ -5,10 +5,6 @@
  */
 package minesweeper;
 
-/**
- *
- * @author gaetane
- */
 public enum Case {
     MINE("x"),
     UNKNOW("?"),
