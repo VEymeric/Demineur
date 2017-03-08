@@ -164,11 +164,11 @@ public class Generate {
                     if (mine == 0) {
                         grid[a][b] = Case.ALONE;
                     } else {
-                        Case.NUMBER.setValueI(mine);
+                        Case.NUMBER.setValueI(8);
                         System.out.print(Case.NUMBER.getValueI()+ "   ");
-                        grid[a][b] = Case.NUMBER ;
-                        System.out.println(grid[a][b].getValueI());
-                        
+                        grid[0][0] = Case.NUMBER ;
+                        System.out.println(grid[0][0].getValueI());
+                        System.out.println(grid[0][0]);                      
                     }
                 }
             }

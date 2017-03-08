@@ -39,6 +39,8 @@ public class Minesweeper {
             action = sc.nextLine();
             demineur.order(action, false);
         }
+        
+        
 
     }
 
