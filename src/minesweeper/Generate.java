@@ -76,7 +76,7 @@ public class Generate {
     }
 
     public void setPercentage(int percentage) {
-        if (percentage < 0 || percentage > 100) {
+        if (percentage < 0 || percentage > 85) {
             throw new java.lang.IllegalArgumentException(" Percentage is not consistent ");
         } else {
             this.percentage = percentage;
@@ -130,7 +130,7 @@ public class Generate {
         }    // coté bas
         return mine;
     } // Parcour des voisins pour voir si il y a une mine
-    
+
     public void affichage() {
         for (int y = 0; y < getJ(); y++) {
             for (int x = 0; x < getI(); x++) {
@@ -155,6 +155,22 @@ public class Generate {
             if (Case.NUMBER.equals(grid[randI][randJ])) {
                 grid[randI][randJ] = Case.MINE;
                 counter++;
+            }
+        }
+        for (int a = 0; a < getI(); a++) {
+            for (int b = 0; b < getJ(); b++) {
+                if (Case.NUMBER.equals(grid[a][b])) {
+                    mine = searchMine(a, b);
+                    if (mine == 0) {
+                        grid[a][b] = Case.ALONE;
+                    } else {
+                        Case.NUMBER.setValueI(mine);
+                        System.out.print(Case.NUMBER.getValueI()+ "   ");
+                        grid[a][b] = Case.NUMBER ;
+                        System.out.println(grid[a][b].getValueI());
+
+                    }
+                }
             }
         }
     }   // La grille est crée, apres que la premiere case ne soit dévoiler
