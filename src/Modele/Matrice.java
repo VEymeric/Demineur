@@ -11,7 +11,7 @@ import java.util.Observable;
  *
  * @author gaetane
  */
-public class Matrice implements Observable {
+public class Matrice extends Observable {
     int i,j;
     Case[][] gridHide;
     Case[][] gridInit;
@@ -46,17 +46,5 @@ public class Matrice implements Observable {
                 gridHide[y][x] = Case.UNKNOW;
             }
         }        
-    }
-    
-    
-    
-    @Override
-    private void changement(Observable o){
-        Case c;
-        if( o instenceof Case){
-        
-    }
-    }
-    
-    
+    }        
 }
