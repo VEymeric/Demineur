@@ -5,64 +5,55 @@
  */
 package Controleur;
 
-import Modele.Case;
-
 /**
  *
  * @author gaetane
  */
 public class Do {
     Modele.Matrice m;
-    private int nbMine = 0;
-    
-    
     
     public Do(int i, int j, int percentMine){
-        m = new Modele.Matrice(i,j);
-        nbMine = (i * j) * percentMine/ 100;        
+        m = new Modele.Matrice(i,j,(i * j) * percentMine/ 100);
     }
     
-    
-    private void majNumbers(int x, int y){
-        if (x>0 && y>0) { // voisin haut gauche
-            if(m.getGridInitCase(y-1,x-1) == Case.NUMBER ) m.getGridInitCase(y-1, x-1).setValueI(m.getGridInitCase(y-1, x-1).getValueI()+1);
-        }
-        if (y>0) { // voisin haut
-            if(m.getGridInitCase(y-1,x) == Case.NUMBER ) m.getGridInitCase(y-1, x).setValueI(m.getGridInitCase(y-1, x).getValueI()+1);
-        }
-        if (x<m.getI() && y>0) { // voisin haut droit
-            if(m.getGridInitCase(y-1,x+1) == Case.NUMBER ) m.getGridInitCase(y-1, x+1).setValueI(m.getGridInitCase(y-1, x+1).getValueI()+1);
-        }
-        if(x>0){//voisin gauche
-            if(m.getGridInitCase(y,x-1) == Case.NUMBER ) m.getGridInitCase(y, x-1).setValueI(m.getGridInitCase(y, x-1).getValueI()+1);
-        }
-        if(x<m.getI()){//voisin droit
-            if(m.getGridInitCase(y,x+1) == Case.NUMBER ) m.getGridInitCase(y, x+1).setValueI(m.getGridInitCase(y, x+1).getValueI()+1);
-        }
-        if (x>0 && y<m.getJ()) { // voisin bas gauche
-            if(m.getGridInitCase(y+1,x-1) == Case.NUMBER ) m.getGridInitCase(y+1, x-1).setValueI(m.getGridInitCase(y+1, x-1).getValueI()+1);
-        }
-        if (y<m.getJ()) { // voisin bas
-            if(m.getGridInitCase(y+1,x) == Case.NUMBER ) m.getGridInitCase(y+1, x).setValueI(m.getGridInitCase(y+1, x).getValueI()+1);
-        }
-        if (x<m.getI() && y<m.getJ()) { // voisin haut droit
-            if(m.getGridInitCase(y-1,x+1) == Case.NUMBER ) m.getGridInitCase(y-1, x+1).setValueI(m.getGridInitCase(y-1, x+1).getValueI()+1);
+    public void order(String go,boolean ok) {
+        String[] cr = go.split(" ");
+        switch (cr[0]) {
+            case "d":
+                if (cr.length == 3) {
+                    //m.print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    break;
+                } else {
+                    help();
+                    break;
+                }
+            case "q":
+                //stop(" give up ");
+                break;
+            case "m":
+                if (cr.length == 4) {
+                    //mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
+                    break;
+                } else {
+                    help();
+                    break;
+                }
+            default:
+                System.out.println(" Not understand your order");
+                help();
         }
     }
     
-    private void generateMatrice(int x, int y){//Genère une matrice de jeu à partir du premier clic en x;y
-       int mineUnused = nbMine;
-       while(mineUnused>0){
-            int randI = (int) (Math.random() * m.getI());
-            int randJ = (int) (Math.random() * m.getJ());
-            if (Case.NUMBER.equals(m.getGridInitCase(randJ, randI)) && (randI != x && randJ != y)) {
-                m.setGridInitCase(Case.MINE, randJ, randI);
-                //majNumbers(randI, randJ);
-                mineUnused--;
-            }
-       }
-    }
+    private void help() {
+        System.out.println(" Not complete order ");
+        System.out.println(" d x y -> show this case ");
+        System.out.println(" m x y ?/! -> mark case with ?/!");
+        System.out.println(" q -> quit ");
+    } 
+
+    // stop()
     
+
     
     
     
