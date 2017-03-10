@@ -16,22 +16,20 @@ public class Matrice extends Observable {
     Case[][] gridHide;
     Case[][] gridInit;
 
+    public Matrice( int i, int j){
+        this.i = i;
+        this.j = j;
+        generateInit();
+    }    
+  
     public Case getGridInitCase(int y, int x) {
         return gridInit[y][x];
     }
 
-    public void setGridInit(Case[][] gridInit) {
-        this.gridInit = gridInit;
+    public void setGridInitCase(Case c, int i,int j) {
+        this.gridInit[j][i] =  c ;
     }
     
-    
-    public Matrice( int i,int j){
-        this.i = i;
-        this.j = j;
-        generateInit();
-    }
-    
-
     public int getI() {
         return i;
     }
