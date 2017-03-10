@@ -13,9 +13,13 @@ import Modele.Case;
  */
 public class Do {
     Modele.Matrice m;
+    private int nbMine = 0;
     
-    public Do(int i, int j){
+    
+    
+    public Do(int i, int j, int percentMine){
         m = new Modele.Matrice(i,j);
+        nbMine = (i * j) * percentMine/ 100;        
     }
     
     
@@ -44,6 +48,19 @@ public class Do {
         if (x<m.getI() && y<m.getJ()) { // voisin haut droit
             if(m.getGridInitCase(y-1,x+1) == Case.NUMBER ) m.getGridInitCase(y-1, x+1).setValueI(m.getGridInitCase(y-1, x+1).getValueI()+1);
         }
+    }
+    
+    private void generateMatrice(int x, int y){//Genère une matrice de jeu à partir du premier clic en x;y
+       int mineUnused = nbMine;
+       while(mineUnused>0){
+            int randI = (int) (Math.random() * m.getI());
+            int randJ = (int) (Math.random() * m.getJ());
+            if (Case.NUMBER.equals(m.getGridInitCase(randJ, randI)) && (randI != x && randJ != y)) {
+                m.setGridInitCase(Case.MINE, randJ, randI);
+                //majNumbers(randI, randJ);
+                mineUnused--;
+            }
+       }
     }
     
     
