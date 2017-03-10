@@ -39,15 +39,6 @@ public class LetsGo {
 
     public void order(String go,boolean ok) {
         String[] cr = go.split(" ");
-        /*if(ok == true){
-            minus.creatGrid(Integer.parseInt(cr[1]),Integer.parseInt(cr[2]));
-            for(int i = 0; i< minus.getI();i++){
-                for(int j=0; j<minus.getJ();j++){
-                    System.out.print(minus.getCase(i, j).getValueI());
-                }
-                System.out.println(" ");
-            }
-        }*/
         switch (cr[0]) {
             case "d":
                 if (cr.length == 3) {

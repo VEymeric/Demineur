@@ -16,6 +16,22 @@ public class Matrice extends Observable {
     Case[][] gridHide;
     Case[][] gridInit;
 
+    public Case getGridInitCase(int y, int x) {
+        return gridInit[y][x];
+    }
+
+    public void setGridInit(Case[][] gridInit) {
+        this.gridInit = gridInit;
+    }
+    
+    
+    public Matrice( int i,int j){
+        this.i = i;
+        this.j = j;
+        generateInit();
+    }
+    
+
     public int getI() {
         return i;
     }
@@ -47,32 +63,6 @@ public class Matrice extends Observable {
         }        
     }
     
-    private void majNumbers(int x, int y){
-        if (x>0 && y>0) { // voisin haut gauche
-            if(gridInit[y-1][x-1] == Case.NUMBER ) gridInit[y-1][x-1].setValueI(gridInit[y-1][x-1].getValueI()+1);
-        }
-        if (y>0) { // voisin haut
-            if(gridInit[y-1][x] == Case.NUMBER ) gridInit[y-1][x].setValueI(gridInit[y-1][x].getValueI()+1);
-        }
-        if (x<getI() && y>0) { // voisin haut droit
-            if(gridInit[y-1][x+1] == Case.NUMBER ) gridInit[y-1][x+1].setValueI(gridInit[y-1][x+1].getValueI()+1);
-        }
-        if(x>0){//voisin gauche
-            if(gridInit[y][x-1] == Case.NUMBER ) gridInit[y][x-1].setValueI(gridInit[y][x-1].getValueI()+1);
-        }
-        if(x<getI()){//voisin droit
-            if(gridInit[y][x+1] == Case.NUMBER ) gridInit[y][x+1].setValueI(gridInit[y][x+1].getValueI()+1);
-        }
-        if (x>0 && y<getJ()) { // voisin bas gauche
-            if(gridInit[y+1][x-1] == Case.NUMBER ) gridInit[y+1][x-1].setValueI(gridInit[y+1][x-1].getValueI()+1);
-        }
-        if (y<getJ()) { // voisin bas
-            if(gridInit[y+1][x] == Case.NUMBER ) gridInit[y+1][x].setValueI(gridInit[y+1][x].getValueI()+1);
-        }
-        if (x<getI() && y<getJ()) { // voisin haut droit
-            if(gridInit[y-1][x+1] == Case.NUMBER ) gridInit[y-1][x+1].setValueI(gridInit[y-1][x+1].getValueI()+1);
-        }
-    }
     
     private void initValues(){
         // je met une bombe (aleatoire ) -> majNumbers
