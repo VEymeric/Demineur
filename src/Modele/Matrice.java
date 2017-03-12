@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import java.util.Observable;
 
-/**
- *
- * @author gaetane
- */
 public class Matrice extends Observable {
     int width=0,height=0,mine=0;
     Case[][] gridHide;
     Case[][] gridInit;
 
     public Matrice(int width, int height, int nbMine){
+        System.out.println("Vous générez une nouvelle partie");
         this.width = width;
         this.height = height;
         generateMatrice(width,height,nbMine);
@@ -30,7 +22,7 @@ public class Matrice extends Observable {
         this.gridInit[j][i] =  c ;
     }
 
-        public int getWidth() {
+    public int getWidth() {
         return width;
     }
 
@@ -67,10 +59,12 @@ public class Matrice extends Observable {
        while(mineUnused>0){
             int randI = (int) (Math.random() * getWidth());
             int randJ = (int) (Math.random() * getHeight());
-            if (Case.NUMBER.equals(getGridInitCase(randJ, randI)) && (randI != xClic && randJ != yClic)) {
-                setGridInitCase(Case.MINE, randJ, randI);
-                majNumbers(randI, randJ);
-                mineUnused--;
+            if (Case.NUMBER.equals(gridInit[randJ][randI])){   //erreur ici
+                if(randI != xClic && randJ != yClic) {
+                    setGridInitCase(Case.MINE, randJ, randI);
+                    majNumbers(randI, randJ);
+                    mineUnused--;
+                }
             }
        }
        for(int x=0; x<getWidth(); x++){
