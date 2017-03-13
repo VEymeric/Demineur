@@ -8,6 +8,7 @@ public class GameController{
     private Print gameView;
             
     public GameController(int x, int y, int percentMine){
+        System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x,y,(x * y) * percentMine/ 100);
     }
     
@@ -45,5 +46,11 @@ public class GameController{
         System.out.println(" d x y -> show this case ");
         System.out.println(" m x y ?/! -> mark case with ?/!");
         System.out.println(" q -> quit ");
+    }
+    
+    public void test(){
+        this.gameView.printHello();
+        System.out.println("fonction test");
+
     }
 }
