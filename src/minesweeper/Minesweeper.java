@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package minesweeper;
 
-import java.util.Scanner;
-/**
- *
- * @author gaetane
- */
 import Controleur.GameController;
+import java.util.Scanner;
+
+
 public class Minesweeper {
 
     /**
@@ -28,8 +21,13 @@ public class Minesweeper {
         height = sc.nextInt();
         System.out.print(" Difficulty : %");
         percentage = sc.nextInt();
+<<<<<<< HEAD
         System.out.println("_________________LET'S GO___________________"); */
         /*Generate generate = new Generate(10, 10, 15);
+=======
+        System.out.println("_________________LET'S GO___________________"); 
+        Generate generate = new Generate(10, 10, 15);
+>>>>>>> a7793ce01af08d661a538a74f56386ff3c5211ee
         System.out.println("chat");
         generate.creatGrid();
         generate.affichage();
@@ -42,6 +40,11 @@ public class Minesweeper {
         GameController controler = new GameController(10,10,15);
         
         controler.affichage();
+        System.out.println("ceci est le main, allons y !");
+        //GameController controler = new GameController(5,5,15);
+        //controler.test();
+        
+        System.out.println("il ne passera plus rien  ici !");
 
     }
 
