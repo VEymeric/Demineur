@@ -7,14 +7,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Matrice extends Observable{
     GameController g;
     int width=0,height=0,mine=0;
+    boolean inGame = true;
+    int countCase, countMine = 0;
     public Case[][] gridInit;
 
     public Matrice(int width, int height, int nbMine){
         System.out.println("Vous générez une nouvelle partie");
         this.width = width;
         this.height = height;
-        mine = nbMine;
-        generateMatrice(0,0,this.mine);
+        this.mine = nbMine;
+        this.countCase = this.width*this.height - this.mine;
+        generateInit();
     }    
   
     public void update(){
@@ -36,7 +39,13 @@ public class Matrice extends Observable{
     public void setHeight(int height) {
         this.height = height;
     }
-        
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
+    }
+
+    public boolean isInGame() {
+        return inGame;
+    }   
     private void generateInit(){ // tableau de valeur initialisé
         Case[][] grid = new Case[getHeight()][getWidth()];
         for(int x = 0; x < getWidth(); x++){
@@ -46,29 +55,41 @@ public class Matrice extends Observable{
         }
         gridInit = grid;
     }    
+
+    public int getCountCase() {
+        return countCase;
+    }
+
+    public void setCountCase(int countCase) {
+        this.countCase = countCase;
+    }
+
+    public int getCountMine() {
+        return countMine;
+    }
+
+    public void setCountMine(int countMine) {
+        this.countMine = countMine;
+    }
     
     //Genère une matrice de jeu à partir du premier clic en x;y
-    private void generateMatrice(int xClic, int yClic, int nbMine){
-       generateInit();
-       int mineUnused = nbMine;
-       System.out.println( mineUnused +" "+ getWidth() +" "+ getHeight() );
+    public void generateMatrice(int xClic, int yClic){
+       System.out.println("Votre matrice viens de se générer.");
+       this.countMine = this.mine;
+       int mineUnused = this.mine;
        while(mineUnused>0){
             int randI = ThreadLocalRandom.current().nextInt(0, getWidth());
             int randJ = ThreadLocalRandom.current().nextInt(0, getHeight());
-            System.out.println( randJ +"  "+ randI);
             if ( gridInit[randJ][randI].getEtat() == CaseInit.NUMBER){   
                 if(randI != xClic || randJ != yClic) {
                     gridInit[randJ][randI].setEtat(CaseInit.MINE);
                     majNumbers(randI,randJ);
                     mineUnused--;
                 }
-                else{
-                    System.out.println("yolo");
-                }
             }
-            else{ 
+            /*else{ 
                 System.out.println(gridInit[randJ][randI].getEtat());
-            }
+            }*/
        }
        for(int x=0; x<getWidth(); x++){
            for(int y=0; y<getHeight(); y++){
@@ -134,6 +155,35 @@ public class Matrice extends Observable{
         return true;
     }
 
+    public void reveal(int x, int y){
+        if(!this.isInGame() || x < 0 || y < 0 || x >= this.width || y >= this.height || this.gridInit[y][x].isShow()){ // cas non nécessaire
+            return;
+        }
+        this.gridInit[y][x].setCache(CaseHide.SHOW);
+        //(on pourrait retirer une case du compteur des cases sans bombe ici)
+        if(this.gridInit[y][x].isMine()){
+            this.setInGame(false); // -> nullos qui perd
+            this.setCountMine(this.getCountMine()-1);
+            //gameover(loose);
+        }else{
+            this.setCountCase(this.getCountCase()-1);
+            if(this.getCountCase() == 0){
+                this.setInGame(false); // champion qui gagne
+            } 
+
+            if(this.gridInit[y][x].isAlone()){
+                reveal(x-1, y-1);
+                reveal(x-1, y);
+                reveal(x-1, y+1);
+                reveal(x, y-1);
+                reveal(x, y+1);
+                reveal(x+1, y-1);
+                reveal(x+1, y);
+                reveal(x+1, y+1);
+            }
+        }
+        
+    }
     
     
     private void propagation(int x, int y) {
