@@ -4,7 +4,7 @@ import java.util.Observable;
 
 public class Matrice extends Observable {
     int width=0,height=0,mine=0;
-    Case[][] gridHide;
+    Case[][] gridHide;hehejhd
     Case[][] gridInit;
 
     public Matrice(int width, int height, int nbMine){
@@ -231,7 +231,7 @@ public class Matrice extends Observable {
             }
         }*/
     } 
-    
+     
     private boolean checkOrNot(int x, int y) {
         return getGridHideCase(y,x) != Case.HIDE;
     }
