@@ -6,12 +6,6 @@ import java.util.Observer;
 public class Print implements Observer {
     // argument pour l'affichage : tableau a afficher Case[][]
     
-    /*private void view(Case[][] grid){
-    }*/
-    
-    public void printHello(){
-        System.out.println("Koukou toi !");
-    }
     @Override
     public void update(Observable o, Object arg) { // a implementer
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

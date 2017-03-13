@@ -65,7 +65,7 @@ public class Matrice extends Observable{
             else{ 
                 System.out.println(gridInit[randJ][randI].getEtat());
             }
-       }/*
+       }
        for(int x=0; x<getWidth(); x++){
            for(int y=0; y<getHeight(); y++){
                if(gridInit[y][x].getEtat() == CaseInit.NUMBER){
@@ -74,7 +74,7 @@ public class Matrice extends Observable{
                    }
                }
            }
-       }*/
+       }
     }
     
     //fonction qui ajoute 1 à toutes les cases autour d'une bombe : efficace pour initiliser
@@ -105,129 +105,135 @@ public class Matrice extends Observable{
         }    
     }
     
-    /*public void mark(int i, int j, String mark) {
+    public void mark(int i, int j, String mark) {
         switch (mark) {
             case "#":
-                setGridHideCase(CaseHide.HIDE, j ,i);
+                gridInit[j][i].setCache(CaseHide.HIDE);
                 break;
             case "?":
-                setGridHideCase(CaseHide.UNKNOW, j ,i);
+                gridInit[j][i].setCache(CaseHide.UNKNOW);
                 break;
             case "!":
-                setGridHideCase(CaseHide.FLAG, j ,i);
+                gridInit[j][i].setCache(CaseHide.FLAG);
                 break;
             default : 
                 System.out.println(" je sais pas quoi mettre ");
         }
-    }/*
-
-    public boolean replace(int i, int j) {
-        if (gridInit[i, j) == CaseInit.MINE) {
+    }
+    
+    public boolean print(int i, int j){
+        gridInit[j][i].setCache(CaseHide.SHOW);
+        if(gridInit[j][i].isMine()){
             return false;
         }
-        setGridHideCase(CaseHide.SHOW ,j ,i);
-        if( gridInit[i, j) == CaseInit.ALONE){
-            propagation(i,j);
-        }
+        propagation(i,j);
         return true;
-    }    
+    }
+
     
     
     private void propagation(int x, int y) {
-        /*if (x + 1 <= getWidth() - 1) {
+        if (x + 1 <= getWidth() - 1) {
             if (checkOrNot(x + 1, y) == false) {
-                if (gridInit[y, x+1) == Case.ALONE) {
-                    setGridHideCase(Case.ALONE,y,y+1);
+                if (gridInit[y][x+1].isAlone()) {
+                    gridInit[y][x+1].setCache(CaseHide.SHOW);
                     propagation(x + 1, y);
 
                 }
-                if (gridInit[y, x+1 ) == Case.NUMBER) {
-                    setGridHideCase(gridInit[y,x+1),y,x+1);
+                if (gridInit[y][x+1].isNumber()) {
+                    gridInit[y][x+1].setCache(CaseHide.SHOW); ;
                 }
             }
         }
         if (x + 1 <= getWidth() - 1 && y + 1 <= getHeight() - 1) {
-            if (checkOrNot(x + 1, y + 1) == false) {
-                if (gridInit[x + 1, y + 1) == Case.ALONE) {
-                    setGridHideCase(Case.ALONE,y + 1,x + 1);
-                    propagation(x + 1, y + 1);
+            if (checkOrNot(x + 1, y+1) == false) {
+                if (gridInit[y+1][x+1].isAlone()) {
+                    gridInit[y+1][x+1].setCache(CaseHide.SHOW);
+                    propagation(x + 1, y+1);
+
                 }
-                if (gridInit[x + 1, y + 1) == Case.NUMBER) {
-                    setGridHideCase(gridInit[y + 1, x + 1),y + 1,x + 1);
+                if (gridInit[y+1][x+1].isNumber()) {
+                    gridInit[y+1][x+1].setCache(CaseHide.SHOW); 
                 }
             }
         }
         if (y + 1 <= getHeight() - 1) {
             if (checkOrNot(x, y + 1) == false) {                               
-                if (gridInit[x, y + 1) == Case.ALONE) {
-                    setGridHideCase(x][y + 1] = Case.ALONE;
-                    propagation(x, y + 1);
+                if (gridInit[y+1][x].isAlone()) {
+                    gridInit[y+1][x].setCache(CaseHide.SHOW);
+                    propagation(x, y+1);
+
                 }
-                if (gridInit[x, y + 1) == Case.NUMBER) {
-                    setGridHideCase(x][y + 1] = gridInit[x, y + 1);
+                if (gridInit[y+1][x].isNumber()) {
+                    gridInit[y+1][x].setCache(CaseHide.SHOW); 
                 }
             }
         }
         if (y - 1 >= 0) {
             if (checkOrNot(x, y - 1) == false) {
-                if (gridInit[x, y - 1) == Case.ALONE) {
-                    setGridHideCase(x][y - 1] = Case.ALONE;
-                    propagation(x, y - 1);
+                if (gridInit[y-1][x].isAlone()) {
+                    gridInit[y-1][x].setCache(CaseHide.SHOW);
+                    propagation(x, y-1);
+
                 }
-                if (gridInit[x, y - 1) == Case.NUMBER) {
-                    setGridHideCase(x][y - 1] = gridInit[x, y - 1);
+                if (gridInit[y-1][x].isNumber()) {
+                    gridInit[y-1][x].setCache(CaseHide.SHOW); 
                 }
             }
         }
         if (x - 1 >= 0) {
             if (checkOrNot(x - 1, y) == false) {
-                if (gridInit[x - 1, y) == Case.ALONE) {
-                    setGridHideCase(x - 1][y] = Case.ALONE;
-                    propagation(x - 1, y);
+                if (gridInit[y][x-1].isAlone()) {
+                    gridInit[y][x-1].setCache(CaseHide.SHOW);
+                    propagation(x-1, y);
+
                 }
-                if (gridInit[x - 1, y) == Case.NUMBER) {
-                    setGridHideCase(x - 1][y] = gridInit[x - 1, y);
+                if (gridInit[y][x-1].isNumber()) {
+                    gridInit[y][x-1].setCache(CaseHide.SHOW); ;
                 }
             }
         }
         if (y - 1 >= 0 && x - 1 >= 0) {
             if (checkOrNot(x - 1, y - 1) == false) {
-                if (gridInit[x - 1, y - 1) == Case.ALONE) {
-                    setGridHideCase(x - 1][y - 1] = Case.ALONE;
-                    propagation(x - 1, y - 1);
+                if (gridInit[y-1][x-1].isAlone()) {
+                    gridInit[y-1][x-1].setCache(CaseHide.SHOW);
+                    propagation(x + 1, y+1);
+
                 }
-                if (gridInit[x - 1, y - 1) == Case.NUMBER) {
-                    setGridHideCase(x - 1][y - 1] = gridInit[x - 1, y - 1);
+                if (gridInit[y-1][x-1].isNumber()) {
+                    gridInit[y-1][x-1].setCache(CaseHide.SHOW); 
                 }
             }
         }
-        if (y + 1 <= minus.getHeight() - 1 && x - 1 >= 0) {
+        if (y + 1 <= getHeight() - 1 && x - 1 >= 0) {
             if (checkOrNot(x - 1, y + 1) == false) {
-                if (gridInit[x - 1, y + 1) == Case.ALONE) {
-                    setGridHideCase(x - 1][y + 1] = Case.ALONE;
-                    propagation(x - 1, y + 1);
+                if (gridInit[y+1][x-1].isAlone()) {
+                    gridInit[y+1][x-1].setCache(CaseHide.SHOW);
+                    propagation(x-1, y+1);
+
                 }
-                if (gridInit[x - 1, y + 1) == Case.NUMBER) {
-                    setGridHideCase(x - 1][y + 1] = gridInit[x - 1, y + 1);
+                if (gridInit[y+1][x-1].isNumber()) {
+                    gridInit[y+1][x-1].setCache(CaseHide.SHOW); 
                 }
             }
         }
-        if (y - 1 >= 0 && x + 1 <= minus.getWidth() - 1) {
+        if (y - 1 >= 0 && x + 1 <= getWidth() - 1) {
             if (checkOrNot(x + 1, y - 1) == false) {
-                if (gridInit[x + 1, y - 1) == Case.ALONE) {
-                    setGridHideCase(x + 1][y - 1] = Case.ALONE;
-                    propagation(x + 1, y - 1);
+                if (gridInit[y-1][x+1].isAlone()) {
+                    gridInit[y-1][x+1].setCache(CaseHide.SHOW);
+                    propagation(x + 1, y-1);
+
                 }
-                if (gridInit[x + 1, y - 1) == Case.NUMBER) {
-                    setGridHideCase(x + 1][y - 1] = gridInit[x + 1, y - 1);
+                if (gridInit[y-1][x+1].isNumber()) {
+                    gridInit[y-1][x+1].setCache(CaseHide.SHOW);
                 }
             }
         }
-    } */
+    } 
     
-    /*private boolean checkOrNot(int x, int y) {
-        return getGridHideCase(y,x) != CaseHide.HIDE;
-    }*/
+    private boolean checkOrNot(int x, int y) {
+        return gridInit[y][x].isHide();
+    }
     
     
 }

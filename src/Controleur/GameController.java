@@ -14,12 +14,16 @@ public class GameController{
     }
     
     //Recupère les ordre donnés par la console et les traites, si inconnu affiche l'help;
-    public void order(String go,boolean ok) {
+    public void order(String go) {
+        boolean end;
         String[] cr = go.split(" ");
         switch (cr[0]) {
             case "d":
                 if (cr.length == 3) {
-                    //m.print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    end = m.print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    if(end == false){
+                        stop("loose...");
+                    }
                     break;
                 } else {
                     help();
@@ -30,7 +34,7 @@ public class GameController{
                 break;
             case "m":
                 if (cr.length == 4) {
-                    //mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
+                    m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
                     break;
                 } else {
                     help();
@@ -40,6 +44,10 @@ public class GameController{
                 help();
         }
     }
+    
+    private void stop(String oh) {
+        System.out.println("____________End of the game : you " + oh + "__________ ");
+    }  
     
     public void affichage(){
         for(int j=0;j< m.getHeight();j++){
