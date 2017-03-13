@@ -6,11 +6,11 @@
 package minesweeper;
 
 import java.util.Scanner;
-
 /**
  *
  * @author gaetane
  */
+import Controleur.GameController;
 public class Minesweeper {
 
     /**
@@ -29,7 +29,7 @@ public class Minesweeper {
         System.out.print(" Difficulty : %");
         percentage = sc.nextInt();
         System.out.println("_________________LET'S GO___________________"); */
-        Generate generate = new Generate(10, 10, 15);
+        /*Generate generate = new Generate(10, 10, 15);
         System.out.println("chat");
         generate.creatGrid();
         generate.affichage();
@@ -38,9 +38,10 @@ public class Minesweeper {
         while (demineur.isEnd() != false) {
             action = sc.nextLine();
             demineur.order(action, false);
-        }
+        }*/
+        GameController controler = new GameController(10,10,15);
         
-        
+        controler.affichage();
 
     }
 

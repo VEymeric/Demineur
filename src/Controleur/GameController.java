@@ -1,6 +1,7 @@
 package Controleur;
 
 import Modele.Matrice;
+import Modele.CaseInit;
 import View.Print;
 
 public class GameController{
@@ -40,6 +41,23 @@ public class GameController{
         }
     }
     
+public void affichage(){
+        for(int j=0;j< m.getHeight();j++){
+            for(int i = 0;i < m.getWidth(); i++){
+                if(m.getGridInitCase(j,i) == CaseInit.NUMBER ){
+                    System.out.print("  " +m.getGridInitCase(j,i).getValue()+ "  ");                   
+                }
+                if(m.getGridInitCase(j, i) == CaseInit.MINE){
+                    System.out.print("  "+m.getGridInitCase(j,i).getString()+ "  ");
+                }
+                else{
+                    System.out.print( "  "+m.getGridInitCase(j,i).getString()+ " ");                                       
+                }
+            }
+            System.out.println(" ");
+        }   
+    }     
+    
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -49,7 +67,6 @@ public class GameController{
     }
     
     public void test(){
-        this.gameView.printHello();
         System.out.println("fonction test");
 
     }

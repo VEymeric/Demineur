@@ -1,32 +1,38 @@
 package Modele;
 
 import java.util.Observable;
+ 
 
+import Controleur.GameController;
+import java.util.concurrent.ThreadLocalRandom;
 public class Matrice extends Observable {
+    GameController g;
     int width=0,height=0,mine=0;
-    Case[][] gridHide;
-    Case[][] gridInit;
+    CaseHide[][] gridHide;
+    CaseInit[][] gridInit;
 
     public Matrice(int width, int height, int nbMine){
         System.out.println("Vous générez une nouvelle partie");
         this.width = width;
         this.height = height;
-        generateMatrice(width,height,nbMine);
+        mine = nbMine;
+        System.out.println(this.mine + " mines ");
+        generateMatrice(0,0,this.mine);
     }    
   
-    public Case getGridInitCase(int y, int x) {
+    public CaseInit getGridInitCase(int y, int x) {
         return gridInit[y][x];
     }
 
-    public void setGridInitCase(Case c, int j,int i) {
+    public void setGridInitCase(CaseInit c, int j,int i) {
         this.gridInit[j][i] =  c ;
     }
 
-    public Case getGridHideCase(int y,int x) {
+    public CaseHide getGridHideCase(int y,int x) {
         return gridHide[y][x];
     }
 
-    public void setGridHideCase(Case c, int j,int i) {
+    public void setGridHideCase(CaseHide c, int j,int i) {
         this.gridHide[j][i] = c;
     }
     
@@ -48,38 +54,44 @@ public class Matrice extends Observable {
     }
         
     private void generateInit(){ // tableau de valeur initialisé
+        CaseInit[][] grid = new CaseInit[getHeight()][getWidth()];
         for(int x = 0; x < getWidth(); x++){
             for(int y = 0 ; y < getHeight() ; y++){
-                gridInit[y][x] = Case.NUMBER;
+                grid[y][x] = CaseInit.NUMBER;
             }
         }
+        gridInit = grid;
     }    
     private void generatHide(){ // tableau caché initialisé
         for(int x = 0; x < getWidth(); x++){
             for(int y = 0 ; y < getHeight() ; y++){
-                gridHide[y][x] = Case.UNKNOW;
+                gridHide[y][x] = CaseHide.UNKNOW;
             }
         }        
     }
     
     //Genère une matrice de jeu à partir du premier clic en x;y
     private void generateMatrice(int xClic, int yClic, int nbMine){
+       generateInit();
        int mineUnused = nbMine;
        while(mineUnused>0){
-            int randI = (int) (Math.random() * getWidth());
-            int randJ = (int) (Math.random() * getHeight());
-            if (Case.NUMBER.equals(gridInit[randJ][randI])){   //erreur ici
+            int randI = ThreadLocalRandom.current().nextInt(0, getWidth());
+            int randJ = ThreadLocalRandom.current().nextInt(0, getHeight());
+            if ( gridInit[randI][randJ].getValue() == 0){   
                 if(randI != xClic && randJ != yClic) {
-                    setGridInitCase(Case.MINE, randJ, randI);
-                    majNumbers(randI, randJ);
+                    setGridInitCase(CaseInit.MINE, randJ, randI);
+                    majNumbers(randI,randJ);
                     mineUnused--;
                 }
             }
        }
        for(int x=0; x<getWidth(); x++){
            for(int y=0; y<getHeight(); y++){
-               if(getGridInitCase(y, x).getValueI() == 0){
-                   setGridInitCase(Case.ALONE, y,x);
+               if(getGridInitCase(y, x) == CaseInit.NUMBER){
+                   if(getGridInitCase(y, x).getValue() == 0){
+                        setGridInitCase(CaseInit.ALONE, y,x);
+                        System.out.println(getGridInitCase(y,x));
+                   }
                }
            }
        }
@@ -88,41 +100,44 @@ public class Matrice extends Observable {
     //fonction qui ajoute 1 à toutes les cases autour d'une bombe : efficace pour initiliser
     private void majNumbers(int x, int y){
         if (x>0 && y>0) { // voisin haut gauche
-            if(getGridInitCase(y-1,x-1) == Case.NUMBER ) getGridInitCase(y-1, x-1).setValueI(getGridInitCase(y-1, x-1).getValueI()+1);
+            if(getGridInitCase(y-1,x-1) == CaseInit.NUMBER ){
+                CaseInit.NUMBER.setValue(getGridInitCase(y-1,x-1).getValue()+1);
+                getGridInitCase(y-1, x-1).setValue(CaseInit.NUMBER.getValue());
+            }
         }
         if (y>0) { // voisin haut
-            if(getGridInitCase(y-1,x) == Case.NUMBER ) getGridInitCase(y-1, x).setValueI(getGridInitCase(y-1, x).getValueI()+1);
+            if(getGridInitCase(y-1,x) == CaseInit.NUMBER ) getGridInitCase(y-1, x).setValue(getGridInitCase(y-1, x).getValue()+1);
         }
         if (x<getWidth() && y>0) { // voisin haut droit
-            if(getGridInitCase(y-1,x+1) == Case.NUMBER ) getGridInitCase(y-1, x+1).setValueI(getGridInitCase(y-1, x+1).getValueI()+1);
+            if(getGridInitCase(y-1,x+1) == CaseInit.NUMBER ) getGridInitCase(y-1, x+1).setValue(getGridInitCase(y-1, x+1).getValue()+1);
         }
         if(x>0){//voisin gauche
-            if(getGridInitCase(y,x-1) == Case.NUMBER ) getGridInitCase(y, x-1).setValueI(getGridInitCase(y, x-1).getValueI()+1);
+            if(getGridInitCase(y,x-1) == CaseInit.NUMBER ) getGridInitCase(y, x-1).setValue(getGridInitCase(y, x-1).getValue()+1);
         }
         if(x<getWidth()){//voisin droit
-            if(getGridInitCase(y,x+1) == Case.NUMBER ) getGridInitCase(y, x+1).setValueI(getGridInitCase(y, x+1).getValueI()+1);
+            if(getGridInitCase(y,x+1) == CaseInit.NUMBER ) getGridInitCase(y, x+1).setValue(getGridInitCase(y, x+1).getValue()+1);
         }
         if (x>0 && y<getHeight()) { // voisin bas gauche
-            if(getGridInitCase(y+1,x-1) == Case.NUMBER ) getGridInitCase(y+1, x-1).setValueI(getGridInitCase(y+1, x-1).getValueI()+1);
+            if(getGridInitCase(y+1,x-1) == CaseInit.NUMBER ) getGridInitCase(y+1, x-1).setValue(getGridInitCase(y+1, x-1).getValue()+1);
         }
         if (y<getHeight()) { // voisin bas
-            if(getGridInitCase(y+1,x) == Case.NUMBER ) getGridInitCase(y+1, x).setValueI(getGridInitCase(y+1, x).getValueI()+1);
+            if(getGridInitCase(y+1,x) == CaseInit.NUMBER ) getGridInitCase(y+1, x).setValue(getGridInitCase(y+1, x).getValue()+1);
         }
         if (x<getWidth() && y<getHeight()) { // voisin haut droit
-            if(getGridInitCase(y-1,x+1) == Case.NUMBER ) getGridInitCase(y-1, x+1).setValueI(getGridInitCase(y-1, x+1).getValueI()+1);
+            if(getGridInitCase(y-1,x+1) == CaseInit.NUMBER ) getGridInitCase(y-1, x+1).setValue(getGridInitCase(y-1, x+1).getValue()+1);
         }
     }
     
     public void mark(int i, int j, String mark) {
         switch (mark) {
             case "#":
-                setGridHideCase(Case.HIDE, j ,i);
+                setGridHideCase(CaseHide.HIDE, j ,i);
                 break;
             case "?":
-                setGridHideCase(Case.UNKNOW, j ,i);
+                setGridHideCase(CaseHide.UNKNOW, j ,i);
                 break;
             case "!":
-                setGridHideCase(Case.FLAG, j ,i);
+                setGridHideCase(CaseHide.FLAG, j ,i);
                 break;
             default : 
                 System.out.println(" je sais pas quoi mettre ");
@@ -130,15 +145,16 @@ public class Matrice extends Observable {
     }
 
     public boolean replace(int i, int j) {
-        if (getGridInitCase(i, j) == Case.MINE) {
+        if (getGridInitCase(i, j) == CaseInit.MINE) {
             return false;
         }
-        setGridHideCase(getGridInitCase(i, j),j ,i);
-        if( getGridInitCase(i, j) == Case.ALONE){
+        setGridHideCase(CaseHide.SHOW ,j ,i);
+        if( getGridInitCase(i, j) == CaseInit.ALONE){
             propagation(i,j);
         }
         return true;
     }    
+    
     
     private void propagation(int x, int y) {
         /*if (x + 1 <= getWidth() - 1) {
@@ -233,7 +249,7 @@ public class Matrice extends Observable {
     } 
     
     private boolean checkOrNot(int x, int y) {
-        return getGridHideCase(y,x) != Case.HIDE;
+        return getGridHideCase(y,x) != CaseHide.HIDE;
     }
     
     
