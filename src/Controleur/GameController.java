@@ -52,8 +52,8 @@ public class GameController{
     public void affichage(){
         for(int j=0;j< m.getHeight();j++){
             for(int i = 0;i < m.getWidth(); i++){
-                if(m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){
-                    System.out.print(" " +m.gridInit[j][i].getEtat().getValue() );                   
+                if(m.gridInit[j][i].isNumber()){
+                    System.out.print(" " +m.gridInit[j][i].getBombes() );                   
                 }
                 else{
                     System.out.print(" "+m.gridInit[j][i].getEtat().getString());                    

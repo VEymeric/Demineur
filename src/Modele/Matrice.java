@@ -68,8 +68,8 @@ public class Matrice extends Observable{
        }
        for(int x=0; x<getWidth(); x++){
            for(int y=0; y<getHeight(); y++){
-               if(gridInit[y][x].getEtat() == CaseInit.NUMBER){
-                   if(gridInit[y][x].getEtat().getValue()  == 0){
+               if(gridInit[y][x].isNumber()){
+                   if(gridInit[y][x].getBombes()  == 0){
                         gridInit[y][x].setEtat(CaseInit.ALONE);
                    }
                }
@@ -80,7 +80,7 @@ public class Matrice extends Observable{
     //fonction qui ajoute 1 à toutes les cases autour d'une bombe : efficace pour initiliser
     private void majNumbers(int x, int y){
         if (x>0 && y>0) { // voisin haut gauche
-            if(gridInit[y-1][x-1].getEtat() == CaseInit.NUMBER ) gridInit[y-1][x-1].setBombes(gridInit[y-1][x-1].getBombes() +1);  
+            if(gridInit[y-1][x-1].isNumber()) gridInit[y-1][x-1].setBombes(gridInit[y-1][x-1].getBombes() +1);
         } 
         if (y>0) { // voisin haut
             if(gridInit[y-1][x].getEtat() == CaseInit.NUMBER ) gridInit[y-1][x].setBombes(gridInit[y-1][x].getBombes() +1);
