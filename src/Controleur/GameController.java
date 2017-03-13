@@ -47,11 +47,8 @@ public void affichage(){
                 if(m.getGridInitCase(j,i) == CaseInit.NUMBER ){
                     System.out.print("  " +m.getGridInitCase(j,i).getValue()+ "  ");                   
                 }
-                if(m.getGridInitCase(j, i) == CaseInit.MINE){
-                    System.out.print("  "+m.getGridInitCase(j,i).getString()+ "  ");
-                }
                 else{
-                    System.out.print( "  "+m.getGridInitCase(j,i).getString()+ " ");                                       
+                    System.out.print("  "+m.getGridInitCase(j,i)+ "  ");                    
                 }
             }
             System.out.println(" ");

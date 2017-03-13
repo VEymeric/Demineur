@@ -1,42 +1,22 @@
 package Modele;
 
 import java.util.Observable;
- 
-
 import Controleur.GameController;
 import java.util.concurrent.ThreadLocalRandom;
-public class Matrice extends Observable {
+
+public class Matrice extends Observable{
     GameController g;
     int width=0,height=0,mine=0;
-    CaseHide[][] gridHide;
-    CaseInit[][] gridInit;
+    Case[][] gridInit;
 
     public Matrice(int width, int height, int nbMine){
         System.out.println("Vous générez une nouvelle partie");
         this.width = width;
         this.height = height;
         mine = nbMine;
-        System.out.println(this.mine + " mines ");
         generateMatrice(0,0,this.mine);
     }    
   
-    public CaseInit getGridInitCase(int y, int x) {
-        return gridInit[y][x];
-    }
-
-    public void setGridInitCase(CaseInit c, int j,int i) {
-        this.gridInit[j][i] =  c ;
-    }
-
-    public CaseHide getGridHideCase(int y,int x) {
-        return gridHide[y][x];
-    }
-
-    public void setGridHideCase(CaseHide c, int j,int i) {
-        this.gridHide[j][i] = c;
-    }
-    
-
     public int getWidth() {
         return width;
     }
@@ -54,21 +34,14 @@ public class Matrice extends Observable {
     }
         
     private void generateInit(){ // tableau de valeur initialisé
-        CaseInit[][] grid = new CaseInit[getHeight()][getWidth()];
+        Case[][] grid = new Case[getHeight()][getWidth()];
         for(int x = 0; x < getWidth(); x++){
             for(int y = 0 ; y < getHeight() ; y++){
-                grid[y][x] = CaseInit.NUMBER;
+                grid[y][x] = new Case(x,y);          
             }
         }
         gridInit = grid;
     }    
-    private void generatHide(){ // tableau caché initialisé
-        for(int x = 0; x < getWidth(); x++){
-            for(int y = 0 ; y < getHeight() ; y++){
-                gridHide[y][x] = CaseHide.UNKNOW;
-            }
-        }        
-    }
     
     //Genère une matrice de jeu à partir du premier clic en x;y
     private void generateMatrice(int xClic, int yClic, int nbMine){
@@ -77,10 +50,11 @@ public class Matrice extends Observable {
        while(mineUnused>0){
             int randI = ThreadLocalRandom.current().nextInt(0, getWidth());
             int randJ = ThreadLocalRandom.current().nextInt(0, getHeight());
-            if ( gridInit[randI][randJ].getValue() == 0){   
+            if ( gridInit[randJ][randI] == CaseInit.NUMBER){   
                 if(randI != xClic && randJ != yClic) {
                     setGridInitCase(CaseInit.MINE, randJ, randI);
-                    majNumbers(randI,randJ);
+                    System.out.println( randJ +"  "+ randI);
+                    majNumbers(1,1);
                     mineUnused--;
                 }
             }
@@ -90,7 +64,6 @@ public class Matrice extends Observable {
                if(getGridInitCase(y, x) == CaseInit.NUMBER){
                    if(getGridInitCase(y, x).getValue() == 0){
                         setGridInitCase(CaseInit.ALONE, y,x);
-                        System.out.println(getGridInitCase(y,x));
                    }
                }
            }
@@ -105,7 +78,8 @@ public class Matrice extends Observable {
                 getGridInitCase(y-1, x-1).setValue(CaseInit.NUMBER.getValue());
             }
         }
-        if (y>0) { // voisin haut
+        
+        /*if (y>0) { // voisin haut
             if(getGridInitCase(y-1,x) == CaseInit.NUMBER ) getGridInitCase(y-1, x).setValue(getGridInitCase(y-1, x).getValue()+1);
         }
         if (x<getWidth() && y>0) { // voisin haut droit
@@ -125,7 +99,7 @@ public class Matrice extends Observable {
         }
         if (x<getWidth() && y<getHeight()) { // voisin haut droit
             if(getGridInitCase(y-1,x+1) == CaseInit.NUMBER ) getGridInitCase(y-1, x+1).setValue(getGridInitCase(y-1, x+1).getValue()+1);
-        }
+        }*/
     }
     
     public void mark(int i, int j, String mark) {

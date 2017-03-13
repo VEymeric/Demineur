@@ -37,7 +37,7 @@ public class Minesweeper {
             action = sc.nextLine();
             demineur.order(action, false);
         }*/
-        GameController controler = new GameController(10,10,15);
+        GameController controler = new GameController(5,5,15);
         
         controler.affichage();
         System.out.println("ceci est le main, allons y !");
