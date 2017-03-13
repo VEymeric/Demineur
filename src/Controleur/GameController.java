@@ -41,14 +41,14 @@ public class GameController{
         }
     }
     
-public void affichage(){
+    public void affichage(){
         for(int j=0;j< m.getHeight();j++){
             for(int i = 0;i < m.getWidth(); i++){
-                if(m.getGridInitCase(j,i) == CaseInit.NUMBER ){
-                    System.out.print("  " +m.getGridInitCase(j,i).getValue()+ "  ");                   
+                if(m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){
+                    System.out.print(" " +m.gridInit[j][i].getEtat().getValue() );                   
                 }
                 else{
-                    System.out.print("  "+m.getGridInitCase(j,i)+ "  ");                    
+                    System.out.print(" "+m.gridInit[j][i].getEtat().getString());                    
                 }
             }
             System.out.println(" ");

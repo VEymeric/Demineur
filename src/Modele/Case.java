@@ -3,7 +3,7 @@ package Modele;
 
 public class Case {
     private int x,y;
-    private int bombes;
+    private int bombes = 0;
     private CaseInit etat;
     private CaseHide cache;
     
@@ -11,6 +11,7 @@ public class Case {
         this.x = x;
         this.y = y;
         this.etat = CaseInit.NUMBER ;
+        this.cache = CaseHide.HIDE;
     }
 
     public Case(int x,int y, CaseHide cache){

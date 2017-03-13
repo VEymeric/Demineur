@@ -1,7 +1,7 @@
 package Modele;
 
 public enum CaseInit {
-    MINE(" x "),
+    MINE("x"),
     ALONE("."),
     NUMBER(0);  
     
