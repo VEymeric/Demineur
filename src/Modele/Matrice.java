@@ -26,8 +26,16 @@ public class Matrice extends Observable {
         return gridInit[y][x];
     }
 
-    public void setGridInitCase(Case c, int i,int j) {
+    public void setGridInitCase(Case c, int j,int i) {
         this.gridInit[j][i] =  c ;
+    }
+
+    public Case getGridHideCase(int y,int x) {
+        return gridHide[y][x];
+    }
+
+    public void setGridHideCase(Case c, int j,int i) {
+        this.gridHide[j][i] = c;
     }
     
     public int getI() {
@@ -108,20 +116,128 @@ public class Matrice extends Observable {
         }
     }
     
-    /*private void mark(int i, int j, String mark) {
+    public void mark(int i, int j, String mark) {
         switch (mark) {
             case "#":
-                ticTac[i][j] = Case.HIDE;
+                setGridHideCase(Case.HIDE, j ,i);
                 break;
             case "?":
-                ticTac[i][j] = Case.UNKNOW;
+                setGridHideCase(Case.UNKNOW, j ,i);
                 break;
             case "!":
-                ticTac[i][j] = Case.FLAG;
+                setGridHideCase(Case.FLAG, j ,i);
                 break;
             default : 
-               help();
+                System.out.println(" je sais pas quoi mettre ");
+        }
+    }
+
+    private boolean replace(int i, int j) {
+        if (getGridInitCase(i, j) == Case.MINE) {
+            return false;
+        }
+        setGridHideCase(getGridInitCase(i, j),j ,i);
+        if( getGridInitCase(i, j) == Case.ALONE){
+            propagation(i,j);
         }
         showTicTac();
-    }*/
+    }    
+    
+    private void propagation(int x, int y) {
+        if (x + 1 <= getI() - 1) {
+            if (checkOrNot(x + 1, y) == false) {
+                if (getGridInitCase(y, x+1) == Case.ALONE) {
+                    setGridHideCase(Case.ALONE,y,y+1);
+                    propagation(x + 1, y);
+
+                }
+                if (getGridInitCase(y, x+1 ) == Case.NUMBER) {
+                    setGridHideCase(getGridInitCase(y,x+1),y,x+1);
+                }
+            }
+        }
+        if (x + 1 <= getI() - 1 && y + 1 <= getJ() - 1) {
+            if (checkOrNot(x + 1, y + 1) == false) {
+                if (getGridInitCase(x + 1, y + 1) == Case.ALONE) {
+                    setGridHideCase(Case.ALONE,y + 1,x + 1);
+                    propagation(x + 1, y + 1);
+                }
+                if (getGridInitCase(x + 1, y + 1) == Case.NUMBER) {
+                    setGridHideCase(getGridInitCase(y + 1, x + 1),y + 1,x + 1);
+                }
+            }
+        }
+        if (y + 1 <= getJ() - 1) {
+            if (checkOrNot(x, y + 1) == false) {                               
+                if (getGridInitCase(x, y + 1) == Case.ALONE) {
+                    setGridHideCase(x][y + 1] = Case.ALONE;
+                    propagation(x, y + 1);
+                }
+                if (getGridInitCase(x, y + 1) == Case.NUMBER) {
+                    setGridHideCase(x][y + 1] = getGridInitCase(x, y + 1);
+                }
+            }
+        }
+        if (y - 1 >= 0) {
+            if (checkOrNot(x, y - 1) == false) {
+                if (getGridInitCase(x, y - 1) == Case.ALONE) {
+                    setGridHideCase(x][y - 1] = Case.ALONE;
+                    propagation(x, y - 1);
+                }
+                if (getGridInitCase(x, y - 1) == Case.NUMBER) {
+                    setGridHideCase(x][y - 1] = getGridInitCase(x, y - 1);
+                }
+            }
+        }
+        if (x - 1 >= 0) {
+            if (checkOrNot(x - 1, y) == false) {
+                if (getGridInitCase(x - 1, y) == Case.ALONE) {
+                    setGridHideCase(x - 1][y] = Case.ALONE;
+                    propagation(x - 1, y);
+                }
+                if (getGridInitCase(x - 1, y) == Case.NUMBER) {
+                    setGridHideCase(x - 1][y] = getGridInitCase(x - 1, y);
+                }
+            }
+        }
+        if (y - 1 >= 0 && x - 1 >= 0) {
+            if (checkOrNot(x - 1, y - 1) == false) {
+                if (getGridInitCase(x - 1, y - 1) == Case.ALONE) {
+                    setGridHideCase(x - 1][y - 1] = Case.ALONE;
+                    propagation(x - 1, y - 1);
+                }
+                if (getGridInitCase(x - 1, y - 1) == Case.NUMBER) {
+                    setGridHideCase(x - 1][y - 1] = getGridInitCase(x - 1, y - 1);
+                }
+            }
+        }
+        if (y + 1 <= minus.getJ() - 1 && x - 1 >= 0) {
+            if (checkOrNot(x - 1, y + 1) == false) {
+                if (getGridInitCase(x - 1, y + 1) == Case.ALONE) {
+                    setGridHideCase(x - 1][y + 1] = Case.ALONE;
+                    propagation(x - 1, y + 1);
+                }
+                if (getGridInitCase(x - 1, y + 1) == Case.NUMBER) {
+                    setGridHideCase(x - 1][y + 1] = getGridInitCase(x - 1, y + 1);
+                }
+            }
+        }
+        if (y - 1 >= 0 && x + 1 <= minus.getI() - 1) {
+            if (checkOrNot(x + 1, y - 1) == false) {
+                if (getGridInitCase(x + 1, y - 1) == Case.ALONE) {
+                    setGridHideCase(x + 1][y - 1] = Case.ALONE;
+                    propagation(x + 1, y - 1);
+                }
+                if (getGridInitCase(x + 1, y - 1) == Case.NUMBER) {
+                    setGridHideCase(x + 1][y - 1] = getGridInitCase(x + 1, y - 1);
+                }
+            }
+        }
+    } 
+    
+    private boolean checkOrNot(int x, int y) {
+        return getGridHideCase(y,x) != Case.HIDE;
+    }
+    
+    
 }

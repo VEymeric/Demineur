@@ -21,18 +21,18 @@ public class Do {
         switch (cr[0]) {
             case "d":
                 if (cr.length == 3) {
-                    //m.print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    m.replace(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
                     break;
                 } else {
                     help();
                     break;
                 }
             case "q":
-                //stop(" give up ");
+                stop(" give up ");
                 break;
             case "m":
                 if (cr.length == 4) {
-                    //mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
+                    m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
                     break;
                 } else {
                     help();
@@ -51,7 +51,9 @@ public class Do {
         System.out.println(" q -> quit ");
     } 
 
-    // stop()
+    private void stop(String oh) {
+        System.out.println("____________End of the game : you " + oh + "__________ ");
+    } 
     
 
     
