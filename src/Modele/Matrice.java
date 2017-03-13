@@ -17,6 +17,10 @@ public class Matrice extends Observable{
         generateMatrice(0,0,this.mine);
     }    
   
+    public void update(){
+        this.setChanged();
+        this.notifyObservers();
+    }
     public int getWidth() {
         return width;
     }
