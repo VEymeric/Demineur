@@ -17,11 +17,15 @@ public class Do {
     }
     
     public void order(String go,boolean ok) {
+        boolean out; 
         String[] cr = go.split(" ");
         switch (cr[0]) {
             case "d":
                 if (cr.length == 3) {
-                    m.replace(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    out = m.replace(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    if(out == false){
+                        stop("PERDU");
+                    }
                     break;
                 } else {
                     help();
@@ -54,6 +58,8 @@ public class Do {
     private void stop(String oh) {
         System.out.println("____________End of the game : you " + oh + "__________ ");
     } 
+    
+    
     
 
     
