@@ -1,12 +1,11 @@
-
 package Modele;
 
 public class Case {
-    private int x,y;
+    private final int x,y;
     private int bombes;
     private CaseInit etat; //mine ; alone ; number
     private CaseHide cache;// unknow , flag , hide, show
-    
+
     public Case(int x,int y){
         this.x = x;
         this.y = y;
@@ -42,6 +41,14 @@ public class Case {
 
     public void setEtat(CaseInit etat) {
         this.etat = etat;
+    }
+    
+    public CaseHide getCache() {
+        return cache;
+    }
+
+    public void setCache(CaseHide cache) {
+        this.cache = cache;
     }
     
     public boolean isMine(){
