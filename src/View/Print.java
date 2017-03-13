@@ -11,6 +11,7 @@ public class Print implements Observer {
     }*/
     
     public void affichage(Matrice m){
+        System.out.println("### PLATEAU DE JEU ###");
         for(int j=0;j< m.getHeight();j++){
             for(int i = 0;i < m.getWidth(); i++){
                 if(m.gridInit[j][i].isShow()){
@@ -20,7 +21,7 @@ public class Print implements Observer {
                     else{
                         System.out.print(" "+m.gridInit[j][i].getEtat().getString());                    
                     }
-                }else if(m.gridInit[j][i].isHide()){
+                }else{
                     System.out.print(" "+m.gridInit[j][i].getCache().getString());                    
                 }
             }
@@ -29,7 +30,6 @@ public class Print implements Observer {
     }       
     @Override
     public void update(Observable obs, Object arg) { // a implementer
-        System.out.println("Vous avez notifié");
         if(obs instanceof Matrice){
             affichage((Matrice)obs);
         }
