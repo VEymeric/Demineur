@@ -11,6 +11,9 @@ public class GameController{
     public GameController(int x, int y, int percentMine){
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x,y,(x * y) * percentMine/ 100);
+        gameView = new Print();
+        m.addObserver(gameView);
+        m.update();
     }
     
     //Recupère les ordre donnés par la console et les traites, si inconnu affiche l'help;
@@ -40,21 +43,7 @@ public class GameController{
                 help();
         }
     }
-    
-    public void affichage(){
-        for(int j=0;j< m.getHeight();j++){
-            for(int i = 0;i < m.getWidth(); i++){
-                if(m.gridInit[j][i].isNumber()){
-                    System.out.print(" " +m.gridInit[j][i].getBombes() );                   
-                }
-                else{
-                    System.out.print(" "+m.gridInit[j][i].getEtat().getString());                    
-                }
-            }
-            System.out.println(" ");
-        }   
-    }     
-    
+      
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
