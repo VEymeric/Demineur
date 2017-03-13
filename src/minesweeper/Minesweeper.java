@@ -5,6 +5,7 @@
  */
 package minesweeper;
 
+import Controleur.GameController;
 import java.util.Scanner;
 
 /**
@@ -28,7 +29,7 @@ public class Minesweeper {
         height = sc.nextInt();
         System.out.print(" Difficulty : %");
         percentage = sc.nextInt();
-        System.out.println("_________________LET'S GO___________________"); */
+        System.out.println("_________________LET'S GO___________________"); 
         Generate generate = new Generate(10, 10, 15);
         System.out.println("chat");
         generate.creatGrid();
@@ -38,9 +39,12 @@ public class Minesweeper {
         while (demineur.isEnd() != false) {
             action = sc.nextLine();
             demineur.order(action, false);
-        }
+        }*/
+        System.out.println("ceci est le main, allons y !");
+        GameController controler = new GameController(5,5,15);
+        controler.test();
         
-        
+        System.out.println("il ne passera plus rien  ici !");
 
     }
 
