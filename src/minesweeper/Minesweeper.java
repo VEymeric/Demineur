@@ -33,16 +33,11 @@ public class Minesweeper {
         generate.affichage();
         LetsGo demineur = new LetsGo(generate);
         //demineur.hideTicTac();
-        while (demineur.isEnd() != false) {
-            action = sc.nextLine();
-            demineur.order(action, false);
-        }*/
+*/
         System.out.println("ceci est le main, allons y !");
 
         GameController controler = new GameController(5,5,15);
         //controler.affichage();
-        controler.test();
-        
         System.out.println("il ne passera plus rien  ici !");
 
     }

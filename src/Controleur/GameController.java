@@ -3,6 +3,7 @@ package Controleur;
 import Modele.Matrice;
 import Modele.CaseInit;
 import View.Print;
+import java.util.Scanner;
 
 public class GameController{
     Matrice m;
@@ -15,8 +16,26 @@ public class GameController{
         gameView = new Print();
         m.addObserver(gameView);
         m.update();
+        startGame();
+
     }
-    
+    public void startGame(){
+        System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
+        Scanner sc = new Scanner(System.in);
+        String action;
+        while (m.isInGame()) {
+            action = sc.nextLine();
+            order(action);
+            m.update();
+        }
+        if(m.getCountCase()>0){
+            System.out.println("Une belle défaite ! Il restait "+m.getCountCase()+" cases à deminer.");
+        }else{
+            System.out.println("La foule est en délire devant notre demineur pro !");
+        }
+        System.out.println("Merci d'avoir joué !");
+ 
+    }
     //Recupère les ordre donnés par la console et les traites, si inconnu affiche l'help;
     public void order(String go) {
         boolean end;
@@ -24,10 +43,10 @@ public class GameController{
         switch (cr[0]) {
             case "d":
                 if (cr.length == 3) {
-                    end = m.print(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
-                    if(end == false){
-                        stop("loose...");
+                    if(m.getCountMine() == 0){//Cas possible que si le jeu n'pas commence
+                        m.generateMatrice(Integer.parseInt(cr[1]),Integer.parseInt(cr[2]));
                     }
+                    m.reveal(Integer.parseInt(cr[2]), Integer.parseInt(cr[1]));
                     break;
                 } else {
                     help();
@@ -38,7 +57,7 @@ public class GameController{
                 break;
             case "m":
                 if (cr.length == 4) {
-                    m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
+                    m.mark(Integer.parseInt(cr[2]), Integer.parseInt(cr[1]), cr[3]);
                     break;
                 } else {
                     help();
