@@ -6,7 +6,8 @@ import View.Print;
 
 public class GameController{
     Matrice m;
-    private Print gameView;
+    private ?
+    Print gameView;
             
     public GameController(int x, int y, int percentMine){
         System.out.println("Votre controller a été créé");

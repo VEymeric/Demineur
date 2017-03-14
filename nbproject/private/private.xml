@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/minesweeper/LetsGo.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Modele/Matrice.java</file>
-            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/minesweeper/Generate.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Modele/Case.java</file>
-            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Controleur/Do.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Controleur/GameController.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/View/Print.java</file>
         </group>
     </open-files>
