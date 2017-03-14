@@ -1,25 +1,26 @@
 package Controleur;
 
 import Modele.Matrice;
-import Modele.CaseInit;
+import View.Button;
+import View.Play;
 import View.Print;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
-public class GameController{
-    Matrice m;
-    private ?
+public class GameController implements ActionListener {
+    public Matrice m;
     Print gameView;
             
-    public GameController(int x, int y, int percentMine){
+    public GameController(int x, int y, int percentMine){ // Constructeur
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x,y,(x * y) * percentMine/ 100);
         gameView = new Print();
         m.addObserver(gameView);
         m.update();
-        startGame();
-
     }
-    public void startGame(){
+    
+    public void startGame(){ 
         System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
         Scanner sc = new Scanner(System.in);
         String action;
@@ -34,30 +35,32 @@ public class GameController{
             System.out.println("La foule est en délire devant notre demineur pro !");
         }
         System.out.println("Merci d'avoir joué !");
- 
     }
-    //Recupère les ordre donnés par la console et les traites, si inconnu affiche l'help;
+  
+    //Recupère les ordre donnés par la console et les traites, si inconnu affiche help;
     public void order(String go) {
         boolean end;
         String[] cr = go.split(" ");
+        System.out.println(" Order x:" + cr[1] +" y :"+cr[2]);
         switch (cr[0]) {
             case "d":
                 if (cr.length == 3) {
                     if(m.getCountMine() == 0){//Cas possible que si le jeu n'pas commence
                         m.generateMatrice(Integer.parseInt(cr[1]),Integer.parseInt(cr[2]));
                     }
-                    m.reveal(Integer.parseInt(cr[2]), Integer.parseInt(cr[1]));
+                    m.reveal(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                    m.update();
                     break;
                 } else {
                     help();
                     break;
                 }
             case "q":
-                //stop(" give up ");
+                stop(" give up ");
                 break;
             case "m":
                 if (cr.length == 4) {
-                    m.mark(Integer.parseInt(cr[2]), Integer.parseInt(cr[1]), cr[3]);
+                    m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
                     break;
                 } else {
                     help();
@@ -80,8 +83,10 @@ public class GameController{
         System.out.println(" q -> quit ");
     }
     
-    public void test(){
-        System.out.println("fonction test");
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Button source = (Button) e.getSource();
+        String action = String.valueOf( "d " + source.x +" "+ source.y );
+        order(action);
     }
 }

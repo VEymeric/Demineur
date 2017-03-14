@@ -20,10 +20,11 @@ public class Matrice extends Observable{
         generateInit();
     }    
   
-    public void update(){
+    public void update(){ // Observer 
         this.setChanged();
         this.notifyObservers();
     }
+    
     public int getWidth() {
         return width;
     }
@@ -87,9 +88,6 @@ public class Matrice extends Observable{
                     mineUnused--;
                 }
             }
-            /*else{ 
-                System.out.println(gridInit[randJ][randI].getEtat());
-            }*/
        }
        for(int x=0; x<getWidth(); x++){
            for(int y=0; y<getHeight(); y++){
@@ -99,6 +97,16 @@ public class Matrice extends Observable{
                    }
                }
            }
+       }
+       for(int j= 0; j<getHeight();j++ ){
+           for(int i = 0; i < getWidth();i++){
+               if( gridInit[j][i].getEtat() == CaseInit.NUMBER){
+                System.out.print( gridInit[j][i].getEtat().getValue());
+               }else{
+                 System.out.print( gridInit[j][i].getEtat().getString());
+               }
+           }
+           System.out.println(" ");
        }
     }
     
@@ -145,15 +153,6 @@ public class Matrice extends Observable{
                 System.out.println(" je sais pas quoi mettre ");
         }
     }
-    
-    public boolean print(int i, int j){
-        gridInit[j][i].setCache(CaseHide.SHOW);
-        if(gridInit[j][i].isMine()){
-            return false;
-        }
-        propagation(i,j);
-        return true;
-    }
 
     public void reveal(int x, int y){
         if(!this.isInGame() || x < 0 || y < 0 || x >= this.width || y >= this.height || this.gridInit[y][x].isShow()){ // cas non nécessaire
@@ -164,7 +163,7 @@ public class Matrice extends Observable{
         if(this.gridInit[y][x].isMine()){
             this.setInGame(false); // -> nullos qui perd
             this.setCountMine(this.getCountMine()-1);
-            //gameover(loose);
+            //gameOver();
         }else{
             this.setCountCase(this.getCountCase()-1);
             if(this.getCountCase() == 0){
@@ -182,112 +181,6 @@ public class Matrice extends Observable{
                 reveal(x+1, y+1);
             }
         }
-        
     }
-    
-    
-    private void propagation(int x, int y) {
-        if (x + 1 <= getWidth() - 1) {
-            if (checkOrNot(x + 1, y) == false) {
-                if (gridInit[y][x+1].isAlone()) {
-                    gridInit[y][x+1].setCache(CaseHide.SHOW);
-                    propagation(x + 1, y);
-
-                }
-                if (gridInit[y][x+1].isNumber()) {
-                    gridInit[y][x+1].setCache(CaseHide.SHOW); ;
-                }
-            }
-        }
-        if (x + 1 <= getWidth() - 1 && y + 1 <= getHeight() - 1) {
-            if (checkOrNot(x + 1, y+1) == false) {
-                if (gridInit[y+1][x+1].isAlone()) {
-                    gridInit[y+1][x+1].setCache(CaseHide.SHOW);
-                    propagation(x + 1, y+1);
-
-                }
-                if (gridInit[y+1][x+1].isNumber()) {
-                    gridInit[y+1][x+1].setCache(CaseHide.SHOW); 
-                }
-            }
-        }
-        if (y + 1 <= getHeight() - 1) {
-            if (checkOrNot(x, y + 1) == false) {                               
-                if (gridInit[y+1][x].isAlone()) {
-                    gridInit[y+1][x].setCache(CaseHide.SHOW);
-                    propagation(x, y+1);
-
-                }
-                if (gridInit[y+1][x].isNumber()) {
-                    gridInit[y+1][x].setCache(CaseHide.SHOW); 
-                }
-            }
-        }
-        if (y - 1 >= 0) {
-            if (checkOrNot(x, y - 1) == false) {
-                if (gridInit[y-1][x].isAlone()) {
-                    gridInit[y-1][x].setCache(CaseHide.SHOW);
-                    propagation(x, y-1);
-
-                }
-                if (gridInit[y-1][x].isNumber()) {
-                    gridInit[y-1][x].setCache(CaseHide.SHOW); 
-                }
-            }
-        }
-        if (x - 1 >= 0) {
-            if (checkOrNot(x - 1, y) == false) {
-                if (gridInit[y][x-1].isAlone()) {
-                    gridInit[y][x-1].setCache(CaseHide.SHOW);
-                    propagation(x-1, y);
-
-                }
-                if (gridInit[y][x-1].isNumber()) {
-                    gridInit[y][x-1].setCache(CaseHide.SHOW); ;
-                }
-            }
-        }
-        if (y - 1 >= 0 && x - 1 >= 0) {
-            if (checkOrNot(x - 1, y - 1) == false) {
-                if (gridInit[y-1][x-1].isAlone()) {
-                    gridInit[y-1][x-1].setCache(CaseHide.SHOW);
-                    propagation(x + 1, y+1);
-
-                }
-                if (gridInit[y-1][x-1].isNumber()) {
-                    gridInit[y-1][x-1].setCache(CaseHide.SHOW); 
-                }
-            }
-        }
-        if (y + 1 <= getHeight() - 1 && x - 1 >= 0) {
-            if (checkOrNot(x - 1, y + 1) == false) {
-                if (gridInit[y+1][x-1].isAlone()) {
-                    gridInit[y+1][x-1].setCache(CaseHide.SHOW);
-                    propagation(x-1, y+1);
-
-                }
-                if (gridInit[y+1][x-1].isNumber()) {
-                    gridInit[y+1][x-1].setCache(CaseHide.SHOW); 
-                }
-            }
-        }
-        if (y - 1 >= 0 && x + 1 <= getWidth() - 1) {
-            if (checkOrNot(x + 1, y - 1) == false) {
-                if (gridInit[y-1][x+1].isAlone()) {
-                    gridInit[y-1][x+1].setCache(CaseHide.SHOW);
-                    propagation(x + 1, y-1);
-
-                }
-                if (gridInit[y-1][x+1].isNumber()) {
-                    gridInit[y-1][x+1].setCache(CaseHide.SHOW);
-                }
-            }
-        }
-    } 
-    
-    private boolean checkOrNot(int x, int y) {
-        return gridInit[y][x].isHide();
-    }
-    
     
 }

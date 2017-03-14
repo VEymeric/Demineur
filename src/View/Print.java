@@ -4,12 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 import Modele.Matrice;
 
-public class Print implements Observer {
-    // argument pour l'affichage : tableau a afficher Case[][]
-    
-    /*private void view(Case[][] grid){
-    }*/
-    
+public class Print implements Observer { // a renommer en PrintConsole !!
     public void affichage(Matrice m){
         System.out.println("### PLATEAU DE JEU ###");
         for(int j=0;j< m.getHeight();j++){
@@ -27,9 +22,10 @@ public class Print implements Observer {
             }
             System.out.println(" ");
         }   
-    }       
+    }   
+    
     @Override
-    public void update(Observable obs, Object arg) { // a implementer
+    public void update(Observable obs, Object arg) {
         if(obs instanceof Matrice){
             affichage((Matrice)obs);
         }
