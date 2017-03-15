@@ -39,10 +39,11 @@ public class GameController implements ActionListener {
   
     //Recupère les ordre donnés par la console et les traites, si inconnu affiche help;
     public void order(String go) {
-        boolean end;
         String[] cr = go.split(" ");
-        System.out.println(" Order x:" + cr[1] +" y :"+cr[2]);
         switch (cr[0]) {
+            case "debug" : 
+                m.debug();
+                break;
             case "d":
                 if (cr.length == 3) {
                     if(m.getCountMine() == 0){//Cas possible que si le jeu n'pas commence
