@@ -12,8 +12,6 @@ public class Minesweeper {
      */
     public static void main(String[] args) {
         GameController controler = new GameController(12,3,15);    
-        Play myPlay = new Play(controler);        
-        controler.startGame();
         
         Scanner sc = new Scanner(System.in);
         System.out.println("ceci est le main, allons y !");

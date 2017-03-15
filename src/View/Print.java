@@ -22,12 +22,13 @@ public class Print implements Observer { // a renommer en PrintConsole !!
             }
             System.out.println(" ");
         }   
-    }   
+    } 
     
     @Override
     public void update(Observable obs, Object arg) {
         if(obs instanceof Matrice){
             affichage((Matrice)obs);
+            
         }
     }
 

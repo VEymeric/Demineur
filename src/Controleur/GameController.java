@@ -1,5 +1,6 @@
 package Controleur;
 
+import Modele.CaseHide;
 import Modele.Matrice;
 import View.Button;
 import View.Play;
@@ -10,24 +11,30 @@ import java.util.Scanner;
 
 public class GameController implements ActionListener {
     public Matrice m;
-    Print gameView;
+    Print gameViewConsole;
+    Play gameViewWindow;
+    private String action;
+    Scanner sc;
+    
+    
             
     public GameController(int x, int y, int percentMine){ // Constructeur
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x,y,(x * y) * percentMine/ 100);
-        gameView = new Print();
-        m.addObserver(gameView);
+        gameViewConsole = new Print();
+        gameViewWindow = new Play(this);
+        m.addObserver(gameViewWindow);
+        m.addObserver(gameViewConsole);
         m.update();
     }
     
     public void startGame(){ 
         System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
-        Scanner sc = new Scanner(System.in);
-        String action;
+        sc = new Scanner(System.in);
+        
         while (m.isInGame()) {
             action = sc.nextLine();
             order(action);
-            m.update();
         }
         if(m.getCountCase()>0){
             System.out.println("Une belle défaite ! Il restait "+m.getCountCase()+" cases à deminer.");
@@ -42,7 +49,7 @@ public class GameController implements ActionListener {
         String[] cr = go.split(" ");
         switch (cr[0]) {
             case "debug" : 
-                m.debug();
+                debug();
                 break;
             case "d":
                 if (cr.length == 3) {
@@ -84,10 +91,30 @@ public class GameController implements ActionListener {
         System.out.println(" q -> quit ");
     }
     
+    public void debug(){
+            for(int j= 0; j<m.getHeight();j++ ){
+                for(int i = 0; i < m.getWidth();i++){
+                    if(m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()){
+                        m.gridInit[j][i].setCache(CaseHide.SHOW);
+                    }
+                    else if(m.gridInit[j][i].isMine() && !m.gridInit[j][i].isHide()){
+                        m.gridInit[j][i].setCache(CaseHide.HIDE);                        
+                    }
+                }
+            }
+            m.update();
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-        Button source = (Button) e.getSource();
-        String action = String.valueOf( "d " + source.x +" "+ source.y );
-        order(action);
+        if(e.getSource() instanceof Button) {
+            Button source = (Button) e.getSource();
+            action= String.valueOf( "d " + source.x +" "+ source.y );
+            order(action);
+        }
+        else{
+            order("debug");
+        }
     }
+
 }

@@ -20,7 +20,7 @@ import javax.swing.*;
 public class Play implements Observer {
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
-    private final GameController controleur;
+    private GameController controleur;
     
     public Play(GameController controleur){
         this.controleur = controleur;
@@ -29,9 +29,16 @@ public class Play implements Observer {
         game.setSize(controleur.m.getWidth()*80,controleur.m.getHeight()*80);
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
         game.setLayout(new BorderLayout (5,5));     
+        game.add(debugger(),BorderLayout.WEST); 
         game.add(new JButton(" Nombre de mines restantes: "),BorderLayout.SOUTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(),controleur) ,BorderLayout.CENTER);
         game.setVisible(true);
+    }
+    
+    private JComponent debugger(){
+        JButton actionDebug = new JButton("debug");
+        actionDebug.addActionListener( controleur );
+        return actionDebug;
     }
       
     private JComponent withCase(int x,int y, GameController controleur){
@@ -40,7 +47,7 @@ public class Play implements Observer {
         grid.setLayout(new GridLayout(y, x, 5,5));
         for(int j = 0; j < y;j++){
             for(int i = 0;i < x ;i++){
-                Button button = new Button( " # " );
+                Button button = new Button(" # ");
                 button.addActionListener( controleur );
                 button.x = i;
                 button.y = j;
@@ -49,12 +56,13 @@ public class Play implements Observer {
         }
         return grid;
     }
-    
+           
     @Override
     public void update(Observable obs, Object arg) {
+        System.out.println(" update");
         if(obs instanceof Matrice){
             for( int j = 0; j < controleur.m.getHeight() ; j++){
-                for(int i= 0; i< controleur.m.getWidth() ;i++){
+                for(int i= 0; i< controleur.m.getWidth() ;i++){                    
                     showOrnot(i,j);
                 }
             }
@@ -62,16 +70,17 @@ public class Play implements Observer {
     } 
     
     private void showOrnot(int i,int j){
-        System.out.println(" x : " + i +" y : "+  j);
+        //System.out.println(" x : " + i +" y : "+  j);
         Button button;
-        if(controleur.m.gridInit[j][i].isShow() == true){
+        if(!controleur.m.gridInit[j][i].isHide()){
+            System.out.println(" x : " + i +" y : "+  j);
             button = getButton(i,j);
             button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getValue()));
         }
     }
     
     private Button getButton(int i,int j){
-        return (Button) grid.getComponent(j*grid.getY()+i );
+        return (Button) grid.getComponent(j*controleur.m.getWidth() +i );
     }
     
 }

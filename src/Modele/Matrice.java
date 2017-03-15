@@ -169,7 +169,6 @@ public class Matrice extends Observable{
             if(this.getCountCase() == 0){
                 this.setInGame(false); // champion qui gagne
             } 
-
             if(this.gridInit[y][x].isAlone()){
                 reveal(x-1, y-1);
                 reveal(x-1, y);
@@ -183,16 +182,4 @@ public class Matrice extends Observable{
         }
     }
     
-    public void debug(){
-            for(int j= 0; j<getHeight();j++ ){
-                for(int i = 0; i < getWidth();i++){
-                    if(gridInit[j][i].isMine() && gridInit[j][i].isHide()){
-                        gridInit[j][i].setCache(CaseHide.SHOW);
-                    }
-                    else if(gridInit[j][i].isMine() && !gridInit[j][i].isHide()){
-                        gridInit[j][i].setCache(CaseHide.HIDE);                        
-                    }
-                }
-            }
-    }
 }

@@ -9,14 +9,14 @@ public class Case {
     public Case(int x,int y){
         this.x = x;
         this.y = y;
-        this.etat = CaseInit.NUMBER ;
+        this.etat = CaseInit.NUMBER;
         this.cache = CaseHide.HIDE;
     }
 
     public Case(int x,int y, CaseHide cache){
         this.x = x;
         this.y = y;
-        this.cache = cache ;
+        this.cache = cache;
     }    
 
     public int getX() {

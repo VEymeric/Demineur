@@ -12,7 +12,8 @@ import java.io.Serializable;
  * @author gaetane
  */
 public class SaveData implements Serializable { // serializable , stocker les données une partie ou les scores.
-    // liste pour stocké le resultat / les parties qui ne sont pas fini ( etat de chaque case ) 
+    // liste ou fichier ( moi je prefere un fichier ) pour stocké le resultat / les parties qui ne sont pas fini ( etat de chaque case ) 
+    // pouvoir récuperer le tout du fichier
     //!\ il y a des contraintes !! 
     
 }
