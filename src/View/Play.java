@@ -6,6 +6,7 @@
 package View;
 
 import Controleur.GameController;
+import Modele.CaseInit;
 import Modele.Matrice;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -55,7 +56,7 @@ public class Play implements Observer {
             }
         }
         return grid;
-    }
+    }   
            
     @Override
     public void update(Observable obs, Object arg) {
@@ -73,9 +74,15 @@ public class Play implements Observer {
         //System.out.println(" x : " + i +" y : "+  j);
         Button button;
         if(!controleur.m.gridInit[j][i].isHide()){
-            System.out.println(" x : " + i +" y : "+  j);
             button = getButton(i,j);
-            button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getValue()));
+            button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
+            if(controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){
+                button.setText(String.valueOf(controleur.m.gridInit[j][i].getBombes()));   
+                System.out.println(controleur.m.gridInit[j][i].getBombes() );
+            }
+            else{
+               button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));
+            }
         }
     }
     
