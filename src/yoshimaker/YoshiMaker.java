@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 
 /**
  *
- * @author adrien
+ * @author Adrien, Eymeric, Simon, Gaëtane :D
  */
 
 
@@ -19,6 +19,7 @@ public class YoshiMaker {
 
     /**
      * @param args the command line arguments
+     * @throws org.newdawn.slick.SlickException
      */
     public static void main (String[] args) throws SlickException {
         new AppGameContainer(new WindowGame(), 640, 480, false).start();
