@@ -11,7 +11,8 @@ public class Minesweeper {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GameController controler = new GameController(10,10,15);    
+        
+        GameController controler = new GameController(10,10,15);
         
         Scanner sc = new Scanner(System.in);
         System.out.println("ceci est le main, allons y !");

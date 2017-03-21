@@ -154,6 +154,18 @@ public class Matrice extends Observable{
         }
     }
 
+    public void markPrint(int i, int j){
+        if( gridInit[j][i].isHide()){
+            gridInit[j][i].setCache(CaseHide.FLAG);
+        }
+        if( gridInit[j][i].isFlag()){
+            gridInit[j][i].setCache(CaseHide.UNKNOW);
+        }        
+        if( gridInit[j][i].isUnknow()){
+            gridInit[j][i].setCache(CaseHide.HIDE);
+        }        
+    }
+    
     public void reveal(int x, int y){
         if(!this.isInGame() || x < 0 || y < 0 || x >= this.width || y >= this.height || this.gridInit[y][x].isShow()){ // cas non nécessaire
             return;

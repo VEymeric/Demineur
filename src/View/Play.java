@@ -10,6 +10,7 @@ import Modele.CaseInit;
 import Modele.Matrice;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -18,10 +19,10 @@ import javax.swing.*;
  *
  * @author gaetane
  */
-public class Play implements Observer {
+public class Play implements Observer{
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
-    private GameController controleur;
+    private final GameController controleur;
     
     public Play(GameController controleur){
         this.controleur = controleur;
@@ -31,9 +32,10 @@ public class Play implements Observer {
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
         game.setLayout(new BorderLayout (5,5));     
         game.add(debugger(),BorderLayout.WEST); 
-        game.add(new JButton(" Nombre de mines restantes: "),BorderLayout.SOUTH);
+        game.add(new JButton(" Nombre de mines restantes: "+ controleur.m.getCountMine()),BorderLayout.SOUTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(),controleur) ,BorderLayout.CENTER);
         game.setVisible(true);
+        //game.addMouseListener(this);
     }
     
     private JComponent debugger(){
@@ -60,7 +62,6 @@ public class Play implements Observer {
            
     @Override
     public void update(Observable obs, Object arg) {
-        System.out.println(" update");
         if(obs instanceof Matrice){
             for( int j = 0; j < controleur.m.getHeight() ; j++){
                 for(int i= 0; i< controleur.m.getWidth() ;i++){                    
@@ -71,14 +72,12 @@ public class Play implements Observer {
     } 
     
     private void showOrnot(int i,int j){
-        //System.out.println(" x : " + i +" y : "+  j);
         Button button;
         if(!controleur.m.gridInit[j][i].isHide()){
             button = getButton(i,j);
             button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
             if(controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){
                 button.setText(String.valueOf(controleur.m.gridInit[j][i].getBombes()));   
-                System.out.println(controleur.m.gridInit[j][i].getBombes() );
             }
             else{
                button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));
