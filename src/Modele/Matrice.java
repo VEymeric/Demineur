@@ -157,13 +157,12 @@ public class Matrice extends Observable{
     public void markPrint(int i, int j){
         if( gridInit[j][i].isHide()){
             gridInit[j][i].setCache(CaseHide.FLAG);
-        }
-        if( gridInit[j][i].isFlag()){
+        }else if( gridInit[j][i].isFlag()){
             gridInit[j][i].setCache(CaseHide.UNKNOW);
         }        
-        if( gridInit[j][i].isUnknow()){
+        else {
             gridInit[j][i].setCache(CaseHide.HIDE);
-        }        
+        }  
     }
     
     public void reveal(int x, int y){

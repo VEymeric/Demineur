@@ -54,7 +54,7 @@ public class GameController implements ActionListener, MouseListener {
                 break;
             case "d":
                 if (cr.length == 3) {
-                    if (m.getCountMine() == 0) {//Cas possible que si le jeu n'pas commence
+                    if (m.getCountMine() == 0) {//Cas possible que si le jeu n'a pas commence
                         m.generateMatrice(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
                     }
                     m.reveal(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
@@ -70,6 +70,7 @@ public class GameController implements ActionListener, MouseListener {
             case "m":
                 if (cr.length == 4) {
                     m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
+                    m.update();
                     break;
                 } else {
                     help();
@@ -117,17 +118,17 @@ public class GameController implements ActionListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         Button source = (Button) e.getSource();
-        System.out.println("Clicked");
+        System.out.println(e.getButton());
         int buttonClicked = e.getButton();
         switch (buttonClicked) {
-            case MouseEvent.BUTTON1:
-                System.out.println("Clicked gauche");
-                action = String.valueOf("d " + source.x + " " + source.y);
-                order(action);                
-                break;
             case MouseEvent.BUTTON3:
-                System.out.println("Clicked droit ");
                 m.markPrint(source.x,source.y);
+                m.update();
+                break;            
+            case MouseEvent.BUTTON1:
+                action = String.valueOf("d " + source.x + " " + source.y);
+                order(action);
+                m.update();
                 break;
             default:
                 System.out.println(" rien compris ");
