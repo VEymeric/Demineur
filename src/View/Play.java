@@ -10,6 +10,7 @@ import Modele.CaseHide;
 import Modele.CaseInit;
 import Modele.Matrice;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
@@ -73,8 +74,9 @@ public class Play implements Observer{
         Button button = getButton(i,j);
         if(!controleur.m.gridInit[j][i].isHide()){
             button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
-            if(controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){
-                button.setText(String.valueOf(controleur.m.gridInit[j][i].getBombes()));   
+            if(controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){               
+                button.setText(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
+                button.setForeground((Color) controleur.m.gridInit[j][i].getColor());
             }
             else if(controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW ) {
                button.setText(String.valueOf(controleur.m.gridInit[j][i].getCache().getString()));

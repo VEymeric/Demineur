@@ -2,6 +2,7 @@ package Modele;
 
 import java.util.Observable;
 import Controleur.GameController;
+import java.awt.Color;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Matrice extends Observable{
@@ -92,6 +93,7 @@ public class Matrice extends Observable{
        for(int x=0; x<getWidth(); x++){
            for(int y=0; y<getHeight(); y++){
                if(gridInit[y][x].isNumber()){
+                   gridInit[y][x].setColor(makeColor(gridInit[y][x].getBombes()));
                    if(gridInit[y][x].getBombes()  == 0){
                         gridInit[y][x].setEtat(CaseInit.ALONE);
                    }
@@ -191,6 +193,29 @@ public class Matrice extends Observable{
                 reveal(x+1, y+1);
             }
         }
+    }
+    
+    private Color makeColor(int numberMine){
+       switch( numberMine ){
+            case 1 :
+                return Color.blue;               
+            case 2 :
+                return Color.green;
+            case 3:
+                return Color.red;
+            case 4 :
+                return Color.yellow;               
+            case 5 :
+                return Color.pink;
+            case 6:
+                return Color.magenta ;   
+            case 7 :
+                return Color.gray;
+            case 8:
+                return Color.orange;                  
+            default : 
+                return Color.black ;
+        } 
     }
     
 }

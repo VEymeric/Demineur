@@ -1,8 +1,11 @@
 package Modele;
 
+import java.awt.Color;
+
 public class Case {
     private final int x,y;
     private int bombes = 0;
+    private Color color ;
     private CaseInit etat; //mine ; alone ; number
     private CaseHide cache;// unknow , flag , hide, show
 
@@ -11,6 +14,7 @@ public class Case {
         this.y = y;
         this.etat = CaseInit.NUMBER;
         this.cache = CaseHide.HIDE;
+        this.color = Color.BLACK ;
     }
 
     public Case(int x,int y, CaseHide cache){
@@ -49,6 +53,14 @@ public class Case {
 
     public void setCache(CaseHide cache) {
         this.cache = cache;
+    }
+    
+    public void setColor(Color color){
+        this.color = color ;
+    }
+    
+    public Color getColor(){
+        return color;
     }
     
     public boolean isMine(){

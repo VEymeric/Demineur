@@ -1,7 +1,6 @@
 package minesweeper;
 
 import Controleur.GameController;
-import View.Play;
 import java.util.Scanner;
 
 

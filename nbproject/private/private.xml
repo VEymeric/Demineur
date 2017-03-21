@@ -5,7 +5,7 @@
             <url>src/minesweeper/Minesweeper.java</url>
             <bookmark id="1">
                 <name/>
-                <line>17</line>
+                <line>18</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,9 +14,12 @@
         <group>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/View/Button.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/View/Play.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Modele/Matrice.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Modele/Case.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/minesweeper/Minesweeper.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Controleur/GameController.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweeper/src/View/Option.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweeper/src/Modele/CaseHide.java</file>
         </group>
     </open-files>
 </project-private>
