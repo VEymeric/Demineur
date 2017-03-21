@@ -5,6 +5,7 @@ import Modele.Matrice;
 import View.Button;
 import View.Play;
 import View.Print;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -24,12 +25,26 @@ public class GameController implements ActionListener, MouseListener {
         m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
         gameViewConsole = new Print();
         gameViewWindow = new Play(this);
+        //gameViewWindow.withCase(x, y, this);
+        m.addObserver(gameViewWindow);
+        m.addObserver(gameViewConsole);
+        m.update();        this.startGame();
+    }
+
+    public void restart(int x, int y, int percentMine){
+        System.out.println("Votre controller a été créé");
+        m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
+        gameViewConsole = new Print();
+        //gameViewWindow = new Play(this);
+        gameViewWindow.refreshGrid();
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
         m.update();
-        startGame();
     }
-
+    
+    public void exit(){
+        System.exit(0);
+    }
     public final void startGame() {
         System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
         sc = new Scanner(System.in);
