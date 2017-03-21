@@ -23,6 +23,7 @@ import javax.swing.*;
 public class Play implements Observer{
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
+    private JMenuBar gameMenu;
     private final GameController controleur;
     
     public Play(GameController controleur){
@@ -34,9 +35,16 @@ public class Play implements Observer{
         game.add(debugger(),BorderLayout.WEST); 
         game.add(new JButton(" Nombre de mines restantes: "+ controleur.m.getCountMine()),BorderLayout.SOUTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(),controleur) ,BorderLayout.CENTER);
+        gameMenu = new GameMenu(controleur);
+        game.setJMenuBar(gameMenu);
         game.setVisible(true);
     }
     
+    public void refreshGrid(){
+        game.remove(grid);
+        game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(),controleur) ,BorderLayout.CENTER);
+        game.setVisible(true);
+    }
     private JComponent debugger(){
         JButton actionDebug = new JButton("debug");
         actionDebug.addMouseListener( controleur );
