@@ -13,7 +13,6 @@ import java.awt.event.MouseListener;
 import java.util.Scanner;
 
 public class GameController implements ActionListener, MouseListener {
-
     public Matrice m;
     Print gameViewConsole;
     Play gameViewWindow;
@@ -28,7 +27,8 @@ public class GameController implements ActionListener, MouseListener {
         //gameViewWindow.withCase(x, y, this);
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
-        m.update();        this.startGame();
+        m.update();        
+        this.startGame();
     }
 
     public void restart(int x, int y, int percentMine){
@@ -73,7 +73,7 @@ public class GameController implements ActionListener, MouseListener {
                         m.generateMatrice(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
                     }
                     m.reveal(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
-                    m.update();
+                    //m.update();
                     break;
                 } else {
                     help();
@@ -85,7 +85,7 @@ public class GameController implements ActionListener, MouseListener {
             case "m":
                 if (cr.length == 4) {
                     m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
-                    m.update();
+                    //m.update();
                     break;
                 } else {
                     help();
