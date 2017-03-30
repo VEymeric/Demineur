@@ -113,6 +113,7 @@ public class Matrice extends Observable {
             }
             System.out.println(" ");
         }
+        reveal(xClic,yClic);
     }
 
     //fonction qui ajoute 1 à toutes les cases autour d'une bombe : efficace pour initiliser
@@ -163,22 +164,22 @@ public class Matrice extends Observable {
         if (!gridInit[j][i].isShow()) {
             switch (mark) {
                 case "#":
-                    if(gridInit[j][i].getCache() == CaseHide.FLAG){
-                        setCountMine(getCountMine() + 1);                        
+                    if (gridInit[j][i].getCache() == CaseHide.FLAG) {
+                        setCountMine(getCountMine() + 1);
                     }
                     gridInit[j][i].setCache(CaseHide.HIDE);
-                    
+
                     break;
                 case "?":
-                    if(gridInit[j][i].getCache() == CaseHide.FLAG){
-                        setCountMine(getCountMine() + 1);                        
+                    if (gridInit[j][i].getCache() == CaseHide.FLAG) {
+                        setCountMine(getCountMine() + 1);
                     }
                     gridInit[j][i].setCache(CaseHide.UNKNOW);
-                    
+
                     break;
                 case "!":
                     gridInit[j][i].setCache(CaseHide.FLAG);
-                        setCountMine(getCountMine() - 1);                   
+                    setCountMine(getCountMine() - 1);
                     break;
                 default:
                     System.out.println(" je sais pas quoi mettre ");
@@ -187,16 +188,14 @@ public class Matrice extends Observable {
     }
 
     public void markPrint(int i, int j) {
-        if (!gridInit[j][i].isShow()) {
-            if (gridInit[j][i].isHide()) {
-                gridInit[j][i].setCache(CaseHide.FLAG);
-                setCountMine(getCountMine() - 1);
-            } else if (gridInit[j][i].isFlag()) {
-                gridInit[j][i].setCache(CaseHide.UNKNOW);
-                setCountMine(getCountMine() + 1);
-            } else {
-                gridInit[j][i].setCache(CaseHide.HIDE);
-            }
+        if (gridInit[j][i].isHide()) {
+            gridInit[j][i].setCache(CaseHide.FLAG);
+            setCountMine(getCountMine() - 1);
+        } else if (gridInit[j][i].isFlag()) {
+            gridInit[j][i].setCache(CaseHide.UNKNOW);
+            setCountMine(getCountMine() + 1);
+        } else {
+            gridInit[j][i].setCache(CaseHide.HIDE);
         }
     }
 
@@ -226,6 +225,7 @@ public class Matrice extends Observable {
                 reveal(x + 1, y + 1);
             }
         }
+        update();
     }
 
     private Color makeColor(int numberMine) {

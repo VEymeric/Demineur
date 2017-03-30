@@ -3,25 +3,26 @@ package Modele;
 import java.awt.Color;
 
 public class Case {
-    private final int x,y;
+
+    private final int x, y;
     private int bombes = 0;
-    private Color color ;
+    private Color color;
     private CaseInit etat; //mine ; alone ; number
     private CaseHide cache;// unknow , flag , hide, show
 
-    public Case(int x,int y){
+    public Case(int x, int y) {
         this.x = x;
         this.y = y;
         this.etat = CaseInit.NUMBER;
         this.cache = CaseHide.HIDE;
-        this.color = Color.BLACK ;
+        this.color = Color.BLACK;
     }
 
-    public Case(int x,int y, CaseHide cache){
+    public Case(int x, int y, CaseHide cache) {
         this.x = x;
         this.y = y;
         this.cache = cache;
-    }    
+    }
 
     public int getX() {
         return x;
@@ -30,7 +31,7 @@ public class Case {
     public int getY() {
         return y;
     }
-  
+
     public int getBombes() {
         return bombes;
     }
@@ -46,7 +47,7 @@ public class Case {
     public void setEtat(CaseInit etat) {
         this.etat = etat;
     }
-    
+
     public CaseHide getCache() {
         return cache;
     }
@@ -54,36 +55,41 @@ public class Case {
     public void setCache(CaseHide cache) {
         this.cache = cache;
     }
-    
-    public void setColor(Color color){
-        this.color = color ;
+
+    public void setColor(Color color) {
+        this.color = color;
     }
-    
-    public Color getColor(){
+
+    public Color getColor() {
         return color;
     }
-    
-    public boolean isMine(){
-        return this.etat==CaseInit.MINE;
+
+    public boolean isMine() {
+        return this.etat == CaseInit.MINE;
     }
-    public boolean isAlone(){
-        return this.etat==CaseInit.ALONE;
+
+    public boolean isAlone() {
+        return this.etat == CaseInit.ALONE;
     }
-    public boolean isNumber(){
-        return this.etat==CaseInit.NUMBER;
+
+    public boolean isNumber() {
+        return this.etat == CaseInit.NUMBER;
     }
-    public boolean isHide(){
-        return this.cache==CaseHide.HIDE;
+
+    public boolean isHide() {
+        return this.cache == CaseHide.HIDE;
     }
-    public boolean isUnknow(){
-        return this.cache==CaseHide.UNKNOW;
+
+    public boolean isUnknow() {
+        return this.cache == CaseHide.UNKNOW;
     }
-    public boolean isFlag(){
-        return this.cache==CaseHide.FLAG;
+
+    public boolean isFlag() {
+        return this.cache == CaseHide.FLAG;
     }
-    public boolean isShow(){
-        return this.cache==CaseHide.SHOW;
+
+    public boolean isShow() {
+        return this.cache == CaseHide.SHOW;
     }
-    
-    
+
 }

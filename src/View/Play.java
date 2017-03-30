@@ -21,46 +21,55 @@ import javax.swing.*;
  *
  * @author gaetane
  */
-public class Play implements Observer{
+public class Play implements Observer {
+
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
+    private JButton countOfMine = new JButton("Partie pas encore commencé");
     private final JMenuBar gameMenu;
     private final GameController controleur;
-    
-    public Play(GameController controleur){
+
+    public Play(GameController controleur) {
         this.controleur = controleur;
         game.setTitle(" Let's go ! ");
-        game.setSize(controleur.m.getWidth()*80,controleur.m.getWidth()*80);
-        game.setMinimumSize(new Dimension(controleur.m.getWidth()*70,controleur.m.getHeight()*70));
-        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-        game.setLayout(new BorderLayout (5,5));     
-        game.add(debugger(),BorderLayout.WEST); 
-        game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(),controleur) ,BorderLayout.CENTER);
+        game.setSize(controleur.m.getWidth() * 80, controleur.m.getWidth() * 80);
+        game.setMinimumSize(new Dimension(controleur.m.getWidth() * 70, controleur.m.getHeight() * 70));
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.setLayout(new BorderLayout(5, 5));
+        game.add(debugger(), BorderLayout.WEST);
+        game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
         gameMenu = new GameMenu(controleur);
         game.setJMenuBar(gameMenu);
-        game.add(new JButton(" Nombre de mines restantes: "+ controleur.m.getCountMine()),BorderLayout.SOUTH);        
-        game.setVisible(true);
-    }  
-    
-    public void refreshGrid(){
-        game.remove(grid);
-        game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(),controleur) ,BorderLayout.CENTER);
+        countOfMine.setEnabled(false);
+        game.add(countOfMine, BorderLayout.SOUTH);
         game.setVisible(true);
     }
-    private JComponent debugger(){
+
+    private String countMine() { // récupère le nombre de mine pour la mise a jour
+        String ok = "Nombre de mine restantes:" + String.valueOf(controleur.m.getCountMine());
+        return ok;
+    }
+
+    public void refreshGrid() {
+        game.remove(grid);
+        game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
+        game.setVisible(true);
+    }
+
+    private JComponent debugger() {
         JButton actionDebug = new JButton("debug");
-        actionDebug.addMouseListener( controleur );
+        actionDebug.addMouseListener(controleur);
         return actionDebug;
     }
-      
-    private JComponent withCase(int x,int y, GameController controleur){
+
+    private JComponent withCase(int x, int y, GameController controleur) {
         grid = new JPanel();
-        grid.setLayout(new BorderLayout (5,5));
-        grid.setLayout(new GridLayout(y, x, 5,5));
-        for(int j = 0; j < y;j++){
-            for(int i = 0;i < x ;i++){
+        grid.setLayout(new BorderLayout(5, 5));
+        grid.setLayout(new GridLayout(y, x, 5, 5));
+        for (int j = 0; j < y; j++) {
+            for (int i = 0; i < x; i++) {
                 Button button = new Button(" # ");
-                button.addMouseListener( controleur );
+                button.addMouseListener(controleur);
                 button.x = i;
                 button.y = j;
                 button.setEnabled(true);
@@ -68,43 +77,44 @@ public class Play implements Observer{
             }
         }
         return grid;
-    }   
-           
+    }
+
     @Override
     public void update(Observable obs, Object arg) {
-        if(obs instanceof Matrice){
-            for( int j = 0; j < controleur.m.getHeight() ; j++){
-                for(int i= 0; i< controleur.m.getWidth() ;i++){                    
-                    showOrnot(i,j);
+        if (obs instanceof Matrice) {
+            for (int j = 0; j < controleur.m.getHeight(); j++) {
+                for (int i = 0; i < controleur.m.getWidth(); i++) {
+                    countOfMine.setText(countMine());
+                    showOrnot(i, j);
                 }
             }
         }
-    } 
-    
-    private void showOrnot(int i,int j){
-        Button button = getButton(i,j);
-        if(!controleur.m.gridInit[j][i].isHide()){
-            button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
-            if(controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER ){               
+    }
+
+    private void showOrnot(int i, int j) {
+        Button button = getButton(i, j);
+        button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
+        if (!controleur.m.gridInit[j][i].isHide()) {
+            if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) {
+                button.paintComponents(button.getGraphics());
+            } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER) {
                 button.setText(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
-                button.setEnabled(false);                
+                button.setEnabled(false);
                 button.setForeground((Color) controleur.m.gridInit[j][i].getColor());
+            } else {
+                button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));
+                button.setEnabled(false);
             }
-            else if(controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW ) {
-               button.setText(String.valueOf(controleur.m.gridInit[j][i].getCache().getString()));
-            }
-            else{
-               button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));   
-               button.setEnabled(false);                
-            }
-        }
-        else{
+        } else {
             button.setText(" # ");
         }
+        if (controleur.m.gridInit[j][i].isHide()) {
+            button.setEnabled(true);
+        }
     }
-    
-    private Button getButton(int i,int j){
-        return (Button) grid.getComponent(j*controleur.m.getWidth() +i );
+
+    private Button getButton(int i, int j) {
+        return (Button) grid.getComponent(j * controleur.m.getWidth() + i);
     }
-    
+
 }

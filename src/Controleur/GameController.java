@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.util.Scanner;
 
 public class GameController implements ActionListener, MouseListener {
+
     public Matrice m;
     Print gameViewConsole;
     Play gameViewWindow;
@@ -27,11 +28,11 @@ public class GameController implements ActionListener, MouseListener {
         //gameViewWindow.withCase(x, y, this);
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
-        m.update();        
+        m.update();
         this.startGame();
     }
 
-    public void restart(int x, int y, int percentMine){
+    public void restart(int x, int y, int percentMine) {
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
         gameViewConsole = new Print();
@@ -41,10 +42,11 @@ public class GameController implements ActionListener, MouseListener {
         m.addObserver(gameViewConsole);
         m.update();
     }
-    
-    public void exit(){
+
+    public void exit() {
         System.exit(0);
     }
+
     public final void startGame() {
         System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
         sc = new Scanner(System.in);
@@ -70,10 +72,9 @@ public class GameController implements ActionListener, MouseListener {
             case "d":
                 if (cr.length == 3) {
                     if (m.getCountMine() == 0) {//Cas possible que si le jeu n'a pas commence
-                        m.generateMatrice(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                        m.generateMatrice(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));    
                     }
                     m.reveal(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
-                    //m.update();
                     break;
                 } else {
                     help();
@@ -123,34 +124,34 @@ public class GameController implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof Button) {
-            Button source = (Button) e.getSource();
-            source.addMouseListener(this);
-        }
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Button source = (Button) e.getSource();
-        System.out.println(e.getButton());
-        int buttonClicked = e.getButton();
-        switch (buttonClicked) {
-            case MouseEvent.BUTTON3:
-                m.markPrint(source.x,source.y);
-                m.update();
-                break;            
-            case MouseEvent.BUTTON1:
-                action = String.valueOf("d " + source.x + " " + source.y);
-                order(action);
-                m.update();
-                break;
-            default:
-                System.out.println(" rien compris ");
-                break;  
-        }         
+        if (e.getSource() instanceof Button) {
+            Button source = (Button) e.getSource();
+            System.out.println(source);
+            System.out.println(e.getButton());
+            int buttonClicked = e.getButton();
+            switch (e.getButton()) {
+                case 3:
+                    m.markPrint(source.x, source.y);
+                    m.update();
+                    break;
+                case 1:
+                    action = String.valueOf("d " + source.x + " " + source.y);
+                    order(action);
+                    m.update();
+                    break;
+                default:
+                    System.out.println(" rien compris ");
+                    break;
+            }
+        } else {
+            debug();
+        }
     }
-    
+
     @Override
     public void mousePressed(MouseEvent e) {
     }
