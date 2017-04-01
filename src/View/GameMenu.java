@@ -1,6 +1,7 @@
 package View;
 
 import Controleur.GameController;
+import View.CustomGamePanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -50,6 +51,12 @@ public class GameMenu extends JMenuBar {
         @Override
         public void actionPerformed(ActionEvent arg0) {
             controleur.restart(10, 10, 20);
+        }
+    });
+    this.item_custom.addActionListener(new ActionListener (){
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            CustomGamePanel koukou = new CustomGamePanel();
         }
     });
     this.menu_new.add(this.item_beginner);
