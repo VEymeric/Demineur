@@ -204,7 +204,6 @@ public class Matrice extends Observable {
             return;
         }
         this.gridInit[y][x].setCache(CaseHide.SHOW);
-        //(on pourrait retirer une case du compteur des cases sans bombe ici)
         if (this.gridInit[y][x].isMine()) {
             this.setInGame(false); // -> nullos qui perd
             this.setCountMine(this.getCountMine() - 1);
@@ -225,7 +224,6 @@ public class Matrice extends Observable {
                 reveal(x + 1, y + 1);
             }
         }
-        update();
     }
 
     private Color makeColor(int numberMine) {
