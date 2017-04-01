@@ -1,7 +1,10 @@
 package View;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,59 +13,67 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
 public class CustomGamePanel  extends JFrame{   
-    JSlider height = new JSlider(JSlider.HORIZONTAL,9, 24, 9);
-    JSlider width = new JSlider(JSlider.HORIZONTAL,9, 30, 9);
-    JSlider mines = new JSlider(JSlider.HORIZONTAL,9, 139, 9);    
-    JTextField jtfHeight, jtfWidth, jtfMines;
-    JPanel labels, sliders, textfields;
+    JSlider sliderH, sliderW, sliderB;  
+    JTextField textH, textW, textB;
+    JPanel heightComponent, widthComponent, mineComponent;
 
     public CustomGamePanel(){
-        this.setSize(250, 300);
+        this.setSize(400, 400);
         this.setTitle("Custom");
 
-        this.labels = new JPanel();      
-        this.labels.setLayout(new BoxLayout(this.labels, BoxLayout.PAGE_AXIS));
-        this.sliders = new JPanel();      
-        this.sliders.setLayout(new BoxLayout(this.sliders, BoxLayout.PAGE_AXIS));
-        this.textfields = new JPanel();      
-        this.textfields.setLayout(new BoxLayout(this.textfields, BoxLayout.PAGE_AXIS));
-        
-        height.setPaintTicks(true);
-        height.setPaintLabels(true);
-        height.setMinorTickSpacing(1);
-        height.setMajorTickSpacing(5); 
-        
-        width.setPaintTicks(true);
-        width.setPaintLabels(true);
-        width.setMinorTickSpacing(1);
-        width.setMajorTickSpacing(5);
-        
-        mines.setPaintTicks(true);
-        mines.setPaintLabels(true);
-        mines.setMinorTickSpacing(5);
-        mines.setMajorTickSpacing(20);   
-        
-        height.addChangeListener(this::myEvent);    
-        width.addChangeListener(this::myEvent);   
+        sliderH = createSlider(9, 24, 15, 1, 5);
+        textH = new JTextField(Integer.toString(sliderH.getValue()), 4);
+        sliderW = createSlider(9, 24, 15, 1, 5);
+        textW = new JTextField(Integer.toString(sliderW.getValue()), 4);
 
-        this.getContentPane().add(height, BorderLayout.NORTH);
-        this.getContentPane().add(width, BorderLayout.CENTER);
-        this.getContentPane().add(mines, BorderLayout.SOUTH);
+        sliderB = createSlider(9, 24, 15, 1, 5);
+        textB = new JTextField(Integer.toString(sliderH.getValue()), 4);
 
+        this.heightComponent = this.createComponent(sliderH, textH);
+        this.widthComponent = this.createComponent(sliderW, textW);
+        this.mineComponent = this.createComponent(sliderB, textB);
+        sliderW.setValue(0);
+
+        this.setLayout(new GridLayout(4,1));
+        this.add(this.heightComponent);      
+        this.add(this.widthComponent);      
+        this.add(this.mineComponent);
+        this.add(new JButton("test"));
         this.setVisible(true);
       }
-    
+    public void stateChanged(ChangeEvent ev){
+        sliderH.setValue(0);
+  }
+    public JSlider createSlider(int min, int max, int value, int minorTick, int majorSpacing){
+        JSlider slider = new JSlider(JSlider.HORIZONTAL,min, max, value);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setMinorTickSpacing(minorTick);
+        slider.setMajorTickSpacing(majorSpacing);
+        slider.addChangeListener(this::myEvent);
+        return slider;
+    }
+    public JPanel createComponent(JSlider slider, JTextField text){
+        JPanel newComponent = new JPanel(); ;         
+        newComponent.add(slider);
+        newComponent.add(text);
+        return newComponent;
+    }
     public void myEvent(ChangeEvent event){
-        System.out.print("Valeur actuelle : " + ((JSlider)event.getSource()).getValue());
-        mines.setMaximum((int) (height.getValue()*width.getValue()*0.85));
-        if(height.getValue()*width.getValue()*85/100 > 200){
-            mines.setMinorTickSpacing(10);
-            mines.setMajorTickSpacing(40);
-            mines.setLabelTable(mines.createStandardLabels(82));
+        this.textH.setText(Integer.toString(sliderH.getValue()));
+        this.textW.setText(Integer.toString(sliderW.getValue()));
+        this.textB.setText(Integer.toString(sliderB.getValue()));
+
+        this.sliderB.setMaximum((int) (this.sliderH.getValue()*this.sliderW.getValue()*0.85));
+        if(this.sliderH.getValue()*this.sliderW.getValue()*85/100 > 200){
+            this.sliderB.setMinorTickSpacing(10);
+            this.sliderB.setMajorTickSpacing(40);
+            this.sliderB.setLabelTable(this.sliderB.createStandardLabels(82));
         }else{
-            mines.setMinorTickSpacing(5);
-            mines.setMajorTickSpacing(20);
-            mines.setLabelTable(mines.createStandardLabels(26));
+            this.sliderB.setMinorTickSpacing(5);
+            this.sliderB.setMajorTickSpacing(20);
+            this.sliderB.setLabelTable(this.sliderB.createStandardLabels(26));
+
         }
     }
 }
