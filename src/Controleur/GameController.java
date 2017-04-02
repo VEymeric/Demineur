@@ -18,6 +18,7 @@ public class GameController implements ActionListener, MouseListener {
     Print gameViewConsole;
     Play gameViewWindow;
     private String action;
+    boolean messageEndSended = false;
     Scanner sc;
 
     public GameController(int x, int y, int percentMine) { // Constructeur
@@ -41,6 +42,7 @@ public class GameController implements ActionListener, MouseListener {
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
         m.update();
+        messageEndSended = false;
     }
 
     public void exit() {
@@ -54,6 +56,13 @@ public class GameController implements ActionListener, MouseListener {
             action = sc.nextLine();
             order(action);
         }
+        gameOver();
+             
+    }
+
+    public void gameOver(){
+        if(this.messageEndSended) return;
+        this.messageEndSended = true;
         if (m.getCountCase() > 0) {
             System.out.println("Une belle défaite ! Il restait " + m.getCountCase() + " cases à deminer.");
         } else {
@@ -61,7 +70,7 @@ public class GameController implements ActionListener, MouseListener {
         }
         System.out.println("Merci d'avoir joué !");
     }
-
+    
     //Recupère les ordre donnés par la console et les traites, si inconnu affiche help;
     public void order(String go) {
         String[] cr = go.split(" ");
@@ -86,7 +95,6 @@ public class GameController implements ActionListener, MouseListener {
             case "m":
                 if (cr.length == 4) {
                     m.mark(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]), cr[3]);
-                    //m.update();
                     break;
                 } else {
                     help();
@@ -95,6 +103,7 @@ public class GameController implements ActionListener, MouseListener {
             default:
                 help();
         }
+        m.update();
     }
 
     private void stop(String oh) {
@@ -141,12 +150,13 @@ public class GameController implements ActionListener, MouseListener {
                 case 1:
                     action = String.valueOf("d " + source.x + " " + source.y);
                     order(action);
-                    m.update();
                     break;
                 default:
                     System.out.println(" rien compris ");
                     break;
+
             }
+            if(m.isInGame() != true) this.gameOver();
         } else {
             debug();
         }
