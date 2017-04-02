@@ -68,7 +68,8 @@ public class Play implements Observer {
         grid.setLayout(new GridLayout(y, x, 5, 5));
         for (int j = 0; j < y; j++) {
             for (int i = 0; i < x; i++) {
-                Button button = new Button(" # ");
+                Button button = new Button();
+                button.setSizeAH(button.getSize() );
                 button.addMouseListener(controleur);
                 button.x = i;
                 button.y = j;
@@ -93,20 +94,21 @@ public class Play implements Observer {
 
     private void showOrnot(int i, int j) {
         Button button = getButton(i, j);
-        button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
+        //button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
         if (!controleur.m.gridInit[j][i].isHide()) {
             if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) {
                 button.paintComponents(button.getGraphics());
             } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER) {
-                button.setText(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
+                button.setTextAH(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
                 button.setEnabled(false);
+                button.setColor(controleur.m.gridInit[j][i].getColor() );
                 button.setForeground((Color) controleur.m.gridInit[j][i].getColor());
             } else {
-                button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));
+                button.setTextAH(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));
                 button.setEnabled(false);
             }
         } else {
-            button.setText(" # ");
+            button.setTextAH("");
         }
         if (controleur.m.gridInit[j][i].isHide()) {
             button.setEnabled(true);
@@ -116,5 +118,4 @@ public class Play implements Observer {
     private Button getButton(int i, int j) {
         return (Button) grid.getComponent(j * controleur.m.getWidth() + i);
     }
-
 }
