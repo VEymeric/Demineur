@@ -7,7 +7,10 @@ package View;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.swing.JButton;
 
 /**
@@ -15,9 +18,11 @@ import javax.swing.JButton;
  * @author gaetane
  */
 public class Button extends JButton {
+
     public int x;
     public int y;
     public String text;
+    public Image img;
     public Dimension size;
     public Color color;
 
@@ -25,11 +30,11 @@ public class Button extends JButton {
         color = Color.BLACK;
     }
 
-    public String getTextAH() {
+    public String getString() {
         return text;
     }
 
-    public void setTextAH(String text) {
+    public void setString(String text) {
         this.text = text;
     }
 
@@ -49,13 +54,14 @@ public class Button extends JButton {
         this.size = size;
     }
 
-    
-    
     @Override
-    public void paintComponent(Graphics g){ // ecrire sans utilisé le setText 
+    public void paintComponent(Graphics g) { // ecrire sans utilisé le setText 
+        FontMetrics metrics = g.getFontMetrics();
+        int x = (this.getWidth() - metrics.stringWidth(this.getString())) / 2;
+        int y = ((this.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
         super.paintComponent(g); // appel la fonction original
         g.setColor(color);
-        g.drawString(text,size.width/2 , size.height/2 );
+        g.drawString(getString(), x, y);
     }
-
+    
 }

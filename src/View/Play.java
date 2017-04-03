@@ -13,6 +13,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -69,7 +71,7 @@ public class Play implements Observer {
         for (int j = 0; j < y; j++) {
             for (int i = 0; i < x; i++) {
                 Button button = new Button();
-                button.setSizeAH(button.getSize() );
+                button.setSizeAH(button.getSize());
                 button.addMouseListener(controleur);
                 button.x = i;
                 button.y = j;
@@ -94,25 +96,48 @@ public class Play implements Observer {
 
     private void showOrnot(int i, int j) {
         Button button = getButton(i, j);
-        //button.setText(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
+        button.setString(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
         if (!controleur.m.gridInit[j][i].isHide()) {
-            if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) {
-                button.paintComponents(button.getGraphics());
-            } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER) {
-                button.setTextAH(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
+            button.paintComponents(button.getGraphics());
+            if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) { // c'est un drapeau ou on sait pas 
+                if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG) {
+                    addIcone(button,"assets/flag.png");
+                    button.setString(" ");
+                } else if (controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) {
+                    addIcone(button,"assets/interr.png");
+                    button.setString(" ");
+                }
+            } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER) { // c'est un nombre
+                button.setIcon(null);
+                button.setString(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
                 button.setEnabled(false);
-                button.setColor(controleur.m.gridInit[j][i].getColor() );
-                button.setForeground((Color) controleur.m.gridInit[j][i].getColor());
+                button.setColor(controleur.m.gridInit[j][i].getColor());
+                //button.setForeground((Color) controleur.m.gridInit[j][i].getColor());
+            } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.ALONE) {    // c'est un point 
+                button.setIcon(null);
+                button.setString(" ");
+                button.setEnabled(false);
             } else {
-                button.setTextAH(String.valueOf(controleur.m.gridInit[j][i].getEtat().getString()));
+                button.setString(" ");
+                addIcone(button,"assets/mine.png");
                 button.setEnabled(false);
             }
         } else {
-            button.setTextAH("");
+            button.setIcon(null);
+            button.setString(" ");
         }
         if (controleur.m.gridInit[j][i].isHide()) {
             button.setEnabled(true);
         }
+    }
+
+    private void addIcone(Button button, String srcImage) {
+        ImageIcon icon = new ImageIcon(srcImage);
+        Image image = icon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        icon = new ImageIcon(newimg);  // transform it back 
+        button.setText(null);
+        button.setIcon(icon);
     }
 
     private Button getButton(int i, int j) {
