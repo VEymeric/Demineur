@@ -24,10 +24,9 @@ import javax.swing.*;
  * @author gaetane
  */
 public class Play implements Observer {
-
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
-    private JButton countOfMine = new JButton("Partie pas encore commencé");
+    private JButton countOfMine = new JButton();
     private final JMenuBar gameMenu;
     private final GameController controleur;
 
@@ -46,9 +45,16 @@ public class Play implements Observer {
         game.add(countOfMine, BorderLayout.SOUTH);
         game.setVisible(true);
     }
-
-    private String countMine() { // récupère le nombre de mine pour la mise a jour
-        String ok = "Nombre de mine restantes:" + String.valueOf(controleur.m.getCountMine());
+    
+  // récupère le nombre de mine pour la mise a jour
+    private String countMine() {
+        String ok;
+    if(controleur.m.getCountMine()==0 ){
+        ok = "Partie pas encore commencé";
+    }
+    else{
+        ok = "Nombre de mine restantes:" + String.valueOf(controleur.m.getCountMine());
+    }
         return ok;
     }
 
@@ -58,13 +64,15 @@ public class Play implements Observer {
         game.setVisible(true);
     }
 
+    // Bouton debbuger
     private JComponent debugger() {
         JButton actionDebug = new JButton("debug");
         actionDebug.addMouseListener(controleur);
         return actionDebug;
     }
 
-    private JComponent withCase(int x, int y, GameController controleur) {
+    // Crée les cases dans la vue
+    private JComponent withCase(int x, int y, GameController controleur) { 
         grid = new JPanel();
         grid.setLayout(new BorderLayout(5, 5));
         grid.setLayout(new GridLayout(y, x, 5, 5));
@@ -93,7 +101,8 @@ public class Play implements Observer {
             }
         }
     }
-
+    
+    // Dévoiler ou non 
     private void showOrnot(int i, int j) {
         Button button = getButton(i, j);
         button.setString(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
@@ -131,6 +140,7 @@ public class Play implements Observer {
         }
     }
 
+    // Donne une image a chaque élément l'utilisant ( flag/mine/unknow)
     private void addIcone(Button button, String srcImage) {
         ImageIcon icon = new ImageIcon(srcImage);
         Image image = icon.getImage(); // transform it 

@@ -24,6 +24,7 @@ public class Case {
         this.cache = cache;
     }
 
+    // Etat que peu avoir une case   
     public int getX() {
         return x;
     }
