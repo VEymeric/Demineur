@@ -35,7 +35,7 @@ public class GameController implements ActionListener, MouseListener {
     }
 
     // Refaire une nouvelle partie
-    public void restart(int x, int y, int percentMine) {
+    public void restart(int x, int y, double percentMine) {
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
