@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import static java.lang.Math.round;
 import java.util.Scanner;
 
 public class GameController implements ActionListener, MouseListener {
@@ -21,9 +22,9 @@ public class GameController implements ActionListener, MouseListener {
     boolean messageEndSended = false;
     Scanner sc;
 
-    public GameController(int x, int y, int percentMine) { // Constructeur
+    public GameController(int x, int y, double percentMine) { // Constructeur
         System.out.println("Votre controller a été créé");
-        m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
+        m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
         gameViewWindow = new Play(this);
         //gameViewWindow.withCase(x, y, this);
@@ -36,7 +37,7 @@ public class GameController implements ActionListener, MouseListener {
     // Refaire une nouvelle partie
     public void restart(int x, int y, int percentMine) {
         System.out.println("Votre controller a été créé");
-        m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
+        m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
         //gameViewWindow = new Play(this);
         gameViewWindow.refreshGrid();
