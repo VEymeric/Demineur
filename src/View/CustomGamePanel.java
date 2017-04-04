@@ -41,15 +41,24 @@ public final class CustomGamePanel  extends JFrame{
         this.add(this.heightComponent);      
         this.add(this.widthComponent);      
         this.add(this.mineComponent);
-        JButton button = new JButton("Valide");
-        button.addActionListener((ActionEvent e) -> {
+        JButton buttonV = new JButton("Valide");
+        buttonV.addActionListener((ActionEvent e) -> {
             controleur.restart(CustomGamePanel.this.sliderH.getValue(), CustomGamePanel.this.sliderW.getValue(), (int) ((double) (100.0 * CustomGamePanel.this.sliderB.getValue()) / (double) (CustomGamePanel.this.sliderH.getValue() * CustomGamePanel.this.sliderW.getValue())));
+            this.setVisible(false);
         });
-        this.add(button, BorderLayout.SOUTH);
-        this.setVisible(true);
+        JButton buttonC = new JButton("Cancel");
+        buttonC.addActionListener((ActionEvent e) -> {
+            this.setVisible(false);
+        });
+        this.add(buttonV, BorderLayout.SOUTH);
+        this.add(buttonC, BorderLayout.SOUTH);
+
         this.setResizable(false);
       }
 
+    public void visible(boolean isVisible){
+        this.setVisible(isVisible);
+    }
     public JSlider createSlider(int min, int max, int value, int minorTick, int majorSpacing){
         JSlider slider = new JSlider(JSlider.HORIZONTAL,min, max, value);
         slider.setPaintTicks(true);
