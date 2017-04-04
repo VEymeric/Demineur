@@ -1,49 +1,58 @@
 package View;
 
+import Controleur.GameController;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
-public class CustomGamePanel  extends JFrame{   
+public final class CustomGamePanel  extends JFrame{   
     JSlider sliderH, sliderW, sliderB;  
     JTextField textH, textW, textB;
     JPanel heightComponent, widthComponent, mineComponent;
 
-    public CustomGamePanel(){
-        this.setSize(400, 400);
-        this.setTitle("Custom");
+    public CustomGamePanel(GameController controleur){
+        this.setSize(320, 250);
+        this.setTitle("Custom"); 
 
-        sliderH = createSlider(9, 24, 15, 1, 5);
-        textH = new JTextField(Integer.toString(sliderH.getValue()), 4);
-        sliderW = createSlider(9, 24, 15, 1, 5);
-        textW = new JTextField(Integer.toString(sliderW.getValue()), 4);
+        this.sliderH = createSlider(9, 24, 10, 1, 5);
+        this.textH = new JTextField(Integer.toString(this.sliderH.getValue()), 4);
 
-        sliderB = createSlider(9, 24, 15, 1, 5);
-        textB = new JTextField(Integer.toString(sliderH.getValue()), 4);
+        this.sliderW = createSlider(9, 29, 11, 1, 5);
+        this.textW = new JTextField(Integer.toString(this.sliderW.getValue()), 4);
 
-        this.heightComponent = this.createComponent(sliderH, textH);
-        this.widthComponent = this.createComponent(sliderW, textW);
-        this.mineComponent = this.createComponent(sliderB, textB);
-        sliderW.setValue(0);
+        this.sliderB = createSlider(9, (int) (this.sliderH.getValue() * this.sliderW.getValue() * 0.85), 76, 5, 20);
+        this.textB = new JTextField(Integer.toString(this.sliderB.getValue()), 4);
+        this.sliderB.setLabelTable(this.sliderB.createStandardLabels(26));
 
-        this.setLayout(new GridLayout(4,1));
+        this.heightComponent = this.createComponent(this.sliderH, this.textH, "Height");
+        this.widthComponent = this.createComponent(this.sliderW, this.textW, "Width");
+        this.mineComponent = this.createComponent(this.sliderB, this.textB, "Mine");
+
+        setLayout(new FlowLayout(FlowLayout.CENTER));
         this.add(this.heightComponent);      
         this.add(this.widthComponent);      
         this.add(this.mineComponent);
-        this.add(new JButton("test"));
+        JButton button = new JButton("Valide");
+        button.addActionListener((ActionEvent e) -> {
+            controleur.restart(this.sliderH.getValue(), this.sliderW.getValue(), (int) ((double)(100.0*this.sliderB.getValue())/(double)(this.sliderH.getValue()*this.sliderW.getValue())));
+        });
+        this.add(button, BorderLayout.SOUTH);
         this.setVisible(true);
+        this.setResizable(false);
       }
-    public void stateChanged(ChangeEvent ev){
-        sliderH.setValue(0);
-  }
+
     public JSlider createSlider(int min, int max, int value, int minorTick, int majorSpacing){
         JSlider slider = new JSlider(JSlider.HORIZONTAL,min, max, value);
         slider.setPaintTicks(true);
@@ -53,16 +62,38 @@ public class CustomGamePanel  extends JFrame{
         slider.addChangeListener(this::myEvent);
         return slider;
     }
-    public JPanel createComponent(JSlider slider, JTextField text){
-        JPanel newComponent = new JPanel(); ;         
+    public JPanel createComponent(JSlider slider, JTextField text, String lab){
+        JPanel newComponent = new JPanel();
+                JLabel label = new JLabel(lab);
+                text.addKeyListener(new KeyListener(){
+                    @Override
+                    public void keyTyped(KeyEvent event){}
+                    @Override
+                    public void keyPressed(KeyEvent event){}
+                    @Override
+                    public void keyReleased(KeyEvent event)
+                    {
+                        try{
+                            int value = Integer.valueOf(text.getText());
+                            if(value <= slider.getMaximum()){
+                                if(value >= slider.getMinimum()) slider.setValue(value);
+                            }else{
+                                text.setText(Integer.toString(slider.getValue()));
+                            }
+                        }catch(NumberFormatException e){
+                            //text.setText("");
+                        }
+                    }
+                });
+        newComponent.add(label);
         newComponent.add(slider);
         newComponent.add(text);
         return newComponent;
     }
     public void myEvent(ChangeEvent event){
-        this.textH.setText(Integer.toString(sliderH.getValue()));
-        this.textW.setText(Integer.toString(sliderW.getValue()));
-        this.textB.setText(Integer.toString(sliderB.getValue()));
+        this.textH.setText(Integer.toString(this.sliderH.getValue()));
+        this.textW.setText(Integer.toString(this.sliderW.getValue()));
+        this.textB.setText(Integer.toString(this.sliderB.getValue()));
 
         this.sliderB.setMaximum((int) (this.sliderH.getValue()*this.sliderW.getValue()*0.85));
         if(this.sliderH.getValue()*this.sliderW.getValue()*85/100 > 200){
