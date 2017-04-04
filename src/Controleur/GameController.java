@@ -117,7 +117,11 @@ public class GameController implements ActionListener, MouseListener {
         }
         m.update();
     }
+    public void save(){
+        JOptionPane.showMessageDialog(null, "par ici la bolosse", null, JOptionPane.ERROR_MESSAGE);
+        System.out.println("prout");
 
+    }
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
