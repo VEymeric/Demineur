@@ -6,15 +6,14 @@
 package View;
 
 import Controleur.GameController;
+import Controleur.TimerPlay;
 import Modele.CaseHide;
 import Modele.CaseInit;
 import Modele.Matrice;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -27,6 +26,7 @@ public class Play implements Observer {
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
     private JButton countOfMine = new JButton();
+    private JButton updateTimer = new JButton();
     private final JMenuBar gameMenu;
     private final GameController controleur;
 
@@ -37,7 +37,8 @@ public class Play implements Observer {
         game.setMinimumSize(new Dimension(controleur.m.getWidth() * 70, controleur.m.getHeight() * 70));
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setLayout(new BorderLayout(5, 5));
-        game.add(debugger(), BorderLayout.WEST);
+        game.add(debugger(), BorderLayout.WEST); //rajouter dans le menu 
+        game.add(updateTimer,BorderLayout.NORTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
         gameMenu = new GameMenu(controleur);
         game.setJMenuBar(gameMenu);
@@ -50,14 +51,26 @@ public class Play implements Observer {
     private String countMine() {
         String ok;
     if(controleur.m.getCountMine()==0 ){
-        ok = "Partie pas encore commencé";
+        ok = "Partie pas encore commencée";
     }
     else{
-        ok = "Nombre de mine restantes:" + String.valueOf(controleur.m.getCountMine());
+        ok = "Nombre de mines restantes:" + String.valueOf(controleur.m.getCountMine());
     }
         return ok;
     }
 
+    private String timerEvolution(){
+        String ok;
+        if(controleur.m.getCountMine() == 0){
+            ok = " Pas de timer, faites un premier clic ";
+        }else {
+            TimerPlay timer = new TimerPlay();
+            ok = String.valueOf(timer.getDuration());            
+        }
+        return ok;
+    }
+    
+    
     public void refreshGrid() {
         game.remove(grid);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
@@ -96,14 +109,16 @@ public class Play implements Observer {
             for (int j = 0; j < controleur.m.getHeight(); j++) {
                 for (int i = 0; i < controleur.m.getWidth(); i++) {
                     countOfMine.setText(countMine());
-                    showOrnot(i, j);
+                    updateTimer.setText(timerEvolution());
+                    showOrnot(i, j);                   
                 }
             }
         }
     }
     
+    
     // Dévoiler ou non 
-    private void showOrnot(int i, int j) {
+    private void showOrnot(int i, int j) {      
         Button button = getButton(i, j);
         button.setString(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
         if (!controleur.m.gridInit[j][i].isHide()) {
@@ -121,7 +136,6 @@ public class Play implements Observer {
                 button.setString(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
                 button.setEnabled(false);
                 button.setColor(controleur.m.gridInit[j][i].getColor());
-                //button.setForeground((Color) controleur.m.gridInit[j][i].getColor());
             } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.ALONE) {    // c'est un point 
                 button.setIcon(null);
                 button.setString(" ");
@@ -143,13 +157,14 @@ public class Play implements Observer {
     // Donne une image a chaque élément l'utilisant ( flag/mine/unknow)
     private void addIcone(Button button, String srcImage) {
         ImageIcon icon = new ImageIcon(srcImage);
-        Image image = icon.getImage(); // transform it 
+        Image image = icon.getImage(); // l'image transforme
         Image newimg = image.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         icon = new ImageIcon(newimg);  // transform it back 
         button.setText(null);
         button.setIcon(icon);
     }
-
+    
+    // Récuperer la position d'un bouton du tableau
     private Button getButton(int i, int j) {
         return (Button) grid.getComponent(j * controleur.m.getWidth() + i);
     }

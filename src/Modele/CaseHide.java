@@ -4,6 +4,7 @@ public enum CaseHide {
     UNKNOW("?"),
     FLAG("!"),
     HIDE("#"),
+    INTACTE("O"),
     SHOW("");
 
     private String etat;

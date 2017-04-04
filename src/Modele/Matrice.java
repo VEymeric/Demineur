@@ -137,10 +137,8 @@ public class Matrice extends Observable {
             }
         }
         if (x > 0) {//voisin gauche
-
-            if (gridInit[y][x + 1].isFlag()) {//voisin gauche
+            if (gridInit[y][x - 1].isFlag()) {//voisin gauche
                 numberOfFlag++;
-
             }
         }
         if (x < getWidth() - 1) {//voisin droit
@@ -188,7 +186,7 @@ public class Matrice extends Observable {
             }
         }
         if (x > 0) {//voisin gauche
-            if (!gridInit[y][x - 1].isFlag()) {
+            if (!gridInit[y][x + 1].isFlag()) {
                 reveal(x - 1, y);
             }
         }

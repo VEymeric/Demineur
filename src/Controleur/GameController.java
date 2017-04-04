@@ -127,14 +127,25 @@ public class GameController implements ActionListener, MouseListener {
         if (m.isInGame()) {
             for (int j = 0; j < m.getHeight(); j++) {
                 for (int i = 0; i < m.getWidth(); i++) {
-                    if (m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()) {
-                        m.gridInit[j][i].setCache(CaseHide.SHOW);
-                    } else if (m.gridInit[j][i].isMine() && !m.gridInit[j][i].isHide()) {
-                        m.gridInit[j][i].setCache(CaseHide.HIDE);
+                    if (m.gridInit[j][i].isMine()) {
+                        switch (m.gridInit[j][i].getCache()) {
+                            case FLAG:
+                                m.gridInit[j][i].setCache(CaseHide.FLAG);
+                                break;
+                            case UNKNOW:
+                                m.gridInit[j][i].setCache(CaseHide.UNKNOW);
+                                break;
+                            case INTACTE:
+                                m.gridInit[j][i].setCache(CaseHide.HIDE);
+                                break;
+                            default:
+                                m.gridInit[j][i].setCache(CaseHide.INTACTE);
+                                break;
+                        }
                     }
                 }
+                m.update();
             }
-            m.update();
         }
     }
 
@@ -150,6 +161,7 @@ public class GameController implements ActionListener, MouseListener {
 
     // Action lors d'un double clics sur une case
     private void doubleClick(int x, int y) {
+        System.out.println(" je suis un double clic ");
         int numberOfMine = m.gridInit[y][x].getBombes();
         if (numberOfMine == m.checkNeighbord(x, y)) {
             m.revealDoubleClick(x, y);
