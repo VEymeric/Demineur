@@ -6,12 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static java.lang.Math.ceil;
-import static java.lang.Math.floor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -46,7 +43,7 @@ public final class CustomGamePanel  extends JFrame{
         this.add(this.mineComponent);
         JButton button = new JButton("Valide");
         button.addActionListener((ActionEvent e) -> {
-            controleur.restart(this.sliderH.getValue(), this.sliderW.getValue(), (int) ((double)(100.0*this.sliderB.getValue())/(double)(this.sliderH.getValue()*this.sliderW.getValue())));
+            controleur.restart(CustomGamePanel.this.sliderH.getValue(), CustomGamePanel.this.sliderW.getValue(), (int) ((double) (100.0 * CustomGamePanel.this.sliderB.getValue()) / (double) (CustomGamePanel.this.sliderH.getValue() * CustomGamePanel.this.sliderW.getValue())));
         });
         this.add(button, BorderLayout.SOUTH);
         this.setVisible(true);
