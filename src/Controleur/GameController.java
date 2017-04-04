@@ -9,7 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import static java.lang.Math.round;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class GameController implements ActionListener, MouseListener {
     public Matrice m;
@@ -19,9 +21,9 @@ public class GameController implements ActionListener, MouseListener {
     boolean messageEndSended = false;
     Scanner sc;
 
-    public GameController(int x, int y, int percentMine) { // Constructeur
+    public GameController(int x, int y, double percentMine) { // Constructeur
         System.out.println("Votre controller a été créé");
-        m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
+        m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
         gameViewWindow = new Play(this);
         //gameViewWindow.withCase(x, y, this);
@@ -32,9 +34,9 @@ public class GameController implements ActionListener, MouseListener {
     }
 
     // Refaire une nouvelle partie
-    public void restart(int x, int y, int percentMine) {
+    public void restart(int x, int y, double percentMine) {
         System.out.println("Votre controller a été créé");
-        m = new Modele.Matrice(x, y, (x * y) * percentMine / 100);
+        m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
         //gameViewWindow = new Play(this);
         gameViewWindow.refreshGrid();
@@ -67,10 +69,12 @@ public class GameController implements ActionListener, MouseListener {
         this.messageEndSended = true;
         if (m.getCountCase() > 0) {
             System.out.println("Une belle défaite ! Il restait " + m.getCountCase() + " cases à deminer.");
-            showAllCase();
+            JOptionPane.showMessageDialog(null, "Le Joker a eu raison de vous.", null, JOptionPane.ERROR_MESSAGE);
         } else {
+            JOptionPane.showMessageDialog(null, "Gotham est sauvé !", null, JOptionPane.INFORMATION_MESSAGE);
             System.out.println("La foule est en délire devant notre demineur pro !");
         }
+        this.showAllCase();
         System.out.println("Merci d'avoir joué !");
     }
 
@@ -110,7 +114,11 @@ public class GameController implements ActionListener, MouseListener {
         }
         m.update();
     }
+    public void save(){
+        JOptionPane.showMessageDialog(null, "par ici la bolosse", null, JOptionPane.ERROR_MESSAGE);
+        System.out.println("prout");
 
+    }
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -146,11 +154,13 @@ public class GameController implements ActionListener, MouseListener {
         m.update();
     }
 
-    // En cas de défaite affiche toutes les cases
+    // En cas de défaite affiche toutes les cases BOMBES
     public void showAllCase() {
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
-                m.gridInit[j][i].setCache(CaseHide.SHOW);
+                if(m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()){
+                    m.gridInit[j][i].setCache(CaseHide.SHOW);
+                }
             }
         }
         m.update();

@@ -38,7 +38,7 @@ public class Play implements Observer {
         game.setMinimumSize(new Dimension(controleur.m.getWidth() * 70, controleur.m.getHeight() * 70));
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setLayout(new BorderLayout(5, 5));
-        game.add(debugger(), BorderLayout.WEST); //rajouter dans le menu 
+        //game.add(debugger(), BorderLayout.WEST); //rajouter dans le menu 
         game.add(updateTimer, BorderLayout.NORTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
         gameMenu = new GameMenu(controleur);

@@ -175,19 +175,19 @@ public class Matrice extends Observable {
                 reveal(x - 1, y - 1);
             }
         }
-        if (y > 0) { // voisin haut
-            if (!gridInit[y - 1][x].isFlag()) {
-                reveal(x, y - 1);
+        if (y > 0) {
+            if (!gridInit[y][x-1].isFlag()) {
+                reveal(x-1, y);
             }
         }
-        if (x < getWidth() - 1 && y > 0) { // voisin haut droit
-            if (!gridInit[y - 1][x + 1].isFlag()) {
+        if (x < getWidth() - 1 && y > 0) { 
+            if (!gridInit[y + 1][x - 1].isFlag()) {
                 reveal(x - 1, y + 1);
             }
         }
-        if (x > 0) {//voisin gauche
-            if (!gridInit[y][x + 1].isFlag()) {
-                reveal(x - 1, y);
+        if (x > 0) {
+            if (!gridInit[y-1][x].isFlag()) {
+                reveal(x, y-1);
             }
         }
         if (x < getWidth() - 1) {//voisin droit
@@ -315,10 +315,8 @@ public class Matrice extends Observable {
     public void markPrint(int i, int j) {
         if (gridInit[j][i].getCache() == CaseHide.HIDE ) {
             gridInit[j][i].setCache(CaseHide.FLAG);
-            System.out.println(" flag tqt ....................");
             setCountMine(getCountMine() - 1);
         }else if (gridInit[j][i].isFlag()) {
-            System.out.println(" j'en sais rien tqt ....................");            
             gridInit[j][i].setCache(CaseHide.UNKNOW);
             setCountMine(getCountMine() + 1);
         } else {
