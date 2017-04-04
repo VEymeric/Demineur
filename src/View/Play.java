@@ -6,9 +6,9 @@
 package View;
 
 import Controleur.GameController;
-import Controleur.TimerPlay;
 import Modele.CaseHide;
 import Modele.CaseInit;
+
 import Modele.Matrice;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -23,6 +23,7 @@ import javax.swing.*;
  * @author gaetane
  */
 public class Play implements Observer {
+
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
     private JButton countOfMine = new JButton();
@@ -38,7 +39,7 @@ public class Play implements Observer {
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setLayout(new BorderLayout(5, 5));
         game.add(debugger(), BorderLayout.WEST); //rajouter dans le menu 
-        game.add(updateTimer,BorderLayout.NORTH);
+        game.add(updateTimer, BorderLayout.NORTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
         gameMenu = new GameMenu(controleur);
         game.setJMenuBar(gameMenu);
@@ -46,31 +47,18 @@ public class Play implements Observer {
         game.add(countOfMine, BorderLayout.SOUTH);
         game.setVisible(true);
     }
-    
-  // récupère le nombre de mine pour la mise a jour
+
+    // récupère le nombre de mine pour la mise a jour
     private String countMine() {
         String ok;
-    if(controleur.m.getCountMine()==0 ){
-        ok = "Partie pas encore commencée";
-    }
-    else{
-        ok = "Nombre de mines restantes:" + String.valueOf(controleur.m.getCountMine());
-    }
-        return ok;
-    }
-
-    private String timerEvolution(){
-        String ok;
-        if(controleur.m.getCountMine() == 0){
-            ok = " Pas de timer, faites un premier clic ";
-        }else {
-            TimerPlay timer = new TimerPlay();
-            ok = String.valueOf(timer.getDuration());            
+        if (controleur.m.getCountMine() == 0) {
+            ok = "Partie pas encore commencée";
+        } else {
+            ok = "Nombre de mines restantes:" + String.valueOf(controleur.m.getCountMine());
         }
         return ok;
-    }
-    
-    
+    }    
+
     public void refreshGrid() {
         game.remove(grid);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
@@ -85,7 +73,7 @@ public class Play implements Observer {
     }
 
     // Crée les cases dans la vue
-    private JComponent withCase(int x, int y, GameController controleur) { 
+    private JComponent withCase(int x, int y, GameController controleur) {
         grid = new JPanel();
         grid.setLayout(new BorderLayout(5, 5));
         grid.setLayout(new GridLayout(y, x, 5, 5));
@@ -109,41 +97,51 @@ public class Play implements Observer {
             for (int j = 0; j < controleur.m.getHeight(); j++) {
                 for (int i = 0; i < controleur.m.getWidth(); i++) {
                     countOfMine.setText(countMine());
-                    updateTimer.setText(timerEvolution());
-                    showOrnot(i, j);                   
+                    showOrnot(i, j);
                 }
             }
         }
     }
-    
-    
+
     // Dévoiler ou non 
-    private void showOrnot(int i, int j) {      
+    private void showOrnot(int i, int j) {
         Button button = getButton(i, j);
         button.setString(String.valueOf(controleur.m.gridInit[j][i].getEtat()));
         if (!controleur.m.gridInit[j][i].isHide()) {
             button.paintComponents(button.getGraphics());
-            if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG || controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) { // c'est un drapeau ou on sait pas 
-                if (controleur.m.gridInit[j][i].getCache() == CaseHide.FLAG) {
-                    addIcone(button,"assets/flag.png");
+            switch (controleur.m.gridInit[j][i].getCache()) {
+                case FLAG:
+                    addIcone(button, "assets/flag.png");
                     button.setString(" ");
-                } else if (controleur.m.gridInit[j][i].getCache() == CaseHide.UNKNOW) {
-                    addIcone(button,"assets/interr.png");
+                    break;
+                case UNKNOW:
+                    addIcone(button, "assets/interr.png");
                     button.setString(" ");
-                }
-            } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.NUMBER) { // c'est un nombre
-                button.setIcon(null);
-                button.setString(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
-                button.setEnabled(false);
-                button.setColor(controleur.m.gridInit[j][i].getColor());
-            } else if (controleur.m.gridInit[j][i].getEtat() == CaseInit.ALONE) {    // c'est un point 
-                button.setIcon(null);
-                button.setString(" ");
-                button.setEnabled(false);
-            } else {
-                button.setString(" ");
-                addIcone(button,"assets/mine.png");
-                button.setEnabled(false);
+                    break;
+                case INTACTE:
+                    addIcone(button, "assets/intacte.png");
+                    button.setEnabled(true);
+                    button.setString(" ");
+                    break;
+                default:
+                    switch (controleur.m.gridInit[j][i].getEtat()) {
+                        case NUMBER:
+                            button.setIcon(null);
+                            button.setString(String.valueOf(controleur.m.gridInit[j][i].getBombes()));
+                            button.setEnabled(false);
+                            button.setColor(controleur.m.gridInit[j][i].getColor());
+                            break;
+                        case ALONE:
+                            button.setIcon(null);
+                            button.setString(" ");
+                            button.setEnabled(false);
+                            break;
+                        default:
+                            button.setString(" ");
+                            addIcone(button, "assets/boooom.png");
+                            button.setEnabled(false);
+                            break;
+                    }
             }
         } else {
             button.setIcon(null);
@@ -163,7 +161,7 @@ public class Play implements Observer {
         button.setText(null);
         button.setIcon(icon);
     }
-    
+
     // Récuperer la position d'un bouton du tableau
     private Button getButton(int i, int j) {
         return (Button) grid.getComponent(j * controleur.m.getWidth() + i);

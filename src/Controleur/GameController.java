@@ -5,7 +5,6 @@ import Modele.Matrice;
 import View.Button;
 import View.Play;
 import View.Print;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,7 +12,6 @@ import java.awt.event.MouseListener;
 import java.util.Scanner;
 
 public class GameController implements ActionListener, MouseListener {
-
     public Matrice m;
     Print gameViewConsole;
     Play gameViewWindow;
@@ -59,9 +57,8 @@ public class GameController implements ActionListener, MouseListener {
             order(action);
         }
         gameOver();
-
     }
-
+    
     // Action après la défaite
     public void gameOver() {
         if (this.messageEndSended) {
@@ -144,9 +141,9 @@ public class GameController implements ActionListener, MouseListener {
                         }
                     }
                 }
-                m.update();
             }
         }
+        m.update();
     }
 
     // En cas de défaite affiche toutes les cases
