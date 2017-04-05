@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
+import Controleur.ControllTimer;
 import Controleur.GameController;
 import Modele.CaseHide;
 import Modele.CaseInit;
@@ -14,9 +10,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -27,7 +28,7 @@ public class Play implements Observer {
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
     private JButton countOfMine = new JButton();
-    private JButton updateTimer = new JButton();
+    private JPanel panelTimer = new JPanel();
     private final JMenuBar gameMenu;
     private final GameController controleur;
 
@@ -38,8 +39,9 @@ public class Play implements Observer {
         game.setMinimumSize(new Dimension(controleur.m.getWidth() * 70, controleur.m.getHeight() * 70));
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setLayout(new BorderLayout(5, 5));
-        //game.add(debugger(), BorderLayout.WEST); //rajouter dans le menu 
-        game.add(updateTimer, BorderLayout.NORTH);
+        setTimer(panelTimer, "TIMER : ");
+        
+        game.add(panelTimer, BorderLayout.NORTH);
         game.add(withCase(controleur.m.getWidth(), controleur.m.getHeight(), controleur), BorderLayout.CENTER);
         gameMenu = new GameMenu(controleur);
         game.setJMenuBar(gameMenu);
@@ -48,6 +50,19 @@ public class Play implements Observer {
         game.setVisible(true);
     }
 
+    
+    private JPanel setTimer(JPanel panel, String txt){
+        JLabel textTime = new JLabel(txt);
+        JLabel myLabel = new JLabel();
+        ControllTimer myTimer = new ControllTimer(myLabel);
+        panel.add(myTimer);
+        controleur.time = myTimer;
+        myLabel.setText(Integer.toString(myTimer.value()));
+        panel.add(textTime);
+        panel.add(myLabel);
+        
+        return panel;
+    }
     // récupère le nombre de mine pour la mise a jour
     private String countMine() {
         String ok;

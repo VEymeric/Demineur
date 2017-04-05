@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Matrice extends Observable {
 
     GameController g;
-    int width = 0, height = 0, mine = 0;
+    int width = 0, height = 0, mine = 0, time =0;
     boolean inGame = true;
     int countCase, countMine = 0;
     public Case[][] gridInit;
@@ -41,6 +41,13 @@ public class Matrice extends Observable {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public void setInGame(boolean inGame) {
@@ -112,6 +119,13 @@ public class Matrice extends Observable {
                 }
             }
             System.out.println(" ");
+        }
+        for (int j = 0; j < getHeight(); j++) {
+            for (int i = 0; i < getWidth(); i++) {
+                if (gridInit[j][i].isFlag()) {
+                    this.countMine--;
+                }
+            }
         }
         reveal(xClic, yClic);
     }
@@ -285,7 +299,7 @@ public class Matrice extends Observable {
 
     // Marquage des cases : drapeau/point d'interrogation / rien par rapport a la console
     public void mark(int i, int j, String mark) {
-        if (!gridInit[j][i].isShow()) {
+        if (this.isInGame() && !gridInit[j][i].isShow()) {
             switch (mark) {
                 case "#":
                     if (gridInit[j][i].getCache() == CaseHide.FLAG) {
@@ -313,6 +327,7 @@ public class Matrice extends Observable {
 
     // Cas pour l'affichage
     public void markPrint(int i, int j) {
+        if(!this.isInGame()) return;
         if (gridInit[j][i].getCache() == CaseHide.HIDE ) {
             gridInit[j][i].setCache(CaseHide.FLAG);
             setCountMine(getCountMine() - 1);
