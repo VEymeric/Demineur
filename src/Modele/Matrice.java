@@ -22,6 +22,10 @@ public class Matrice extends Observable {
         generateInit();
     }
 
+    public Case getCase(int i, int j){
+        return gridInit[j][i];
+    }
+
     public void update() { // Observer 
         this.setChanged();
         this.notifyObservers();
@@ -170,46 +174,14 @@ public class Matrice extends Observable {
 
     // reveler les cases 
     public void revealDoubleClick(int x, int y) {
-        if (x > 0 && y > 0) { // voisin haut gauche
-            if (!gridInit[y - 1][x - 1].isFlag()) {
-                reveal(x - 1, y - 1);
-            }
-        }
-        if (y > 0) {
-            if (!gridInit[y][x-1].isFlag()) {
-                reveal(x-1, y);
-            }
-        }
-        if (x < getWidth() - 1 && y > 0) { 
-            if (!gridInit[y + 1][x - 1].isFlag()) {
-                reveal(x - 1, y + 1);
-            }
-        }
-        if (x > 0) {
-            if (!gridInit[y-1][x].isFlag()) {
-                reveal(x, y-1);
-            }
-        }
-        if (x < getWidth() - 1) {//voisin droit
-            if (!gridInit[y][x + 1].isFlag()) {
-                reveal(x + 1, y);
-            }
-        }
-        if (x > 0 && y < getHeight() - 1) { // voisin bas gauche
-            if (!gridInit[y + 1][x - 1].isFlag()) {
-                reveal(x - 1, y + 1);
-            }
-        }
-        if (y < getHeight() - 1) { // voisin bas
-            if (!gridInit[y + 1][x].isFlag()) {
-                reveal(x, y + 1);
-            }
-        }
-        if (x < getWidth() - 1 && y < getHeight() - 1) { // voisin bas droit
-            if (!gridInit[y + 1][x + 1].isFlag()) {
-                reveal(x + 1, y + 1);
-            }
-        }
+        reveal(x - 1, y - 1);
+        reveal(x-1, y);
+        reveal(x - 1, y + 1);
+        reveal(x, y-1);
+        reveal(x + 1, y);
+        reveal(x + 1, y - 1);
+        reveal(x, y + 1);
+        reveal(x + 1, y + 1);
     }
 
     //Génère une matrice du jeu en créant un drapeau en premiere ligne
@@ -328,6 +300,7 @@ public class Matrice extends Observable {
     // Fonction pour dévoiler la case 
     public void reveal(int x, int y) {
         if (!this.isInGame() || x < 0 || y < 0 || x >= this.width || y >= this.height || this.gridInit[y][x].isShow() || this.gridInit[y][x].isFlag() || this.gridInit[y][x].isUnknow()) { // cas non nécessaire
+            System.out.println(" clic mais veut pas");
             return;
         }
         this.gridInit[y][x].setCache(CaseHide.SHOW);

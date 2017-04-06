@@ -12,9 +12,11 @@ import java.awt.event.MouseListener;
 import static java.lang.Math.round;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import java.util.Timer;
 
 public class GameController implements ActionListener, MouseListener {
     public Matrice m;
+    public ControllTimer time;
     Print gameViewConsole;
     Play gameViewWindow;
     private String action;
@@ -26,16 +28,17 @@ public class GameController implements ActionListener, MouseListener {
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
         gameViewWindow = new Play(this);
-        //gameViewWindow.withCase(x, y, this);
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
         m.update();
+        //time = new ControllTimer();
         this.startGame();
     }
 
     // Refaire une nouvelle partie
     public void restart(int x, int y, double percentMine) {
         System.out.println("Votre controller a été créé");
+        this.time.initChrono();
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
         //gameViewWindow = new Play(this);
@@ -66,6 +69,8 @@ public class GameController implements ActionListener, MouseListener {
         if (this.messageEndSended) {
             return;
         }
+        this.time.stopChrono();
+        this.m.setInGame(false);
         this.messageEndSended = true;
         if (m.getCountCase() > 0) {
             System.out.println("Une belle défaite ! Il restait " + m.getCountCase() + " cases à deminer.");
@@ -87,8 +92,9 @@ public class GameController implements ActionListener, MouseListener {
                 break;
             case "d":
                 if (cr.length == 3) {
-                    if (m.getCountMine() == 0) {//Cas possible que si le jeu n'a pas commence
+                    if (m.getCountMine() <= 0) {//Cas possible que si le jeu n'a pas commence
                         m.generateMatrice(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
+                        this.time.startChrono();
                     }
                     m.reveal(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
                     break;

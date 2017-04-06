@@ -1,10 +1,38 @@
 package Modele;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class Case {
+public class Case implements Serializable {
+    
+    // méthode readObject, utilisé pour reconstituer un object sérialiser
+    // car la déserialisation basique n'arrive pas à reconstruire l'objet 
+    // donc il faut faire une surcharge
+    public void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException{
+        // Lecture en esperant que c'est le bon ordre 
+        this.x = ois.readInt();
+        this.y = ois.readInt();
+        this.bombes = ois.readInt();
+        this.etat = (CaseInit) ois.readObject();
+        this.cache = (CaseHide) ois.readObject();
+        this.color = (Color)ois.readObject();
+        
+    }
+    
+    public void writeObject(ObjectOutputStream oos)throws IOException{
+        oos.writeInt(x);
+        oos.writeInt(y);
+        oos.writeInt(bombes);
+        oos.writeObject(etat);
+        oos.writeObject(cache);
+        oos.writeObject(color);        
+    }
+    
 
-    private final int x, y;
+    private int x, y;
     private int bombes = 0;
     private Color color;
     private CaseInit etat; //mine ; alone ; number
@@ -24,7 +52,16 @@ public class Case {
         this.cache = cache;
     }
 
-    // Etat que peu avoir une case   
+    // Etat que peu avoir une case  
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }  
+    
     public int getX() {
         return x;
     }
