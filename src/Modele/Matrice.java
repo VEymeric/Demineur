@@ -18,11 +18,6 @@ public class Matrice extends Observable implements Serializable{
         this.countCase = this.width * this.height - this.mine;
         generateInit();
     }
-    
-    public Matrice(int x,int y){
-        this.width = x;
-        this.height = y;
-    }
 
     public Case getCase(int i, int j){
         return gridInit[j][i];
@@ -48,6 +43,15 @@ public class Matrice extends Observable implements Serializable{
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public int getMine() {
+        return mine;
+    }
+
+    public void setMine(int mine) {
+        this.mine = mine;
+    }
+    
     public int getTime() {
         return time;
     }
