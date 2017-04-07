@@ -100,10 +100,7 @@ public class GameController implements ActionListener, MouseListener {
             if((m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10) ||
             (m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40) ||
             (m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100)){
-                JOptionPane.showMessageDialog(null, "Record !", null, JOptionPane.INFORMATION_MESSAGE);
                 serialize(m.getHeight(), m.getWidth(), this.time.value());
-            }else{
-                JOptionPane.showMessageDialog(null,m.getHeight() + " "+ m.getWidth() + " "+ m.getMine(), null, JOptionPane.INFORMATION_MESSAGE);
             }
         }
         this.showAllCase();
