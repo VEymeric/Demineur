@@ -50,6 +50,15 @@ public class Matrice extends Observable {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public int getMine() {
+        return mine;
+    }
+
+    public void setMine(int mine) {
+        this.mine = mine;
+    }
+    
     public int getTime() {
         return time;
     }
