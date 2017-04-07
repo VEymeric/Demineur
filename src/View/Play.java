@@ -171,7 +171,7 @@ public class Play implements Observer {
     private void addIcone(Button button, String srcImage) {
         ImageIcon icon = new ImageIcon(srcImage);
         Image image = icon.getImage(); // l'image transforme
-        Image newimg = image.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        Image newimg = image;//.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         icon = new ImageIcon(newimg);  // transform it back 
         button.setText(null);
         button.setIcon(icon);

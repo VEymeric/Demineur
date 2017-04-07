@@ -2,7 +2,8 @@ package Controleur;
 
 import Modele.CaseHide;
 import Modele.Matrice;
-import Modele.Scores;
+import Modele.Score;
+import Modele.Serialization;
 import View.Button;
 import View.ControllTimer;
 import View.Play;
@@ -38,7 +39,6 @@ public class GameController implements ActionListener, MouseListener {
     Play gameViewWindow;
     private String action;
     boolean messageEndSended = false;
-    Scores test;
     Scanner sc;
 
     public GameController(int x, int y, double percentMine) throws IOException, ClassNotFoundException { // Constructeur
@@ -97,18 +97,13 @@ public class GameController implements ActionListener, MouseListener {
         } else {
             JOptionPane.showMessageDialog(null, "Gotham est sauvé !", null, JOptionPane.INFORMATION_MESSAGE);
             System.out.println("La foule est en délire devant notre demineur pro !");
-            if(m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10){
-                test = new Scores(1,gameViewWindow.giveName(),this.time.value());
-                saveScore();
-                loadScore();
-            }
-            if(m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40){
-                test = new Scores(2,gameViewWindow.giveName(),this.time.value());
-                saveScore();
-            }            
-            if(m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100){
-                test = new Scores(3,gameViewWindow.giveName(),this.time.value());
-                saveScore();
+            if((m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10) ||
+            (m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40) ||
+            (m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100)){
+                JOptionPane.showMessageDialog(null, "Record !", null, JOptionPane.INFORMATION_MESSAGE);
+                serialize(m.getHeight(), m.getWidth(), this.time.value());
+            }else{
+                JOptionPane.showMessageDialog(null,m.getHeight() + " "+ m.getWidth() + " "+ m.getMine(), null, JOptionPane.INFORMATION_MESSAGE);
             }
         }
         this.showAllCase();
@@ -191,40 +186,8 @@ public class GameController implements ActionListener, MouseListener {
         startGame();
         System.out.println(" Normalement déserializé ");
     }
-
-    public void saveScore() throws IOException{
-        switch (test.getLevel()){
-            case 1 : //beginner
-                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveB));                
-                break;
-            case 2 : //intermediaire
-                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveI));
-                break;
-            case 3 : // expert
-                toSave = new ObjectOutputStream(new  FileOutputStream(scoreSaveE));
-                break;
-        }
-        toSave.writeObject(test.getPseudo()+test.getTimer());
-    }
-
-    public void loadScore() throws IOException, ClassNotFoundException{
-        switch (test.getLevel()){
-            case 1 : //beginner
-                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveB));                
-                break;
-            case 2 : //intermediaire
-                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveI));
-                break;
-            case 3 : // expert
-                checkScore = new ObjectInputStream(new  FileInputStream(scoreSaveE));
-                break;
-        }
-        String o = (String) checkScore.readObject();
-        String k = (String) checkScore.readObject();
-        System.out.println( o + "    " + k);
-    }    
-    
-    
+  
+   
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -271,7 +234,17 @@ public class GameController implements ActionListener, MouseListener {
         }
         m.update();
     }
-
+    public void serialize(int rows, int cols, int time){
+        Serialization s = new Serialization();
+        Score sc = new Score(rows, cols, time);
+        try{
+            s.loadScore();
+        }catch(IOException | ClassNotFoundException e){
+            
+        }
+        s.scores.add(sc);
+        s.updateScore();
+    }
     // Action lors d'un double clics sur une case
     private void doubleClick(int x, int y) {
         System.out.println(" je suis un double clic ");
