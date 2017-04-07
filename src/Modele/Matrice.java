@@ -1,16 +1,14 @@
 package Modele;
 
 import java.util.Observable;
-import Controleur.GameController;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Matrice extends Observable {
-
-    GameController g;
+public class Matrice extends Observable implements Serializable{
     int width = 0, height = 0, mine = 0, time =0;
-    boolean inGame = true;
-    int countCase, countMine = 0;
+    private boolean inGame = true;
+    private int countCase, countMine = 0;
     public Case[][] gridInit;
 
     public Matrice(int width, int height, int nbMine) {
@@ -93,6 +91,7 @@ public class Matrice extends Observable {
     }
     
     public void reloadMatrice( Matrice m){
+        System.out.println(" ok ok  j'ai redonnée les valeurs");
         this.gridInit = m.gridInit;
         this.width = m.width;
         this.height = m.height;
@@ -328,7 +327,6 @@ public class Matrice extends Observable {
     // Fonction pour dévoiler la case 
     public void reveal(int x, int y) {
         if (!this.isInGame() || x < 0 || y < 0 || x >= this.width || y >= this.height || this.gridInit[y][x].isShow() || this.gridInit[y][x].isFlag() || this.gridInit[y][x].isUnknow()) { // cas non nécessaire
-            System.out.println(" clic mais veut pas");
             return;
         }
         this.gridInit[y][x].setCache(CaseHide.SHOW);

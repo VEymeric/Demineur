@@ -1,4 +1,4 @@
-package Controleur;
+package View;
 
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;

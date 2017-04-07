@@ -1,6 +1,5 @@
 package View;
 
-import Controleur.ControllTimer;
 import Controleur.GameController;
 import Modele.CaseHide;
 import Modele.CaseInit;

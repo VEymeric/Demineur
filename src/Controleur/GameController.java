@@ -1,9 +1,13 @@
 package Controleur;
 
+import View.ControllTimer;
 import Modele.CaseHide;
 import Modele.Matrice;
 import View.Button;
+import View.Button;
 import View.Play;
+import View.Play;
+import View.Print;
 import View.Print;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,6 +60,17 @@ public class GameController implements ActionListener, MouseListener {
         messageEndSended = false;
     }
 
+    public void restartAfterLoad(){
+        System.out.println(" Matrice load");
+        // recuperer le timer;
+        gameViewConsole =new Print();
+        gameViewWindow.refreshGrid();
+        m.addObserver(gameViewWindow);
+        m.addObserver(gameViewConsole);
+        m.update();
+        messageEndSended = false;
+    }
+    
     public void exit() {
         System.exit(0);
     }
@@ -161,8 +176,8 @@ public class GameController implements ActionListener, MouseListener {
                 m.gridInit[j][i].readObject(fluxRentrant);
             }
         }
-        m.setInGame(true);
-        startGame();
+        this.m.reloadMatrice(m);
+        
         System.out.println(" Normalement déserializé ");
     }
 
