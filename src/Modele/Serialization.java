@@ -16,12 +16,13 @@ public class Serialization {
     ObjectInputStream inputStream = null;
     public List<Score> scoresBeginner, scoresIntermediate, scoresExpert;
     int ScoreMax = 5;
-    //On récupère les scores déjà serialisés
+    
+//On récupère les scores déjà serialisés
     public void loadScore() throws IOException, ClassNotFoundException {
         try {
             inputStream = new ObjectInputStream(new FileInputStream("scores.txt"));
             this.scores = (ArrayList<Score>) inputStream.readObject();
-        } catch (FileNotFoundException fnfe) {
+        } catch (FileNotFoundException f) {
             
         } catch (IOException  ex) {
            

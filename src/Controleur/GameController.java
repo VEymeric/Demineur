@@ -20,18 +20,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Math.round;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public final class GameController implements ActionListener, MouseListener {
+public class GameController implements ActionListener, MouseListener {
 
     public Matrice m;
     File scoreSaveB = new File(" scoreOfMinesweaperBeginer.winner");
     File scoreSaveE = new File(" scoreOfMinesweaperExpert.winner");
     File scoreSaveI = new File(" scoreOfMinesweaperIntermediaire.winner");
+    
     ObjectInputStream checkScore;
-    ObjectOutputStream toSave;
+    ObjectOutputStream toSave ;
     public ControllTimer time;
     Print gameViewConsole;
     Play gameViewWindow;
@@ -39,7 +38,7 @@ public final class GameController implements ActionListener, MouseListener {
     boolean messageEndSended = false;
     Scanner sc;
 
-    public GameController(int x, int y, double percentMine){ // Constructeur
+    public GameController(int x, int y, double percentMine) throws IOException, ClassNotFoundException { // Constructeur
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
@@ -47,7 +46,6 @@ public final class GameController implements ActionListener, MouseListener {
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
         m.update();
-        //time = new ControllTimer();
         JOptionPane.showMessageDialog(null, "Vite batman ! Sauves nous ! Le joker a miné la zone !", null, JOptionPane.ERROR_MESSAGE);
         this.startGame();
     }
@@ -58,18 +56,7 @@ public final class GameController implements ActionListener, MouseListener {
         this.time.initChrono();
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
-        gameViewWindow.refreshGrid();
-        m.addObserver(gameViewWindow);
-        m.addObserver(gameViewConsole);
-        m.update();
-        messageEndSended = false;
-    }
-    
-    public void reloadAfter(Matrice ma){
-        //this.time
-        this.m = ma;
-        //recharge();
-        gameViewConsole =new Print();
+        //gameViewWindow = new Play(this);
         gameViewWindow.refreshGrid();
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
@@ -82,19 +69,19 @@ public final class GameController implements ActionListener, MouseListener {
     }
 
     // Tourne en rond pendant le jeu
-    public final void startGame(){
+    public final void startGame() throws IOException, ClassNotFoundException {
         System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
         sc = new Scanner(System.in);
         while (m.isInGame()) {
             action = sc.nextLine();
-            System.out.println("action " + action);
+            System.out.println("action "+action);
             order(action);
         }
         gameOver();
     }
 
     // Action après la défaite
-    public void gameOver() {
+    public void gameOver() throws IOException, ClassNotFoundException {
         if (this.messageEndSended) {
             return;
         }
@@ -141,7 +128,7 @@ public final class GameController implements ActionListener, MouseListener {
                 break;
             case "m":
                 if (cr.length == 4) {
-                    if (m.getCountMine() <= 0) {
+                    if (m.getCountMine() == 0) {
                         m.startWithFlag(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
                         break;
                     } else {
@@ -157,14 +144,14 @@ public final class GameController implements ActionListener, MouseListener {
 
     public void save() throws IOException {
         // Fichier dans lequel on va écrire;
-        File fichier = new File("lastSave.minesweaper");
+        File fichier = new File("test1.minesweaper");
         // Ouverture du flux du fichier 
         ObjectOutputStream fluxFichier = new ObjectOutputStream(new FileOutputStream(fichier));
         // Serialisation de l'objet
         fluxFichier.writeInt(m.getWidth());
         fluxFichier.writeInt(m.getHeight());
-        fluxFichier.writeInt(m.getCountMine());
         fluxFichier.writeInt(m.getMine());
+        System.out.println( m.getMine());
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
                 m.gridInit[j][i].writeObject(fluxFichier);
@@ -175,16 +162,15 @@ public final class GameController implements ActionListener, MouseListener {
 
     //récuperer un niveau ou reprendre une partie
     public void load() throws IOException, ClassNotFoundException {
-        File fichier = new File("lastSave.minesweaper");
+        File fichier = new File("test1.minesweaper");
         // Ouverture du flux fichier pour récuperer
         ObjectInputStream fluxRentrant = new ObjectInputStream(new FileInputStream(fichier));
         int x = fluxRentrant.readInt();
         int y = fluxRentrant.readInt();
-        int count = fluxRentrant.readInt();
         int mines = fluxRentrant.readInt();
-        Matrice map = new Matrice(x, y, mines);
-        map.setCountMine(count);        
-        System.out.println(map.getMine());
+        Matrice map =new Matrice(x,y,mines);
+        System.out.println( map.getMine());
+        System.out.println(map.getCountMine());
         for (int j = 0; j < map.getHeight(); j++) {
             for (int i = 0; i < map.getWidth(); i++) {
                 map.gridInit[j][i].readObject(fluxRentrant);
@@ -192,9 +178,21 @@ public final class GameController implements ActionListener, MouseListener {
         }
         map.setInGame(true);
         reloadAfter(map);
+        JOptionPane.showMessageDialog(null, "Le Joker s'est aperçu de votre supercherie et cache des indices.", null, JOptionPane.INFORMATION_MESSAGE);
         System.out.println(" Normalement déserializé ");
     }
-    
+      public void reloadAfter(Matrice ma){
+        //this.time
+        this.m = ma;
+        //recharge();
+        gameViewConsole =new Print();
+        gameViewWindow.refreshGrid();
+        m.addObserver(gameViewWindow);
+        m.addObserver(gameViewConsole);
+        m.update();
+        messageEndSended = false;
+}
+   
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -252,7 +250,6 @@ public final class GameController implements ActionListener, MouseListener {
         s.scores.add(sc);
         s.updateScore();
     }
-    
     // Action lors d'un double clics sur une case
     private void doubleClick(int x, int y) {
         System.out.println(" je suis un double clic ");
@@ -287,8 +284,14 @@ public final class GameController implements ActionListener, MouseListener {
                 }
             } else if (e.getClickCount() == 2) {
                 doubleClick(source.x, source.y);
-            }            
-            //gameOver();
+            }
+            if (m.isInGame() != true) {
+                try {
+                    this.gameOver();
+                } catch (IOException | ClassNotFoundException ex) {
+                    System.out.println(" Batman a eu un petit soucis technique");
+                }
+            }
         } else {
             debug();
         }
@@ -296,6 +299,7 @@ public final class GameController implements ActionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(e.getButton() != 3) mouseClicked(e);
     }
 
     @Override

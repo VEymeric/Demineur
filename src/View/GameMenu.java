@@ -82,7 +82,7 @@ public class GameMenu extends JMenuBar {
             }
 
         });
-        this.item_score.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_MASK));
+        this.item_score.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK));
         this.item_score.addActionListener((ActionEvent arg1) -> {
             JFrame frame = new JFrame("Best scores");
                 Serialization s = new Serialization();

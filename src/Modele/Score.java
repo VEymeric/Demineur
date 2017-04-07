@@ -2,12 +2,11 @@ package Modele;
 
 import java.io.Serializable;
 
-//Les scores sont de la forme rows x cols : temps
 public class Score implements Serializable, Comparable<Score> {
     public int r,c,timer;
-    public Score(int r, int c, int timer){
-        this.r = r;
-        this.c = c;
+    public Score(int rows, int colums, int timer){
+        this.r = rows;
+        this.c = colums;
         this.timer = timer;
     }
     

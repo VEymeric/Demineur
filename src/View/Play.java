@@ -1,23 +1,15 @@
 package View;
 
-import View.ControllTimer;
 import Controleur.GameController;
-import Modele.CaseHide;
-import Modele.CaseInit;
 
 import Modele.Matrice;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -27,8 +19,8 @@ public class Play implements Observer {
 
     public JFrame game = new JFrame(); // nouvelle fenetre
     private JPanel grid;
-    private JButton countOfMine = new JButton();
-    private JPanel panelTimer = new JPanel();
+    private final JButton countOfMine = new JButton();
+    private final JPanel panelTimer = new JPanel();
     private final JMenuBar gameMenu;
     private final GameController controleur;
 
@@ -126,7 +118,7 @@ public class Play implements Observer {
             button.paintComponents(button.getGraphics());
             switch (controleur.m.gridInit[j][i].getCache()) {
                 case FLAG:
-                    addIcone(button, "assets/bat2.png");
+                    addIcone(button, "assets/bat3.png");
                     button.setString(" ");
                     break;
                 case UNKNOW:
@@ -171,7 +163,7 @@ public class Play implements Observer {
     private void addIcone(Button button, String srcImage) {
         ImageIcon icon = new ImageIcon(srcImage);
         Image image = icon.getImage(); // l'image transforme
-        Image newimg = image;//.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        Image newimg = image.getScaledInstance(button.getWidth(), button.getHeight(), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         icon = new ImageIcon(newimg);  // transform it back 
         button.setText(null);
         button.setIcon(icon);

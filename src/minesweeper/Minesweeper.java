@@ -5,7 +5,13 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Minesweeper {
-
+/*********************
+Démineur - Projet Cir3 - Gaetane Jallais & Eymeric Vandaele
+* Conforme aux tps
+* ajout particulier :
+* scénario batman
+* double clic
+**********************/
     /**
      * @param args the command line arguments
      * @throws java.io.IOException
