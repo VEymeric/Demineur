@@ -19,21 +19,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Math.round;
 import java.util.Scanner;
-import javax.swing.JOptionPane;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
-public class GameController implements ActionListener, MouseListener {
+public final class GameController implements ActionListener, MouseListener {
 
     public Matrice m;
     File scoreSaveB = new File(" scoreOfMinesweaperBeginer.winner");
     File scoreSaveE = new File(" scoreOfMinesweaperExpert.winner");
     File scoreSaveI = new File(" scoreOfMinesweaperIntermediaire.winner");
-    
 
+    int nbSave = 0;
     ObjectInputStream checkScore;
-    ObjectOutputStream toSave ;
+    ObjectOutputStream toSave;
     public ControllTimer time;
     Print gameViewConsole;
     Play gameViewWindow;
@@ -42,7 +41,7 @@ public class GameController implements ActionListener, MouseListener {
     Scores test;
     Scanner sc;
 
-    public GameController(int x, int y, double percentMine) throws IOException, ClassNotFoundException { // Constructeur
+    public GameController(int x, int y, double percentMine){ // Constructeur
         System.out.println("Votre controller a été créé");
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
@@ -51,7 +50,7 @@ public class GameController implements ActionListener, MouseListener {
         m.addObserver(gameViewConsole);
         m.update();
         //time = new ControllTimer();
-        this.startGame();
+        this.startGame();  
     }
 
     // Refaire une nouvelle partie
@@ -73,19 +72,19 @@ public class GameController implements ActionListener, MouseListener {
     }
 
     // Tourne en rond pendant le jeu
-    public final void startGame() throws IOException, ClassNotFoundException {
+    public final void startGame(){
         System.out.println("Chuuuuuttt ! Silence ! Le jeu commence :");
         sc = new Scanner(System.in);
         while (m.isInGame()) {
             action = sc.nextLine();
-            System.out.println("action "+action);
+            System.out.println("action " + action);
             order(action);
         }
         gameOver();
     }
 
     // Action après la défaite
-    public void gameOver() throws IOException, ClassNotFoundException {
+    public void gameOver() {
         if (this.messageEndSended) {
             return;
         }
@@ -98,18 +97,14 @@ public class GameController implements ActionListener, MouseListener {
         } else {
             JOptionPane.showMessageDialog(null, "Gotham est sauvé !", null, JOptionPane.INFORMATION_MESSAGE);
             System.out.println("La foule est en délire devant notre demineur pro !");
-            if(m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10){
-                test = new Scores(1,gameViewWindow.giveName(),this.time.value());
-                saveScore();
-                loadScore();
+            if (m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10) {
+                test = new Scores(1, gameViewWindow.giveName(), this.time.value());
             }
-            if(m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40){
-                test = new Scores(2,gameViewWindow.giveName(),this.time.value());
-                saveScore();
-            }            
-            if(m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100){
-                test = new Scores(3,gameViewWindow.giveName(),this.time.value());
-                saveScore();
+            if (m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40) {
+                test = new Scores(2, gameViewWindow.giveName(), this.time.value());
+            }
+            if (m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100) {
+                test = new Scores(3, gameViewWindow.giveName(), this.time.value());
             }
         }
         this.showAllCase();
@@ -163,7 +158,7 @@ public class GameController implements ActionListener, MouseListener {
         fluxFichier.writeInt(m.getWidth());
         fluxFichier.writeInt(m.getHeight());
         fluxFichier.writeInt(m.getMine());
-        System.out.println( m.getMine());
+        System.out.println(m.getMine());
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
                 m.gridInit[j][i].writeObject(fluxFichier);
@@ -180,9 +175,8 @@ public class GameController implements ActionListener, MouseListener {
         int x = fluxRentrant.readInt();
         int y = fluxRentrant.readInt();
         int mines = fluxRentrant.readInt();
-        Matrice map =new Matrice(x,y,mines);
-        System.out.println( map.getMine());
-        System.out.println(map.getCountMine());
+        Matrice map = new Matrice(x, y, mines);
+        System.out.println(map.getMine());
         for (int j = 0; j < map.getHeight(); j++) {
             for (int i = 0; i < map.getWidth(); i++) {
                 map.gridInit[j][i].readObject(fluxRentrant);
@@ -192,40 +186,59 @@ public class GameController implements ActionListener, MouseListener {
         startGame();
         System.out.println(" Normalement déserializé ");
     }
-
-    public void saveScore() throws IOException{
-        switch (test.getLevel()){
-            case 1 : //beginner
-                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveB));                
+/*
+    public void saveScore() throws IOException {
+        setNbSave(recupNbSave());
+        nbSave++;
+        switch (test.getLevel()) {
+            case 1: //beginner
+                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveB));
                 break;
-            case 2 : //intermediaire
+            case 2: //intermediaire
                 toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveI));
                 break;
-            case 3 : // expert
-                toSave = new ObjectOutputStream(new  FileOutputStream(scoreSaveE));
+            case 3: // expert
+                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveE));
                 break;
         }
-        toSave.writeObject(test.getPseudo()+test.getTimer());
+        toSave.writeInt(nbSave);
+        for (int i = 0; i < nbSave; i++) {
+            toSave.writeObject(test.getPseudo() + test.getTimer());
+        }
+        System.out.println(" ok ser ");
     }
 
-    public void loadScore() throws IOException, ClassNotFoundException{
-        switch (test.getLevel()){
-            case 1 : //beginner
-                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveB));                
+    public void loadScore() throws IOException, ClassNotFoundException {
+        setNbSave(recupNbSave());
+        for (int i = 0; i < nbSave; i++) {
+            System.out.println(String.valueOf(checkScore.readObject()));
+        }
+    }
+
+    public int getNbSave() {
+        return nbSave;
+    }
+
+    public void setNbSave(int nbSave) {
+        this.nbSave = nbSave;
+    }
+
+    public int recupNbSave() throws IOException {
+        switch (test.getLevel()) {
+            case 1: //beginner
+                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveB));
                 break;
-            case 2 : //intermediaire
+            case 2: //intermediaire
                 checkScore = new ObjectInputStream(new FileInputStream(scoreSaveI));
                 break;
-            case 3 : // expert
-                checkScore = new ObjectInputStream(new  FileInputStream(scoreSaveE));
+            case 3: // expert
+                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveE));
                 break;
         }
-        String o = (String) checkScore.readObject();
-        String k = (String) checkScore.readObject();
-        System.out.println( o + "    " + k);
-    }    
-    
-    
+        setNbSave(checkScore.readInt());
+        return getNbSave();
+    }
+*/
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -308,13 +321,7 @@ public class GameController implements ActionListener, MouseListener {
             } else if (e.getClickCount() == 2) {
                 doubleClick(source.x, source.y);
             }
-            if (m.isInGame() != true) {
-                try {
-                    this.gameOver();
-                } catch (IOException | ClassNotFoundException ex) {
-                    System.out.println(" Batman a eu un petit soucis technique");
-                }
-            }
+            gameOver();
         } else {
             debug();
         }

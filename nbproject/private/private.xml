@@ -13,10 +13,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/Modele/Matrice.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/View/Print.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/Modele/Case.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/minesweeper/Minesweeper.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/Controleur/GameController.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/Modele/Scores.java</file>
             <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/View/GameMenu.java</file>
-            <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/Controleur/ControllTimer.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/View/ControllTimer.java</file>
+            <file>file:/home/gaetane/Documents/Java/Minesweaper/Demineur/src/View/Play.java</file>
         </group>
     </open-files>
 </project-private>
