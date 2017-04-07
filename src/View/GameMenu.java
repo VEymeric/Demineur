@@ -1,6 +1,7 @@
 package View;
 
 import Controleur.GameController;
+import Modele.Serialization;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -81,7 +82,23 @@ public class GameMenu extends JMenuBar {
             }
 
         });
-
+        this.item_score.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, KeyEvent.CTRL_MASK));
+        this.item_score.addActionListener((ActionEvent arg1) -> {
+            JFrame frame = new JFrame("Best scores");
+                Serialization s = new Serialization();
+                try{
+                    s.loadScore();
+                }catch(IOException | ClassNotFoundException e){
+                }
+                s.updateScore();
+                ScoresPanel sp = new ScoresPanel();
+                sp.setScores(s.scoresBeginner, s.scoresIntermediate, s.scoresExpert);
+                frame.add(sp);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+        });
         this.menu_new.add(this.item_beginner);
         this.menu_new.add(this.item_inter);
         this.menu_new.add(this.item_expert);

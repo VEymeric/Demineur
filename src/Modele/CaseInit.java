@@ -5,7 +5,7 @@ public enum CaseInit {
     ALONE("."),
     NUMBER(0);
 
-    private int value;
+    public int value;
     private String string;
 
     private CaseInit(String s) {

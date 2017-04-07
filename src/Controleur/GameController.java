@@ -2,7 +2,8 @@ package Controleur;
 
 import Modele.CaseHide;
 import Modele.Matrice;
-import Modele.Scores;
+import Modele.Score;
+import Modele.Serialization;
 import View.Button;
 import View.ControllTimer;
 import View.Play;
@@ -29,8 +30,6 @@ public final class GameController implements ActionListener, MouseListener {
     File scoreSaveB = new File(" scoreOfMinesweaperBeginer.winner");
     File scoreSaveE = new File(" scoreOfMinesweaperExpert.winner");
     File scoreSaveI = new File(" scoreOfMinesweaperIntermediaire.winner");
-
-    int nbSave = 0;
     ObjectInputStream checkScore;
     ObjectOutputStream toSave;
     public ControllTimer time;
@@ -38,7 +37,6 @@ public final class GameController implements ActionListener, MouseListener {
     Play gameViewWindow;
     private String action;
     boolean messageEndSended = false;
-    Scores test;
     Scanner sc;
 
     public GameController(int x, int y, double percentMine){ // Constructeur
@@ -50,7 +48,8 @@ public final class GameController implements ActionListener, MouseListener {
         m.addObserver(gameViewConsole);
         m.update();
         //time = new ControllTimer();
-        this.startGame();  
+        JOptionPane.showMessageDialog(null, "Vite batman ! Sauves nous ! Le joker a miné la zone !", null, JOptionPane.ERROR_MESSAGE);
+        this.startGame();
     }
 
     // Refaire une nouvelle partie
@@ -59,7 +58,18 @@ public final class GameController implements ActionListener, MouseListener {
         this.time.initChrono();
         m = new Modele.Matrice(x, y, (int) round((x * y) * percentMine / 100.0));
         gameViewConsole = new Print();
-        //gameViewWindow = new Play(this);
+        gameViewWindow.refreshGrid();
+        m.addObserver(gameViewWindow);
+        m.addObserver(gameViewConsole);
+        m.update();
+        messageEndSended = false;
+    }
+    
+    public void reloadAfter(Matrice ma){
+        //this.time
+        this.m = ma;
+        //recharge();
+        gameViewConsole =new Print();
         gameViewWindow.refreshGrid();
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
@@ -97,14 +107,13 @@ public final class GameController implements ActionListener, MouseListener {
         } else {
             JOptionPane.showMessageDialog(null, "Gotham est sauvé !", null, JOptionPane.INFORMATION_MESSAGE);
             System.out.println("La foule est en délire devant notre demineur pro !");
-            if (m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10) {
-                test = new Scores(1, gameViewWindow.giveName(), this.time.value());
-            }
-            if (m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40) {
-                test = new Scores(2, gameViewWindow.giveName(), this.time.value());
-            }
-            if (m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100) {
-                test = new Scores(3, gameViewWindow.giveName(), this.time.value());
+            if((m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10) ||
+            (m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40) ||
+            (m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100)){
+                JOptionPane.showMessageDialog(null, "Record !", null, JOptionPane.INFORMATION_MESSAGE);
+                serialize(m.getHeight(), m.getWidth(), this.time.value());
+            }else{
+                JOptionPane.showMessageDialog(null,m.getHeight() + " "+ m.getWidth() + " "+ m.getMine(), null, JOptionPane.INFORMATION_MESSAGE);
             }
         }
         this.showAllCase();
@@ -135,7 +144,7 @@ public final class GameController implements ActionListener, MouseListener {
                 break;
             case "m":
                 if (cr.length == 4) {
-                    if (m.getCountMine() == 0) {
+                    if (m.getCountMine() <= 0) {
                         m.startWithFlag(Integer.parseInt(cr[1]), Integer.parseInt(cr[2]));
                         break;
                     } else {
@@ -151,14 +160,14 @@ public final class GameController implements ActionListener, MouseListener {
 
     public void save() throws IOException {
         // Fichier dans lequel on va écrire;
-        File fichier = new File("test1.minesweaper");
+        File fichier = new File("lastSave.minesweaper");
         // Ouverture du flux du fichier 
         ObjectOutputStream fluxFichier = new ObjectOutputStream(new FileOutputStream(fichier));
         // Serialisation de l'objet
         fluxFichier.writeInt(m.getWidth());
         fluxFichier.writeInt(m.getHeight());
+        fluxFichier.writeInt(m.getCountMine());
         fluxFichier.writeInt(m.getMine());
-        System.out.println(m.getMine());
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
                 m.gridInit[j][i].writeObject(fluxFichier);
@@ -169,13 +178,15 @@ public final class GameController implements ActionListener, MouseListener {
 
     //récuperer un niveau ou reprendre une partie
     public void load() throws IOException, ClassNotFoundException {
-        File fichier = new File("test1.minesweaper");
+        File fichier = new File("lastSave.minesweaper");
         // Ouverture du flux fichier pour récuperer
         ObjectInputStream fluxRentrant = new ObjectInputStream(new FileInputStream(fichier));
         int x = fluxRentrant.readInt();
         int y = fluxRentrant.readInt();
+        int count = fluxRentrant.readInt();
         int mines = fluxRentrant.readInt();
         Matrice map = new Matrice(x, y, mines);
+        map.setCountMine(count);        
         System.out.println(map.getMine());
         for (int j = 0; j < map.getHeight(); j++) {
             for (int i = 0; i < map.getWidth(); i++) {
@@ -183,62 +194,10 @@ public final class GameController implements ActionListener, MouseListener {
             }
         }
         map.setInGame(true);
-        startGame();
+        reloadAfter(map);
         System.out.println(" Normalement déserializé ");
     }
-/*
-    public void saveScore() throws IOException {
-        setNbSave(recupNbSave());
-        nbSave++;
-        switch (test.getLevel()) {
-            case 1: //beginner
-                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveB));
-                break;
-            case 2: //intermediaire
-                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveI));
-                break;
-            case 3: // expert
-                toSave = new ObjectOutputStream(new FileOutputStream(scoreSaveE));
-                break;
-        }
-        toSave.writeInt(nbSave);
-        for (int i = 0; i < nbSave; i++) {
-            toSave.writeObject(test.getPseudo() + test.getTimer());
-        }
-        System.out.println(" ok ser ");
-    }
-
-    public void loadScore() throws IOException, ClassNotFoundException {
-        setNbSave(recupNbSave());
-        for (int i = 0; i < nbSave; i++) {
-            System.out.println(String.valueOf(checkScore.readObject()));
-        }
-    }
-
-    public int getNbSave() {
-        return nbSave;
-    }
-
-    public void setNbSave(int nbSave) {
-        this.nbSave = nbSave;
-    }
-
-    public int recupNbSave() throws IOException {
-        switch (test.getLevel()) {
-            case 1: //beginner
-                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveB));
-                break;
-            case 2: //intermediaire
-                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveI));
-                break;
-            case 3: // expert
-                checkScore = new ObjectInputStream(new FileInputStream(scoreSaveE));
-                break;
-        }
-        setNbSave(checkScore.readInt());
-        return getNbSave();
-    }
-*/
+    
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -279,13 +238,24 @@ public final class GameController implements ActionListener, MouseListener {
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
                 if (m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()) {
-                    m.gridInit[j][i].setCache(CaseHide.SHOW);
+                    m.gridInit[j][i].setCache(CaseHide.INTACTE);
                 }
             }
         }
         m.update();
     }
-
+    public void serialize(int rows, int cols, int time){
+        Serialization s = new Serialization();
+        Score sc = new Score(rows, cols, time);
+        try{
+            s.loadScore();
+        }catch(IOException | ClassNotFoundException e){
+            
+        }
+        s.scores.add(sc);
+        s.updateScore();
+    }
+    
     // Action lors d'un double clics sur une case
     private void doubleClick(int x, int y) {
         System.out.println(" je suis un double clic ");
@@ -320,8 +290,8 @@ public final class GameController implements ActionListener, MouseListener {
                 }
             } else if (e.getClickCount() == 2) {
                 doubleClick(source.x, source.y);
-            }
-            gameOver();
+            }            
+            //gameOver();
         } else {
             debug();
         }

@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Matrice extends Observable implements Serializable{
     int width = 0, height = 0, mine = 0, time =0;
     private boolean inGame = true;
-    private int countCase, countMine = 0;
+    public int countCase, countMine = 0;
     public Case[][] gridInit;
 
     public Matrice(int width, int height, int nbMine) {
@@ -102,8 +102,7 @@ public class Matrice extends Observable implements Serializable{
         this.mine = m.mine;
         update();
     }
-    
-    
+        
     //Genère une matrice de jeu à partir du premier clic en x;y
     public void generateMatrice(int xClic, int yClic) {
         System.out.println("Votre matrice viens de se générer.");
@@ -242,7 +241,8 @@ public class Matrice extends Observable implements Serializable{
     }
 
     //fonction qui ajoute 1 à toutes les cases autour d'une bombe : efficace pour initiliser
-    private void majNumbers(int x, int y) {
+    // Egalement pour la sérialisation
+    public void majNumbers(int x, int y) {
         if (x > 0 && y > 0) { // voisin haut gauche
             if (gridInit[y - 1][x - 1].isNumber()) {
                 gridInit[y - 1][x - 1].setBombes(gridInit[y - 1][x - 1].getBombes() + 1);
@@ -284,7 +284,7 @@ public class Matrice extends Observable implements Serializable{
             }
         }
     }
-
+    
     // Marquage des cases : drapeau/point d'interrogation / rien par rapport a la console
     public void mark(int i, int j, String mark) {
         if (this.isInGame() && !gridInit[j][i].isShow()) {
