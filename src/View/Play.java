@@ -181,4 +181,8 @@ public class Play implements Observer {
     private Button getButton(int i, int j) {
         return (Button) grid.getComponent(j * controleur.m.getWidth() + i);
     }
+    public String  giveName(){
+        String nom = JOptionPane.showInputDialog(null, "Entrez votre pseudo : ", "Gendarmerie nationale !", JOptionPane.INFORMATION_MESSAGE);
+        return nom;
+    }
 }
