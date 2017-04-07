@@ -31,7 +31,6 @@ public class GameController implements ActionListener, MouseListener {
     File scoreSaveE = new File(" scoreOfMinesweaperExpert.winner");
     File scoreSaveI = new File(" scoreOfMinesweaperIntermediaire.winner");
     
-
     ObjectInputStream checkScore;
     ObjectOutputStream toSave ;
     public ControllTimer time;
@@ -50,7 +49,7 @@ public class GameController implements ActionListener, MouseListener {
         m.addObserver(gameViewWindow);
         m.addObserver(gameViewConsole);
         m.update();
-        //time = new ControllTimer();
+        JOptionPane.showMessageDialog(null, "Vite batman ! Sauves nous ! Le joker a miné la zone !", null, JOptionPane.ERROR_MESSAGE);
         this.startGame();
     }
 
@@ -266,7 +265,7 @@ public class GameController implements ActionListener, MouseListener {
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
                 if (m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()) {
-                    m.gridInit[j][i].setCache(CaseHide.SHOW);
+                    m.gridInit[j][i].setCache(CaseHide.INTACTE);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package View;
 
+import View.ControllTimer;
 import Controleur.GameController;
 import Modele.CaseHide;
 import Modele.CaseInit;
@@ -125,11 +126,11 @@ public class Play implements Observer {
             button.paintComponents(button.getGraphics());
             switch (controleur.m.gridInit[j][i].getCache()) {
                 case FLAG:
-                    addIcone(button, "assets/flag.png");
+                    addIcone(button, "assets/bat2.png");
                     button.setString(" ");
                     break;
                 case UNKNOW:
-                    addIcone(button, "assets/interr.png");
+                    addIcone(button, "assets/enigma.png");
                     button.setString(" ");
                     break;
                 case INTACTE:
