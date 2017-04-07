@@ -2,6 +2,7 @@ package Controleur;
 
 import Modele.CaseHide;
 import Modele.Matrice;
+import Modele.Scores;
 import View.Button;
 import View.Play;
 import View.Print;
@@ -86,6 +87,15 @@ public class GameController implements ActionListener, MouseListener {
         } else {
             JOptionPane.showMessageDialog(null, "Gotham est sauvé !", null, JOptionPane.INFORMATION_MESSAGE);
             System.out.println("La foule est en délire devant notre demineur pro !");
+            if(m.getHeight() == 9 && m.getWidth() == 9 && m.getMine() == 10){
+                Scores test = new Scores(1,gameViewWindow.giveName(),this.time.value());
+            }
+            if(m.getHeight() == 16 && m.getWidth() == 16 && m.getMine() == 40){
+                Scores test = new Scores(2,gameViewWindow.giveName(),this.time.value());
+            }            
+            if(m.getHeight() == 16 && m.getWidth() == 30 && m.getMine() == 100){
+                Scores test = new Scores(3,gameViewWindow.giveName(),this.time.value());
+            }
         }
         this.showAllCase();
         System.out.println("Merci d'avoir joué !");
