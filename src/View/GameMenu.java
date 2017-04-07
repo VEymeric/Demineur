@@ -67,12 +67,11 @@ public class GameMenu extends JMenuBar {
         this.item_save.addActionListener((ActionEvent arg0) -> {
             try {
                 controleur.save();
-            } catch (IOException ex) {
-                System.out.println(" Exception error");
+            }   catch (IOException ex) {
                 Logger.getLogger(GameMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-
+    
         this.item_load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
         this.item_load.addActionListener((ActionEvent arg1) -> {
             try {

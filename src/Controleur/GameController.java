@@ -9,12 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import static java.lang.Math.round;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import java.util.Timer;
 
 public class GameController implements ActionListener, MouseListener {
+
     public Matrice m;
     public ControllTimer time;
     Print gameViewConsole;
@@ -59,11 +66,12 @@ public class GameController implements ActionListener, MouseListener {
         sc = new Scanner(System.in);
         while (m.isInGame()) {
             action = sc.nextLine();
+            System.out.println("action "+action);
             order(action);
         }
         gameOver();
     }
-    
+
     // Action après la défaite
     public void gameOver() {
         if (this.messageEndSended) {
@@ -120,11 +128,44 @@ public class GameController implements ActionListener, MouseListener {
         }
         m.update();
     }
-    public void save(){
-        JOptionPane.showMessageDialog(null, "par ici la bolosse", null, JOptionPane.ERROR_MESSAGE);
-        System.out.println("prout");
 
+    public void save() throws IOException {
+        // Fichier dans lequel on va écrire;
+        File fichier = new File("test1.yoshiMaker");
+        // Ouverture du flux du fichier 
+        ObjectOutputStream fluxFichier = new ObjectOutputStream(new FileOutputStream(fichier));
+        // Serialisation de l'objet
+        fluxFichier.writeInt(m.getWidth());
+        fluxFichier.writeInt(m.getHeight());
+        fluxFichier.writeInt(m.getCountMine());
+        for (int j = 0; j < m.getHeight(); j++) {
+            for (int i = 0; i < m.getWidth(); i++) {
+                m.gridInit[j][i].writeObject(fluxFichier);
+            }
+        }
+        System.out.println(" Sérialisation ok");
     }
+
+    //récuperer un niveau ou reprendre une partie
+    public void load() throws IOException, ClassNotFoundException {
+        File fichier = new File("test1.yoshiMaker");
+        // Ouverture du flux fichier pour récuperer
+        ObjectInputStream fluxRentrant = new ObjectInputStream(new FileInputStream(fichier));
+        int x = fluxRentrant.readInt();
+        int y = fluxRentrant.readInt();
+        int mines = fluxRentrant.readInt();
+        Matrice map =new Matrice(x,y);
+        System.out.println(map.getCountMine());
+        for (int j = 0; j < m.getHeight(); j++) {
+            for (int i = 0; i < m.getWidth(); i++) {
+                m.gridInit[j][i].readObject(fluxRentrant);
+            }
+        }
+        m.setInGame(true);
+        startGame();
+        System.out.println(" Normalement déserializé ");
+    }
+
     //affiche les diffèrentes commandes possibles
     private void help() {
         System.out.println(" Not complete order ");
@@ -164,7 +205,7 @@ public class GameController implements ActionListener, MouseListener {
     public void showAllCase() {
         for (int j = 0; j < m.getHeight(); j++) {
             for (int i = 0; i < m.getWidth(); i++) {
-                if(m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()){
+                if (m.gridInit[j][i].isMine() && m.gridInit[j][i].isHide()) {
                     m.gridInit[j][i].setCache(CaseHide.SHOW);
                 }
             }

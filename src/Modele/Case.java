@@ -13,9 +13,6 @@ public class Case implements Serializable {
     // donc il faut faire une surcharge
     public void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException{
         // Lecture en esperant que c'est le bon ordre 
-        this.x = ois.readInt();
-        this.y = ois.readInt();
-        this.bombes = ois.readInt();
         this.etat = (CaseInit) ois.readObject();
         this.cache = (CaseHide) ois.readObject();
         this.color = (Color)ois.readObject();
@@ -23,9 +20,6 @@ public class Case implements Serializable {
     }
     
     public void writeObject(ObjectOutputStream oos)throws IOException{
-        oos.writeInt(x);
-        oos.writeInt(y);
-        oos.writeInt(bombes);
         oos.writeObject(etat);
         oos.writeObject(cache);
         oos.writeObject(color);        
